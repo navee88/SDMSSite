@@ -479,7 +479,7 @@ const InstrumentLockTag = () => {
           </div>
         )}
 
-        <button
+        {/* <button
           className="absolute right-4 -bottom-3 z-10 bg-[#f0f4f8] hover:bg-slate-200 p-0.5 rounded shadow-sm transition-colors"
           onClick={() => setIsExpanded(!isExpanded)}
         >
@@ -488,7 +488,7 @@ const InstrumentLockTag = () => {
           ) : (
             <ChevronDown className="w-4 h-4 text-blue-600" />
           )}
-        </button>
+        </button> */}
       </div>
 
       {/* Action Buttons */}
