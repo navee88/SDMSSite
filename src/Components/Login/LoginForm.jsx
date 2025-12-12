@@ -484,7 +484,7 @@ showDialog(msg, "warning");
 
       if (!email) { 
       const translationKey = 'login.noemaildforforgotpwd';
-    showDialog(translationKey || 'login.noemaildforforgotpwd', "information");
+      showDialog(translationKey || 'login.noemaildforforgotpwd', "information");
         // showDialog(getErrorMessage('login.noemaildforforgotpwd'), "information");
         return;
       }
@@ -510,7 +510,7 @@ showDialog(msg, "warning");
       <form onSubmit={handleSubmit(onSubmit)}>
       
         <div className="mb-3">
-          <label className="text-sm font-medium text-gray-600">User:</label>
+          <label className="text-sm font-medium text-gray-600">{t('login.username')}</label>
           <input
             ref={usernameRef}
             type="text"

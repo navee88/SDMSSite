@@ -4,7 +4,6 @@ import { CF_sessionGet } from "../Common/CF_session";
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = CF_sessionGet("isLoggedIn") === "Login Success";
-  console.log(isAuthenticated);
 
   if (!isAuthenticated) {
     return <Navigate to="/Login" replace />;

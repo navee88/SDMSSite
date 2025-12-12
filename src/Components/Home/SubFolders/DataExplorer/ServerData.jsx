@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 
 import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
+import UsersPage from '../../../Layout/Common/Home/Userpage';
 
 const ACTION_ICONS = {
   "Open": FolderOpen,
@@ -101,7 +102,6 @@ const DatePicker = ({ label, value, onChange, max }) => (
 );
 
 
-// --- ConfigModal Component ---
 
 const ConfigModal = ({ onClose, currentVisibility, onSave }) => {
   const [tempVisibility, setTempVisibility] = useState({ ...currentVisibility });
@@ -562,7 +562,11 @@ const ServerData = () => {
               </div>
             )}
         </div>
+        
       </div>
+        
+        <div><UsersPage /> </div>
+       
 
       {showConfig && (
         <ConfigModal 

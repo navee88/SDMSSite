@@ -5,7 +5,7 @@ function TabsHeader({ tabs, selectedTab, setSelectedTab }) {
   const [hoveredTab, setHoveredTab] = useState(null);
 
   return (
-    <div className="flex sticky top-0 gap-10 px-4 pt-4 border-b border-[#264ab2] h-[54px]">
+    <div className="flex gap-10 px-4 pt-4 border-b border-[#264ab2] h-[54px]">
       {tabs.map((tab, index) => {
         const isActive = selectedTab === index;
         const isHovered = hoveredTab === index;

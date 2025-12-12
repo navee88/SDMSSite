@@ -53,7 +53,7 @@ function Homelayout() {
       </header>
 
       <main
-        className="overflow-auto bg-white"
+        className="overflow-hidden bg-white"
         style={{ gridArea: "main", height: `calc(100vh - ${NAVBAR_HEIGHT}px)` }}
       >
         <AnimatePresence mode="wait">

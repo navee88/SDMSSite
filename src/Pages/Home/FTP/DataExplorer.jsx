@@ -18,14 +18,25 @@ export default function DataExplorer() {
 
   return (
     <>
-      <TabsHeader
-        tabs={currentTabs}
-        selectedTab={selectedTab}
-        setSelectedTab={setSelectedTab}
-      />
-      <div>
-        {currentTabs[selectedTab]?.content || null}
-      </div>
+
+<div className="flex flex-col h-dvh overflow-hidden bg-white">
+  
+
+  <div className="flex-none z-10 bg-white">
+    <TabsHeader 
+      tabs={currentTabs} 
+      selectedTab={selectedTab} 
+      setSelectedTab={setSelectedTab}
+      className="shadow-sm"
+    />
+  </div>
+
+  <div className="flex-1 overflow-y-scroll overflow-x-hidden pb-20">
+    {currentTabs[selectedTab]?.content || null}
+  </div>
+
+</div>
+
     </>
   );
 }

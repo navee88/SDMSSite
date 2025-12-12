@@ -1,4 +1,4 @@
-import React, { lazy ,Suspense, useMemo} from "react";
+import React, { lazy, Suspense, useCallback, useMemo, useState, useEffect, useTransition } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -31,64 +31,94 @@ function AnimatedRouteWrapper({ element }) {
   return <PageWrapper>{element}</PageWrapper>;
 }
 
+// Custom hook for Home route transition
+function useHomeTransition() {
+  const actualLocation = useLocation();
+  const [displayLocation, setDisplayLocation] = useState(actualLocation);
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    // Apply transition only when navigating to/from Home route
+    if (actualLocation.pathname === '/Home' || displayLocation.pathname === '/Home') {
+      startTransition(() => {
+        setDisplayLocation(actualLocation);
+      });
+    } else {
+      setDisplayLocation(actualLocation);
+    }
+  }, [actualLocation]);
+
+  return { location: displayLocation, isPending };
+}
+
 function AnimatedRoutes() {
-  const location = useLocation();
-   const loadingFallback = useMemo(
+  const { location, isPending } = useHomeTransition();
+  
+  const loadingFallback = useMemo(
     () => (
       <div className="flex items-center justify-center py-10">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-3 text-gray-600">Loading...</span>
+        {/* <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <span className="ml-3 text-gray-600">Loading...</span> */}
       </div>
     ),
     []
   );
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <Routes location={location} key={location.pathname}>
+    <>
 
-        {/* <Route path="/" element={<Navigate to="/Login" replace />} /> */}
-
-        <Route path="/Login" element={<AnimatedRouteWrapper element={<Loginlayout />} />} />
+      {isPending && (
+        <div className="fixed top-0 left-0 right-0 h-1 bg-blue-600 animate-pulse z-50" />
+        // <div></div>
+      )}
       
-        <Route
-          path="/errordialog"
-          element={<AnimatedRouteWrapper element={<Errordialog />} />}
-        />
-        {/* <Route path="/guid" 
-        element={ <Suspense fallback={loadingFallback}><AnimatedRouteWrapper element={<Guid />} /> </Suspense> } /> */}
-
-       
-        <Route
-          path="/Home"
-          element={
-            <Suspense fallback={loadingFallback}>
-              <ProtectedRoute>
-                <AnimatedRouteWrapper element={<Home />} />
-              </ProtectedRoute>
-            </Suspense>
-          }
-        />
-       
-      </Routes>
-    </AnimatePresence>
+      <div 
+        style={{
+          opacity: isPending ? 0.6 : 1,
+          transition: 'opacity 0.3s ease-in-out',
+          pointerEvents: isPending ? 'none' : 'auto'
+        }}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/Login" element={<AnimatedRouteWrapper element={<Loginlayout />} />} />
+            
+            <Route
+              path="/errordialog"
+              element={<AnimatedRouteWrapper element={<Errordialog />} />}
+            />
+            
+            <Route
+              path="/Home"
+              element={
+                <Suspense fallback={loadingFallback}>
+                  <ProtectedRoute>
+                    <AnimatedRouteWrapper element={<Home />} />
+                  </ProtectedRoute>
+                </Suspense>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
+      </div>
+    </>
   );
 }
 
 function App() {
-
-   if (window.location.pathname === "/LogilabSDMS" || window.location.pathname === "/LogilabSDMS/") {
+  if (window.location.pathname === "/LogilabSDMS" || window.location.pathname === "/LogilabSDMS/") {
     window.location.replace("/LogilabSDMS/Login");
   }
 
   return (
-    <LanguageProvider>
-    <Router basename="/LogilabSDMS">
-      <AnimatedRoutes />
-    </Router>
-    </LanguageProvider>
+    <>
+      <LanguageProvider>
+        <Router basename="/LogilabSDMS">
+          <AnimatedRoutes />
+        </Router>
+      </LanguageProvider>
+    </>
   );
 }
 
 export default App;
-
