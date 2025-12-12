@@ -18,12 +18,4 @@ export const tabConfig = {
   SearchServerData: {
     "SearchServerData" : {content: <SearchServerData />}
   },
-  InstrumentLockSettings:{
-    "Instrument Locks and Tags": { content: <InstrumentLockTag /> },
-    "Data": { content: <Data /> },
-    "My Instruments": { content: <MyInstruments /> },
-    "Other Instruments": { content: <OtherInstruments /> },
-
-
-  }
 };

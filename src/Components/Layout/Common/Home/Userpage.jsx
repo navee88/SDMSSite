@@ -11,7 +11,7 @@ const UsersPage = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("Your Url");
+        const response = await axios.get("your url here");
         setUserData(response.data);
         setLoading(false);
       } catch (err) {
@@ -79,16 +79,73 @@ const UsersPage = () => {
           {user.userStatus}
         </div>
       </div>
+
+      <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">Email ID</div>
+        <div className="col-span-2 text-gray-800 font-medium">{user.email}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">User ID</div>
+        <div className="col-span-2 text-gray-800 font-medium">{user.id}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">Status</div>
+        <div className={`col-span-2 font-medium ${user.userStatus === 'Active' ? 'text-green-600' : 'text-red-600'}`}>
+          {user.userStatus}
+        </div>
+      </div>
+
+         <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">Email ID</div>
+        <div className="col-span-2 text-gray-800 font-medium">{user.email}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">User ID</div>
+        <div className="col-span-2 text-gray-800 font-medium">{user.id}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">Status</div>
+        <div className={`col-span-2 font-medium ${user.userStatus === 'Active' ? 'text-green-600' : 'text-red-600'}`}>
+          {user.userStatus}
+        </div>
+      </div>
+
+         <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">Email ID</div>
+        <div className="col-span-2 text-gray-800 font-medium">{user.email}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">User ID</div>
+        <div className="col-span-2 text-gray-800 font-medium">{user.id}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4 text-[13px]">
+        <div className="font-semibold text-teal-700">Status</div>
+        <div className={`col-span-2 font-medium ${user.userStatus === 'Active' ? 'text-green-600' : 'text-red-600'}`}>
+          {user.userStatus}
+        </div>
+      </div>
+
       
+
     </div>
   );
 
+  if (loading) {
+    return <div className="p-8 text-center text-gray-500">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="p-8 text-center text-red-500"></div>;
+  }
+  
   return (
+    <>
     <GridLayout
       columns={userColumns}
       data={userData}
       renderDetailPanel={renderUserDetail}
     />
+    </>
   );
 };
 
