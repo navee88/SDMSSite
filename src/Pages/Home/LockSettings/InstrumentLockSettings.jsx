@@ -1,9 +1,42 @@
+import React, { useState, useEffect } from "react";
+import TabsHeader from "../../../Components/Layout/Common/Home/TabsHeader";
+import { tabConfig } from ".././../../Components/Layout/Common/Home/TabConfig";
+
 export default function InstrumentLockSettings() {
+  const [page, setPage] = useState("InstrumentLockSettings");
+  const [selectedTab, setSelectedTab] = useState(2);
+
+  useEffect(() => {
+    setSelectedTab(0);
+  }, [page]);
+
+  const pageTabsObj = tabConfig[page] || {};
+  const currentTabs = Object.keys(pageTabsObj).map(label => ({
+    label,
+    content: pageTabsObj[label].content,
+  }));
+
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Instrument Lock Settings</h2>
-      {/* Instrument Lock Settings content goes here */}
-      <p>This is where you can configure the instrument lock settings.</p>
-    </div>
+    <>
+
+<div className="flex flex-col h-dvh overflow-hidden bg-white">
+  
+
+  <div className="flex-none z-10 bg-white">
+    <TabsHeader 
+      tabs={currentTabs} 
+      selectedTab={selectedTab} 
+      setSelectedTab={setSelectedTab}
+      className="shadow-sm"
+    />
+  </div>
+
+  <div className="flex-1 overflow-y-scroll overflow-x-hidden pb-20">
+    {currentTabs[selectedTab]?.content || null}
+  </div>
+
+</div>
+
+    </>
   );
 }
