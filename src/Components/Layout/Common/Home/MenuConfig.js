@@ -7,10 +7,12 @@ import { faSitemap } from "@fortawesome/free-solid-svg-icons";
 import { FaUser, FaCog } from "react-icons/fa";
 
 
+
 import DataExplorer from "../../../../Pages/Home/FTP/DataExplorer";
 import Searchserverdata from "../../../../Pages/Home/FTP/Searchserverdata";
 import UserManagment from "../../../../Pages/Home/UserManagment/UserManagment";
 import Passwordpolicy from "../../../../Pages/Home/UserManagment/Passwordpolicy";
+import InstrumentLockSettings from "../../../../Pages/Home/LockSettings/InstrumentLockSettings";
 
 
 export const menuConfig = [
@@ -27,7 +29,7 @@ export const menuConfig = [
     icon: <GiPadlock />,
     label: "Lock Settings",
     subItems: [
-      { label: "Instrument Lock Settings", content: <div>Instrument Lock Settings</div> },
+      { label: "Instrument Lock Settings", content: <InstrumentLockSettings/> },
     ],
   },
 
