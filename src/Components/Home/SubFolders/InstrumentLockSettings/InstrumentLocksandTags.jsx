@@ -506,7 +506,7 @@ const InstrumentLockTag = () => {
   return (
     <div className="flex flex-col w-full font-sans rounded-md">
       <div className="bg-white px-6 py-6">
-        <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-[1400px] ">
           <div className="grid grid-cols-2 gap-8">
             {/* Left Panel */}
             <div className="max-w-[400px]">
