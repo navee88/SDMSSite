@@ -11,7 +11,7 @@ const UsersPage = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5173/users');
+        const response = await axios.get("Your Url");
         setUserData(response.data);
         setLoading(false);
       } catch (err) {
@@ -79,6 +79,7 @@ const UsersPage = () => {
           {user.userStatus}
         </div>
       </div>
+      
     </div>
   );
 

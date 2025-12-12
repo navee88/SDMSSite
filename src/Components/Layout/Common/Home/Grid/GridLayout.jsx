@@ -186,8 +186,8 @@ const GridLayout = ({ columns, data, renderDetailPanel }) => {
 
       <div className="flex w-full p-4 gap-4 overflow-hidden">
        <div
-          className={`flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden min-w-0 ${
-            !renderDetailPanel || processedData.length === 0 ? 'w-full' : 'w-1/2'
+          className={`flex flex-col bg-white rounded-lg shadow-sm border  max-h-[600px] border-gray-200 overflow-hidden min-w-0 ${
+            !renderDetailPanel || processedData.length === 0 ? 'w-full' : 'w-4/5'
           }`}
         >
           <div
@@ -306,14 +306,21 @@ const GridLayout = ({ columns, data, renderDetailPanel }) => {
         </div>
 
     {renderDetailPanel && processedData.length > 0 && (
-          <div className="w-1/2 bg-white rounded-lg shadow-sm border border-gray-200 p-8 overflow-y-auto custom-scrollbar">
-            {selectedItem
-              ? renderDetailPanel(selectedItem)
-              : <div className="text-gray-400 text-center mt-10">Select an item to view details</div>
-            }
-          </div>
-        )}
-
+    <div
+    className="w-3/6 bg-white rounded-md shadow-sm border border-gray-200 p-3 overflow-y-scroll custom-scrollbar"
+    style={{
+              maxHeight: '600px',
+              overflowY: 'auto',
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#cbd5e1 #f1f5f9',
+            }}
+    >
+    {selectedItem
+      ? renderDetailPanel(selectedItem)
+      : <div className="text-gray-400 text-center mt-10">Select an item to view details</div>
+    }
+    </div>
+    )}
       </div>
     </>
   );
