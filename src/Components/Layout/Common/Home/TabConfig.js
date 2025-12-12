@@ -12,5 +12,5 @@ export const tabConfig = {
   },
   SearchServerData: {
     "SearchServerData" : {content: <SearchServerData />}
-  },
+  }
 };
