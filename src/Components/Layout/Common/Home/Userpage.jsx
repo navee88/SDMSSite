@@ -83,6 +83,15 @@ const UsersPage = () => {
     </div>
   );
 
+  if (loading) {
+    return <div className="p-8 text-center text-gray-500">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="p-8 text-center text-red-500"></div>;
+  }
+
+  
   return (
     <GridLayout
       columns={userColumns}
