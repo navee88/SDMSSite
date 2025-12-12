@@ -2,12 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
     Filter, RotateCcw, RefreshCw, Settings, ChevronUp, ChevronDown, X, CheckSquare,
     FolderDown, Upload, FolderUp, FileClock, History, Tag, FileText, FolderOpen, Download,
-    CheckCircle, List, MoreVertical, MousePointer2, Calendar, 
-    UploadIcon, 
+    CheckCircle, List, MoreVertical, MousePointer2, Calendar,
+    UploadIcon,
 } from 'lucide-react';
 import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
 import UsersPage from '../../../Layout/Common/Home/Userpage';
 import exportIcon from "../../../../Assests/Icons/export-icon.png"
+import AnimatedInput from '../../../Layout/Common/AnimatedInput';
 
 const ACTION_ICONS = {
     "Open": FolderOpen,
@@ -65,35 +66,6 @@ const PrimaryButton = ({ icon: Icon, label, onClick }) => (
         <span>{label}</span>
     </button>
 );
-
-// const PrimaryButton = ({ icon: Icon, label, onClick }) => {
-//   const isLucide = Icon && Icon.$$typeof; // works for all lucide-react versions
-
-//   return (
-//     <button
-//       onClick={onClick}
-//       className="flex items-center gap-1 px-2.5 py-2 hover:scale-90 transition-all bg-white text-blue-600 text-[11px] font-bold rounded shadow-sm"
-//     >
-//       {/* Lucide icon */}
-//       {isLucide && <Icon className="w-4 h-4" />}
-
-//       {/* PNG / SVG */}
-//       {!isLucide && Icon && (
-//         <img src={Icon} className="w-4 h-4 filter invert-[40%] sepia-[80%] saturate-[1000%] hue-rotate-[180deg]" alt="" />
-//       )}
-
-//       <span>{label}</span>
-//     </button>
-//   );
-// };
-
-
-
-
-
-
-
-
 
 const ActionButton = ({ icon: Icon, label, disabled, onClick, className = "" }) => (
     <button
@@ -292,6 +264,8 @@ const UploadQueue = () => {
     const [recordsDuration, setRecordsDuration] = useState("Current Date");
     const [fromDate, setFromDate] = useState(today);
     const [toDate, setToDate] = useState(today);
+    const [filename, setFilename] = useState("");
+
 
     const menuRef = useRef(null);
     const actionContainerRef = useRef(null);
@@ -407,9 +381,14 @@ const UploadQueue = () => {
                         </div>
 
                         <div className="w-60">
-                            <label className="text-sm font-medium text-gray-600 mb-1 block">Filename</label>
-                            <input type='text' style={{ borderBottom: "2px solid blue", }} />
+                            <AnimatedInput
+                                label="Filename"
+                                name="filename"
+                                value={filename}
+                                onChange={(e) => setFilename(e.target.value)}
+                            />
                         </div>
+
 
                         <div className="w-60">
                             <AnimatedDropdown
