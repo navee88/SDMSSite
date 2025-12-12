@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import axios from 'axios';
-import DetailsLayout from './Grid/GridLayout';
+import GridLayout from './Grid/GridLayout';
 
 const UsersPage = () => {
   const [userData, setUserData] = useState([]);
@@ -11,7 +11,7 @@ const UsersPage = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('your url...');
+        const response = await axios.get('http://localhost:5173/users');
         setUserData(response.data);
         setLoading(false);
       } catch (err) {
@@ -83,7 +83,7 @@ const UsersPage = () => {
   );
 
   return (
-    <DetailsLayout
+    <GridLayout
       columns={userColumns}
       data={userData}
       renderDetailPanel={renderUserDetail}

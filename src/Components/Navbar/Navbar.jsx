@@ -10,6 +10,8 @@ import { IoHelp } from "react-icons/io5";
 import { FaRocket } from "react-icons/fa6";
 import { CF_decrypt } from "../Common/encryptiondecryption";
 import { useTranslation } from "react-i18next";
+import SDMS_Logo from '../../Assests/SDMS_Logo.webp';
+
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -68,7 +70,7 @@ function Navbar() {
 
       <div className="flex items-center">
         <img
-          src="http://localhost:9090/LogilabSDMS/images/SDMS_Logo.png"
+          src={SDMS_Logo}
          alt="SDMS_Logo"
       className="w-20 h-auto text-sm inline-block"
         />

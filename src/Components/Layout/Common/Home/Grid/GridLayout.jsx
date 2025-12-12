@@ -86,7 +86,7 @@ const TableHeaderCell = ({
   );
 };
 
-const DetailsLayout = ({ columns, data, renderDetailPanel }) => {
+const GridLayout = ({ columns, data, renderDetailPanel }) => {
   const [selectedItem, setSelectedItem] = useState(data[0]);
   const [filters, setFilters] = useState({});
   const [debouncedFilters] = useDebounceValue(filters, 300);
@@ -319,4 +319,4 @@ const DetailsLayout = ({ columns, data, renderDetailPanel }) => {
   );
 };
 
-export default DetailsLayout;
+export default GridLayout;
