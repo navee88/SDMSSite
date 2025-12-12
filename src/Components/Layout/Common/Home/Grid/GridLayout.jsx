@@ -44,7 +44,7 @@ const TableHeaderCell = ({
 
   return (
     <th
-      className="sticky top-0 z-10 px-4 py-3 text-[14px] font-bold text-gray-600 capitalize tracking-wider bg-white border-b border-gray-200 group hover:bg-gray-50 cursor-pointer select-none"
+      className="sticky top-0 z-50 px-4 py-3 text-[14px] font-bold text-gray-600 capitalize tracking-wider bg-white border-b border-gray-200 group hover:bg-gray-50 cursor-pointer select-none"
       style={{
         width: width,
         minWidth: width,
@@ -64,13 +64,13 @@ const TableHeaderCell = ({
 
         {isActive && (
           <div
-            className={`absolute top-full mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg z-50 py-1 text-left font-normal normal-case ${
+            className={`absolute top-full z-50 mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg py-1 text-left font-normal normal-case ${
               isLast ? 'right-0 origin-top-right' : 'left-0 origin-top-left'
             }`}
             onClick={(e) => e.stopPropagation()}
           >
             <button onClick={() => onSort(colKey, 'asc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sort Ascending <span className='text-[20px] text-green-900'><AiOutlineSortAscending /></span></button>
-            <button onClick={() => onSort(colKey, 'desc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sort Descending <span className='text-[20px] text-green-900'><TbSortDescendingLetters /></span></button>
+            <button onClick={() => onSort(colKey, 'desc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sort Descending <span className='text-[18px] text-green-900'><TbSortDescendingLetters /></span></button>
             <div className="border-t border-gray-500 my-1 border-1"></div>
             <button onClick={() => onSort(null, 'asc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Remove Sort <span className='text-[20px] text-red-500'><CgPlayListRemove /></span></button>
           </div>
@@ -230,7 +230,7 @@ const GridLayout = ({ columns, data, renderDetailPanel }) => {
                       <div className="relative">
                         <input
                           type="text"
-                          className="w-full pl-2 pr-7 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                          className="w-full pl-2 z-10 pr-7 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                           value={filters[col.key] || ''}
                           onChange={(e) => setFilters({ ...filters, [col.key]: e.target.value })}
                         />
@@ -269,8 +269,10 @@ const GridLayout = ({ columns, data, renderDetailPanel }) => {
               </tbody>
             </table>
           </div>
-
-          <div className="px-4 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between text-xs sm:text-sm shrink-0">
+          
+          
+          {processedData.length > rowsPerPage && (
+  <div className="px-4 py-3 z-10 border-t border-gray-200 bg-gray-50 flex items-center justify-between text-xs sm:text-sm shrink-0">
             <div className="flex items-center gap-2 text-gray-600">
               <span>Rows per page:</span>
               <select
@@ -303,10 +305,12 @@ const GridLayout = ({ columns, data, renderDetailPanel }) => {
               </div>
             </div>
           </div>
+            )}
         </div>
+      
 
     {renderDetailPanel && processedData.length > 0 && (
-    <div
+  <div
     className="w-3/6 bg-white rounded-md shadow-sm border border-gray-200 p-3 overflow-y-scroll custom-scrollbar"
     style={{
               maxHeight: '600px',
@@ -314,13 +318,14 @@ const GridLayout = ({ columns, data, renderDetailPanel }) => {
               scrollbarWidth: 'thin',
               scrollbarColor: '#cbd5e1 #f1f5f9',
             }}
-    >
+  >
     {selectedItem
       ? renderDetailPanel(selectedItem)
       : <div className="text-gray-400 text-center mt-10">Select an item to view details</div>
     }
-    </div>
-    )}
+  </div>
+)}
+
       </div>
     </>
   );

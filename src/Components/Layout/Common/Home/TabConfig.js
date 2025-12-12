@@ -30,14 +30,5 @@ export const tabConfig = {
     "Other Instruments": { content: <OtherInstruments /> },
 
 
-  },
-  MonitorSchedular:{
-    "Upload Queue": { content: <UploadQueue /> },
-    "Failed Queue": { content: <FailedQueue /> },
-    "Upload Monitor":{content: <UploadMonitor/>},
-    "Restore Monitor": { content: <RestoreMonitor /> },
-    "Download Monitor": { content: <DownloadMonitor /> },
   }
-
-
 };
