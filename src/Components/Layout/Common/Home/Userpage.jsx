@@ -11,7 +11,7 @@ const UsersPage = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("your url here");
+        const response = await axios.get('http://localhost:5173/users');
         setUserData(response.data);
         setLoading(false);
       } catch (err) {
@@ -137,7 +137,8 @@ const UsersPage = () => {
   if (error) {
     return <div className="p-8 text-center text-red-500"></div>;
   }
-  
+
+
   return (
     <>
     <GridLayout

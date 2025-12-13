@@ -7,6 +7,7 @@ import {
 
 import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
 import UsersPage from '../../../Layout/Common/Home/Userpage';
+import FtpLayout from '../../../Layout/Common/Home/Grid/FtpLayout';
 
 const ACTION_ICONS = {
   "Open": FolderOpen,
@@ -564,9 +565,9 @@ const ServerData = () => {
         </div>
 
       </div>
-
-      <div><UsersPage /> </div>
-
+        
+        <div><UsersPage /> </div>
+       
 
       {showConfig && (
         <ConfigModal
