@@ -1,473 +1,289 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-    Filter, RotateCcw, RefreshCw, Settings, ChevronUp, ChevronDown, X, CheckSquare,
-    FolderDown, Upload, FolderUp, FileClock, History, Tag, FileText, FolderOpen, Download,
-    CheckCircle, List, MoreVertical, MousePointer2, Calendar,
-    UploadIcon,
-} from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import UsersPage from '../../../Layout/Common/Home/Userpage';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
+import React, { useState, useEffect } from 'react';
+import { Search, ChevronDown, FileText, SquarePen } from 'lucide-react';
 
-const ACTION_ICONS = {
-    "Open": FolderOpen,
-    "File Download": Download,
-    "Restore": RotateCcw,
-    "Folder Download": FolderDown,
-    "File Upload": Upload,
-    "Folder Upload": FolderUp,
-    "Version History": FileClock,
-    "Workflow History": History,
-    "Tag": Tag,
-    "Audit Trail History": List,
-    "Attribute": FileText,
-    "Multi-File Select": MousePointer2,
-    "Work Complete": CheckCircle
-};
+const InstrumentGrid = () => {
+    const [sortMenuOpen, setSortMenuOpen] = useState(false);
+    const [sortOrder, setSortOrder] = useState(null);
+    const [data, setData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
+    const [searchValues, setSearchValues] = useState({
+        clientName: '',
+        instrument: '',
+        live: ''
+    });
+    const [focusedInput, setFocusedInput] = useState(null);
+    const [hoveredColumn, setHoveredColumn] = useState(null);
+    const [selectedRow, setSelectedRow] = useState(null);
 
-const ALL_ACTION_ORDER = [
-    "Open",
-    "File Download",
-    "Restore",
-    "Folder Download",
-    "File Upload",
-    "Folder Upload",
-    "Version History",
-    "Work Complete",
-    "Workflow History",
-    "Tag",
-    "Audit Trail History",
-    "Attribute",
-    "Multi-File Select"
-];
+    // Simulate API call
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-const CUSTOM_FILTERS = ["Instrument", "Workflow Status", "Task Status"];
-const CUSTOM_COLUMNS = ["Parser Status"];
-
-const CheckboxItem = ({ label, checked, onChange }) => (
-    <label className="flex items-center justify-between py-2 hover:bg-slate-50 px-2 rounded cursor-pointer group transition-colors mr-2">
-        <span className="text-slate-700 font-medium text-sm select-none group-hover:text-blue-700">{label}</span>
-        <input
-            type="checkbox"
-            checked={!!checked}
-            onChange={() => onChange(label)}
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
-        />
-    </label>
-);
-
-const PrimaryButton = ({ icon: Icon, label, onClick }) => (
-    <button
-        onClick={onClick}
-        className="flex items-center gap-1 px-2.5 py-2 hover:scale-90 transition-all bg-white text-blue-600 text-[11px] font-bold rounded shadow-sm border border-transparent hover:bg-blue-50  whitespace-nowrap"
-    >
-        <Icon className="w-4 h-4 stroke-[3]" />
-        <span>{label}</span>
-    </button>
-);
-
-const ActionButton = ({ icon: Icon, label, disabled, onClick, className = "" }) => (
-    <button
-        onClick={onClick}
-        disabled={disabled}
-        className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold rounded  whitespace-nowrap hover:scale-90 transition-all
-      ${disabled
-                ? "bg-slate-100 text-slate-300 cursor-not-allowed"
-                : "bg-[#f1f5f9] text-[#1d8cf8] hover:bg-blue-100"
-            }
-      ${className}
-    `}
-    >
-        {Icon && <Icon className="w-3.5 h-3.5" />}
-        <span>{label}</span>
-    </button>
-);
-
-const SummaryItem = ({ label, value }) => (
-    <div className="flex items-center gap-1 text-xs">
-        <span className="font-medium text-slate-800">{value}</span>
-    </div>
-);
-
-const DatePicker = ({ label, value, onChange, max }) => (
-    <div className="flex flex-col w-full">
-        <label className="block text-xs font-semibold text-slate-600 mb-1.5">{label}</label>
-        <input
-            type="date"
-            value={value}
-            max={max}
-            onChange={(e) => onChange(e.target.value)}
-            className="w-full bg-transparent border-b border-slate-300 pb-1 text-sm text-slate-800 font-medium focus:outline-none focus:border-blue-500"
-        />
-    </div>
-);
-
-
-
-const ConfigModal = ({ onClose, currentVisibility, onSave }) => {
-    const [tempVisibility, setTempVisibility] = useState({ ...currentVisibility });
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [isDragging, setIsDragging] = useState(false);
-    const dragStartPos = useRef({ x: 0, y: 0 });
-
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        dragStartPos.current = { x: e.clientX - position.x, y: e.clientY - position.y };
+    const fetchData = async () => {
+        // Simulated API response
+        const apiData = [
+            { id: 1, clientName: 'DESKTOP-CU9J5T2', instrument: 'CU-Summary1 (CU-Summary1)', live: true },
+            { id: 2, clientName: 'DESKTOP-CU9J5T2', instrument: 'CU-Summary1 (CU-Summary1)', live: true },
+            { id: 3, clientName: 'DESKTOP-CU9J5T2', instrument: 'MU-Summary1 (MU-Summary1)', live: true },
+            { id: 4, clientName: 'DESKTOP-CU9J5T2', instrument: 'AU-Summary1 (AU-Summary1)', live: true },
+            { id: 5, clientName: 'DESKTOP-CU9J5T2', instrument: 'CU-Summary1 (CU-Summary1)', live: true },
+            { id: 6, clientName: 'DESKTOP-CU9J5T2', instrument: 'CU-Summary1 (CU-Summary1)', live: false },
+            { id: 7, clientName: 'DESKTOP-CU9J5T2', instrument: 'CU-Summary1 (CU-Summary1)', live: true },
+        ];
+        setData(apiData);
+        setFilteredData(apiData);
     };
 
     useEffect(() => {
-        const handleMouseMove = (e) => {
-            if (!isDragging) return;
-            setPosition({ x: e.clientX - dragStartPos.current.x, y: e.clientY - dragStartPos.current.y });
-        };
-        const handleMouseUp = () => setIsDragging(false);
-        if (isDragging) {
-            window.addEventListener('mousemove', handleMouseMove);
-            window.addEventListener('mouseup', handleMouseUp);
+        filterData();
+    }, [searchValues, data]);
+
+    const filterData = () => {
+        let filtered = [...data];
+
+        if (searchValues.clientName) {
+            filtered = filtered.filter(item =>
+                item.clientName.toLowerCase().includes(searchValues.clientName.toLowerCase())
+            );
         }
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseup', handleMouseUp);
-        };
-    }, [isDragging]);
 
-    const toggleVisibility = (label) => {
-        setTempVisibility(prev => ({ ...prev, [label]: !prev[label] }));
+        if (searchValues.instrument) {
+            filtered = filtered.filter(item =>
+                item.instrument.toLowerCase().includes(searchValues.instrument.toLowerCase())
+            );
+        }
+
+        if (searchValues.live) {
+            const searchLower = searchValues.live.toLowerCase();
+            filtered = filtered.filter(item => {
+                const liveText = item.live ? 'true' : 'false';
+                return liveText.includes(searchLower);
+            });
+        }
+
+        setFilteredData(filtered);
     };
 
-    const handleSubmit = () => {
-        onSave(tempVisibility);
-        onClose();
+    const handleSort = (order) => {
+        const sorted = [...filteredData].sort((a, b) => {
+            if (order === 'asc') {
+                return a.instrument.localeCompare(b.instrument);
+            } else if (order === 'desc') {
+                return b.instrument.localeCompare(a.instrument);
+            }
+            return 0;
+        });
+        setFilteredData(sorted);
+        setSortOrder(order);
+        setSortMenuOpen(false);
     };
 
-    const scrollbarStyles = {
-        scrollbarWidth: 'thin',
-        scrollbarColor: '#cbd5e1 #f1f5f9'
+    const handleRemoveSort = () => {
+        filterData();
+        setSortOrder(null);
+        setSortMenuOpen(false);
+    };
+
+    const handleSearchChange = (column, value) => {
+        setSearchValues(prev => ({
+            ...prev,
+            [column]: value
+        }));
+    };
+
+    const clearSearch = (column) => {
+        setSearchValues(prev => ({
+            ...prev,
+            [column]: ''
+        }));
     };
 
     return (
-        <>
-            <style>
-                {`
-          .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-          }
-        `}
-            </style>
-
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+        <div className="bg-white border border-gray-300 rounded-lg overflow-hidden flex flex-col h-full">
+            {/* Header */}
+            <div className="grid grid-cols-3 border-b border-gray-300 bg-white">
                 <div
-                    style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
-                    className="bg-white w-[650px] max-w-[95%] rounded-md shadow-2xl flex flex-col max-h-[90vh] border border-slate-200"
+                    className="px-4 py-3 font-semibold text-sm text-gray-700 border-r border-gray-300 relative"
+                    onMouseEnter={() => setHoveredColumn('clientName')}
+                    onMouseLeave={() => setHoveredColumn(null)}
                 >
-                    <div
-                        onMouseDown={handleMouseDown}
-                        className="flex items-center justify-between px-6 py-3 border-b border-slate-100 cursor-move bg-slate-50/50 rounded-t-md select-none"
-                    >
-                        <h2 className="text-xl font-semibold text-blue-700">Configuration</h2>
-                        <button onClick={onClose} className="text-slate-400 hover:text-slate-600 cursor-pointer">
-                            <X className="w-5 h-5" />
-                        </button>
-                    </div>
-
-                    <div className="px-6 pt-[20px] overflow-hidden">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div className="space-y-6">
-                                <div>
-                                    <h3 className="text-blue-800 font-bold mb-3">Custom Filter</h3>
-                                    <div className="space-y-1">
-                                        {CUSTOM_FILTERS.map(item => (
-                                            <CheckboxItem
-                                                key={item}
-                                                label={item}
-                                                checked={tempVisibility[item]}
-                                                onChange={toggleVisibility}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 className="text-blue-800 font-bold mb-3">Custom Column</h3>
-                                    <div className="space-y-1">
-                                        {CUSTOM_COLUMNS.map(item => (
-                                            <CheckboxItem
-                                                key={item}
-                                                label={item}
-                                                checked={tempVisibility[item]}
-                                                onChange={toggleVisibility}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="md:border-l md:border-slate-200 md:pl-8 flex flex-col">
-                                <h3 className="text-blue-800 font-bold mb-3">Custom Actions</h3>
-                                <div
-                                    className="space-y-1 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar"
-                                    style={scrollbarStyles}
-                                >
-                                    {ALL_ACTION_ORDER.map(item => (
-                                        <CheckboxItem
-                                            key={item}
-                                            label={item}
-                                            checked={tempVisibility[item]}
-                                            onChange={toggleVisibility}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-end gap-3 px-6 py-4 border-t text-[13px] border-slate-100 bg-slate-50/50 rounded-b-md mt-4">
-                        <button onClick={handleSubmit} className="px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 flex items-center gap-2 transition-colors shadow-sm">
-                            <CheckSquare className="w-3.5 h-3.5" /> Submit
-                        </button>
-                        <button onClick={onClose} className="px-4 py-2 bg-white border border-slate-300 text-slate-600 font-medium rounded hover:bg-slate-50 transition-colors shadow-sm">
-                            Close
-                        </button>
+                    <div className="flex items-center justify-between">
+                        <span>Client Name</span>
                     </div>
                 </div>
+                <div
+                    className="px-4 py-3 font-semibold text-sm text-gray-700 border-r border-gray-300 relative"
+                    onMouseEnter={() => setHoveredColumn('instrument')}
+                    onMouseLeave={() => setHoveredColumn(null)}
+                >
+                    <div className="flex items-center justify-between">
+                        <span>Instrument</span>
+                        {hoveredColumn === 'instrument' && (
+                            <button
+                                onClick={() => setSortMenuOpen(!sortMenuOpen)}
+                                className="hover:bg-gray-100 p-1 rounded"
+                            >
+                                <ChevronDown className="w-4 h-4" />
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Sort Dropdown Menu */}
+                    {sortMenuOpen && (
+                        <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 shadow-lg z-10 w-48">
+                            <button
+                                onClick={() => handleSort('asc')}
+                                className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2"
+                            >
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M12 5v14M5 12l7-7 7 7" />
+                                </svg>
+                                Sort Ascending
+                            </button>
+                            <button
+                                onClick={() => handleSort('desc')}
+                                className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2"
+                            >
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M12 19V5M5 12l7 7 7-7" />
+                                </svg>
+                                Sort Descending
+                            </button>
+                            <button
+                                onClick={handleRemoveSort}
+                                className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2"
+                            >
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M18 6L6 18M6 6l12 12" />
+                                </svg>
+                                Remove Sort
+                            </button>
+                        </div>
+                    )}
+                </div>
+                <div
+                    className="px-4 py-3 font-semibold text-sm text-gray-700 flex items-center justify-between"
+                    onMouseEnter={() => setHoveredColumn('live')}
+                    onMouseLeave={() => setHoveredColumn(null)}
+                >
+                    <span>live</span>
+                </div>
             </div>
-        </>
+
+            {/* Search Row */}
+            <div className="grid grid-cols-3 border-b border-gray-300 bg-gray-50">
+                <div className="px-4 py-1 border-r border-gray-300">
+                    <div className="relative">
+                        {focusedInput !== 'clientName' && !searchValues.clientName && (
+                            <Search className="w-4 h-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        )}
+                        <input
+                            type="text"
+                            value={searchValues.clientName}
+                            onChange={(e) => handleSearchChange('clientName', e.target.value)}
+                            onFocus={() => setFocusedInput('clientName')}
+                            onBlur={() => setFocusedInput(null)}
+                            className={`w-full ${focusedInput === 'clientName' || searchValues.clientName ? 'pl-2' : 'pl-8'} pr-2 py-1 text-sm border-0 border-b-2 ${focusedInput === 'clientName' ? 'border-blue-500' : 'border-gray-300'
+                                } focus:outline-none bg-transparent`}
+                        />
+                    </div>
+                </div>
+                <div className="px-4 py-1 border-r border-gray-300">
+                    <div className="relative">
+                        {focusedInput !== 'instrument' && !searchValues.instrument && (
+                            <Search className="w-4 h-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        )}
+                        <input
+                            type="text"
+                            value={searchValues.instrument}
+                            onChange={(e) => handleSearchChange('instrument', e.target.value)}
+                            onFocus={() => setFocusedInput('instrument')}
+                            onBlur={() => setFocusedInput(null)}
+                            className={`w-full ${focusedInput === 'instrument' || searchValues.instrument ? 'pl-2' : 'pl-8'} pr-2 py-1 text-sm border-0 border-b-2 ${focusedInput === 'instrument' ? 'border-blue-500' : 'border-gray-300'
+                                } focus:outline-none bg-transparent`}
+                        />
+                    </div>
+                </div>
+                <div className="px-4 py-2">
+                    {/* Empty - no search for live column */}
+                </div>
+            </div>
+            <div className="overflow-y-auto flex-1">
+                {/* Data Rows */}
+                {filteredData.map((row, index) => (
+                    <div
+                        key={row.id}
+                        onClick={() => setSelectedRow(row.id)}
+                        className={`grid grid-cols-3 border-b border-gray-200 cursor-pointer ${selectedRow === row.id ? 'bg-[#EEF2F9]' : 'hover:bg-gray-50'
+                            }`}
+
+                    >
+                        <div className="px-4 py-2 text-sm text-gray-700 border-r border-gray-200 font-medium">
+                            {row.clientName}
+                        </div>
+                        <div className="px-4 py-2 text-sm text-gray-700 border-r border-gray-200">
+                            {row.instrument}
+                        </div>
+                        <div className="px-4 py-2 text-center">
+                            {row.live && (
+                                <span className="text-gray-700 text-lg">✓</span>
+                            )}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 };
 
-const getCurrentDate = () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-};
 
-const UploadQueue = () => {
-    const today = getCurrentDate();
-    // const [hideEmpty, setHideEmpty] = useState(true);
-    const [isOpen, setIsOpen] = useState(true);
-    const [showConfig, setShowConfig] = useState(false);
-    const [showMenu, setShowMenu] = useState(false);
-    const [visibleCount, setVisibleCount] = useState(9);
-    const [recordsDuration, setRecordsDuration] = useState("Current Date");
-    const [fromDate, setFromDate] = useState(today);
-    const [toDate, setToDate] = useState(today);
-    const [filename, setFilename] = useState("");
-
-
-    const menuRef = useRef(null);
-    const actionContainerRef = useRef(null);
-    const buttonRefs = useRef([]);
-
-    const [configState, setConfigState] = useState({
-        "Restore": true,
-        "Folder Download": true,
-        "File Upload": true,
-        "Folder Upload": true,
-        "Version History": true,
-        "Work Complete": true,
-        "Workflow History": true,
-        "Tag": true,
-        "Open": true,
-        "File Download": true,
-        "Audit Trail History": true,
-        "Attribute": true,
-        "Multi-File Select": true,
-        "Instrument": true,
-        "Workflow Status": true,
-        "Task Status": true,
-        "Parser Status": false
-    });
-
-    const enabledActions = ALL_ACTION_ORDER.filter(action => configState[action]);
-
-    useEffect(() => {
-        const calculateVisibleActions = () => {
-            if (!actionContainerRef.current) return;
-
-            const containerWidth = actionContainerRef.current.offsetWidth;
-            const reservedSpace = 140;
-            const availableWidth = containerWidth - reservedSpace;
-
-            let accumulatedWidth = 0;
-            let count = 0;
-
-            for (let i = 0; i < buttonRefs.current.length; i++) {
-                const button = buttonRefs.current[i];
-                if (!button) continue;
-
-                const buttonWidth = button.offsetWidth + 8;
-
-                if (accumulatedWidth + buttonWidth <= availableWidth) {
-                    accumulatedWidth += buttonWidth;
-                    count++;
-                } else {
-                    break;
-                }
-            }
-
-            setVisibleCount(Math.max(1, count));
-        };
-
-        calculateVisibleActions();
-
-        window.addEventListener('resize', calculateVisibleActions);
-
-        const timer = setTimeout(calculateVisibleActions, 100);
-
-        return () => {
-            window.removeEventListener('resize', calculateVisibleActions);
-            clearTimeout(timer);
-        };
-    }, [configState, enabledActions.length]);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setShowMenu(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    const visibleActions = enabledActions.slice(0, visibleCount);
-    const overflowActions = enabledActions.slice(visibleCount);
-
-    const isCustomDate = recordsDuration === "Custom Date";
-
-    const handleDurationChange = (value) => {
-        const actualValue = value?.target?.value || value?.value || value;
-        setRecordsDuration(actualValue);
-    };
-
+function UploadQueue() {
     return (
-        <div className="flex flex-col w-full font-sans rounded-md">
-            <div className="bg-[#f0f4f8] px-4 pt-4 pb-2 relative rounded-t-md z-20">
-                {isOpen ? (
-                    <div className="flex flex-wrap items-end gap-3.5 mb-2">
+        <div className="flex gap-6 p-6">
+            {/* Left Side - Existing Grid */}
+            {/* <div className="w-1/2">
+            <div className="h-[44px] mb-4"></div>
+                <InstrumentGrid />
+            </div> */}
+            <div className="w-1/2 flex flex-col h-[calc(100vh-150px)]">
+                <div className="h-[44px] mb-4"></div>
+                <div className="flex-1">
+                    <InstrumentGrid />
+                </div>
+            </div>
 
-                        <div className="w-60">
-                            <AnimatedDropdown
-                                label="Client Name"
-                                value="All"
-                                options={["All", "Client A", "Client B"]}
-                                onChange={(value) => console.log(value)}
-                                isSearchable={true}
-                            />
-                        </div>
+            {/* Right Side - Details Panel */}
+            <div className="w-1/2 flex flex-col h-[calc(100vh-150px)]">
+                {/* Buttons */}
+                <div className="flex gap-2 mb-4">
+                    <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded flex items-center gap-2">
+                        <span><FileText /></span> View Details
+                    </button>
+                    <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded flex items-center gap-2">
+                        <span><SquarePen /></span> Update Schedule Mode
+                    </button>
+                </div>
 
-
-                        <div className="w-60">
-                            <AnimatedDropdown
-                                label="Task ID"
-                                value=""
-                                // options={["Inst 1", "Inst 2"]}
-                                onChange={(value) => console.log(value)}
-                                isSearchable={true}
-                            />
-                        </div>
-
-                        <div className="w-60">
-                            <AnimatedInput
-                                label="Filename"
-                                name="filename"
-                                value={filename}
-                                onChange={(e) => setFilename(e.target.value)}
-                            />
-                        </div>
-
-
-                        <div className="w-60">
-                            <AnimatedDropdown
-                                label="Records Duration"
-                                value={recordsDuration}
-                                options={["Current Date", "Last 7 Days", "Last 1 Month", "Last 1 Year", "Custom Date"]}
-                                onChange={handleDurationChange}
-                                isSearchable={true}
-                            />
-                        </div>
-
-                        {isCustomDate && (
-                            <>
-                                <div className="w-52 pb-4">
-                                    <DatePicker
-                                        label="From"
-                                        value={fromDate}
-                                        onChange={setFromDate}
-                                        max={today}
-                                    />
-                                </div>
-                                <div className="w-52 pb-4">
-                                    <DatePicker
-                                        label="To"
-                                        value={toDate}
-                                        onChange={setToDate}
-                                        max={today}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {/* <label className="flex items-center gap-2 cursor-pointer select-none pb-4">
-                            <span className="text-xs font-bold text-slate-600">Hide Empty Folder</span>
-                            <div
-                                onClick={() => setHideEmpty(!hideEmpty)}
-                                className={`w-4 h-4 rounded border flex items-center justify-center transition-colors
-                        ${hideEmpty ? 'bg-blue-500 border-blue-500' : 'bg-white border-slate-300'}
-                      `}
-                            >
-                                {hideEmpty && <CheckSquare className="w-3 h-3 text-white" />}
-                            </div>
-                        </label> */}
-
-                        <div className="flex items-end gap-2 pb-2">
-                            <PrimaryButton icon={Filter} label="Filter" />
-                            {/* <PrimaryButton icon={RotateCcw} label="Reset" /> */}
-                            <PrimaryButton icon={RefreshCw} label="Refresh" />
-                            <PrimaryButton icon={UploadIcon} label="Export" />
-                            {/* <PrimaryButton icon={Settings} label="Configuration" onClick={() => setShowConfig(true)} /> */}
-                        </div>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-4 gap-4 py-2.5">
-                        <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs text-slate-600">Storage Group:</span>
-                            <span className="font-medium text-xs text-slate-800">File01</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs text-slate-600">Client:</span>
-                            <span className="font-medium text-xs text-slate-800">All</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs text-slate-600">Instrument:</span>
-                            <span className="font-medium text-xs text-slate-800">All</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            {/* <span className="font-bold text-xs text-slate-600">From:</span> */}
-                            <span className="font-medium text-xs text-slate-800">{isCustomDate ? `From ${fromDate} to ${toDate}` : recordsDuration}</span>
-                        </div>
-                    </div>
-                )}
-
-                <button
-                    className="absolute right-4 -bottom-3 z-10 bg-[#f0f4f8] hover:bg-slate-200 p-0.5 rounded shadow-sm cursor-pointer transition-colors"
-                    onClick={() => setIsOpen(!isOpen)}
-                >
-                    {isOpen ? <ChevronUp className="w-4 h-4 text-blue-600" /> : <ChevronDown className="w-4 h-4 text-blue-600" />}
-                </button>
+                {/* Details Table */}
+                <div className="border border-gray-300 rounded-lg overflow-hidden flex-1 overflow-y-auto">
+                    <table className="w-full text-sm">
+                        <tbody>
+                            <tr> {/* Remove border-b */}
+                                <td className="px-4 py-2 font-semibold bg-gray-50 text-[#405F78]">Storage Name</td> {/* Remove border-r */}
+                                <td className="px-4 py-2">sdms-ftp</td>
+                            </tr>
+                            <tr> {/* Remove border-b */}
+                                <td className="px-4 py-2 font-semibold bg-gray-50 text-[#405F78]">Task Status</td> {/* Remove border-r */}
+                                <td className="px-4 py-2">Active</td>
+                            </tr>
+                            <tr> {/* Remove border-b */}
+                                <td className="px-4 py-2 font-semibold bg-gray-50 text-[#405F78]">Schedule ID</td> {/* Remove border-r */}
+                                <td className="px-4 py-2">TS1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     )
