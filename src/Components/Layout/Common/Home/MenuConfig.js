@@ -38,7 +38,7 @@ export const menuConfig = [
     icon: <RiCalendarScheduleLine />,
     label: "Scheduler",
     subItems: [
-      { label: "Data Scheduler", content: <div>Data Scheduler</div> },
+      { label: "Data Scheduler", content: <div>Data Scheduler1</div> },
       { label: "View Edit Scheduler", content: <div>View Edit Scheduler</div> },
       // { label: "Monitor Scheduler", content: <div>Monitor Scheduler</div> },
       { label: "Monitor Scheduler", content: <MonitorSchedular/> },
