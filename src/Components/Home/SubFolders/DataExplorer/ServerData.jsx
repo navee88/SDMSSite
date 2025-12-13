@@ -566,7 +566,7 @@ const ServerData = () => {
 
       </div>
         
-        <div><UsersPage /> </div>
+        <div><FtpLayout /> </div>
        
 
       {showConfig && (
