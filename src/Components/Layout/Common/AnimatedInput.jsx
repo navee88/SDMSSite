@@ -1,7 +1,7 @@
 const AnimatedInput = ({ label, value, onChange, name }) => {
   return (
     <div className="relative mb-4">
-      <label className="text-sm font-medium text-gray-600 mb-1 block">
+      <label className="text-sm font-medium text-gray-600 mb-3 block">
         {label}
       </label>
 

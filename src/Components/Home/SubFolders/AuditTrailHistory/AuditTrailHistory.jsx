@@ -5,6 +5,13 @@ import {
     CheckCircle, List, MoreVertical, MousePointer2, Calendar,
     UploadIcon,
     Search,
+    RotateCw,
+    RotateCwIcon,
+    Printer,
+    Archive,
+    PackageOpen,
+    PackageOpenIcon,
+    ArchiveIcon,
 } from 'lucide-react';
 import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
 import UsersPage from '../../../Layout/Common/Home/Userpage';
@@ -494,7 +501,7 @@ const getCurrentDate = () => {
     return `${year}-${month}-${day}`;
 };
 
-const RestoreMonitor = () => {
+const AuditTrailHistory = () => {
     const today = getCurrentDate();
     // const [hideEmpty, setHideEmpty] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
@@ -649,15 +656,32 @@ const RestoreMonitor = () => {
 
     const { currentLanguage, changeLanguage, languages } = useLanguage();
     const { t } = useTranslation();
+
+    const ActionButton = ({ icon: Icon, label, disabled, onClick, className = "" }) => (
+        <button
+            onClick={onClick}
+            disabled={disabled}
+            className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold rounded  whitespace-nowrap hover:scale-90 transition-all
+      ${disabled
+                    ? "bg-slate-100 text-slate-300 cursor-not-allowed"
+                    : "bg-[#f1f5f9] text-[#1d8cf8] hover:bg-blue-100"
+                }
+      ${className}
+    `}
+        >
+            {Icon && <Icon className="w-3.5 h-3.5" />}
+            <span>{label}</span>
+        </button>
+    );
     return (
         <div className="flex flex-col w-full font-roboto rounded-md">
             <div className="bg-[#f0f2f5] px-4 pt-4 pb-2 relative rounded-t-md z-20">
                 {isOpen ? (
                     <div className="flex flex-wrap items-end gap-3.5 mb-2">
 
-                        <div className="w-60">
+                        <div className="w-60 mr-4">
                             <AnimatedDropdown
-                                label={t("label.clientName")}
+                                label={t("label.userName")}
                                 value="All"
                                 options={["All", "User A", "User B"]}
                                 onChange={(value) => console.log(value)}
@@ -666,28 +690,26 @@ const RestoreMonitor = () => {
                         </div>
 
 
-                        <div className="w-60 mr-40">
+                        <div className="w-60 mr-4">
                             <AnimatedDropdown
-                                label={t("label.taskId")}
-                                value=""
-                                // options={["Inst 1", "Inst 2"]}
+                                label={t("label.moduleName")}
+                                value="All"
+                                options={["All", "Audit Trail", "CFR Gateway", "CFR Settings"]}
                                 onChange={(value) => console.log(value)}
                                 isSearchable={true}
                             />
                         </div>
 
-
-                        <div className="w-60">
-                            <AnimatedInput
-                                label={t("label.fileName")}
-                                name="filename"
-                                value={filename}
+                        <div className="w-60 mr-4">
+                            <AnimatedDropdown
+                                label={t("label.auditType")}
+                                options={["User", "System", "All"]}
+                                value={"All"}
                                 onChange={(e) => setFilename(e.target.value)}
                             />
                         </div>
 
-
-                        <div className="w-60">
+                        <div className="w-60 mr-4">
                             <AnimatedDropdown
                                 label={t("label.recordsDuration")}
                                 value={recordsDuration}
@@ -719,8 +741,7 @@ const RestoreMonitor = () => {
                         )}
                         <div className="flex items-end gap-2 pb-2 ml-4">
                             <PrimaryButton icon={Filter} label={t('button.filter')} />
-                            <PrimaryButton icon={RefreshCw} label={t('button.refresh')} />
-                            <PrimaryButton icon={UploadIcon} label={t('button.export')} />
+                            <PrimaryButton icon={RotateCwIcon} label={t('button.reset')} />
                         </div>
                     </div>
                 ) : (
@@ -756,16 +777,25 @@ const RestoreMonitor = () => {
 
             <div className="flex gap-2 px-4">
                 <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
-                    <div className="h-[38px] mb-2"></div>
+                    <div className="h-[52px] mb-2"></div>
                     <div className="flex-1">
                         <InstrumentGrid />
                     </div>
                 </div>
 
                 {/* Right Side - Details Panel */}
-                <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
-                    <div className="h-[38px] mb-2"></div>
 
+                <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
+                    {/* Buttons */}
+                    <div className="flex justify-start gap-2 mb-2 mt-5">
+                        <ActionButton icon={History} label={t('button.reviewHistory')} />
+                        <ActionButton icon={FileText} label={t('button.review')} />
+                        <ActionButton icon={ArchiveIcon} label={t('button.createArchieve')} />
+                        <ActionButton icon={PackageOpenIcon} label={t('button.openArchieve')} />
+                        <ActionButton icon={Upload} label={t('button.export')} />
+                        <ActionButton icon={Printer} label={t('button.print')} />
+                    </div>
+                    {/* <div className="h-[38px] mb-2"></div> */}
                     {/* Details Table */}
                     <div className="border border-gray-300 rounded-lg overflow-hidden flex-1 overflow-y-auto">
                         <table className="w-full text-xs">
@@ -805,5 +835,6 @@ const RestoreMonitor = () => {
     )
 }
 
-export default RestoreMonitor
+export default AuditTrailHistory
+
 

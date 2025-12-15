@@ -14,6 +14,13 @@ import UserManagment from "../../../../Pages/Home/UserManagment/UserManagment";
 import Passwordpolicy from "../../../../Pages/Home/UserManagment/Passwordpolicy";
 import InstrumentLockSettings from "../../../../Pages/Home/LockSettings/InstrumentLockSettings";
 import MonitorSchedular from "../../../../Pages/Home/Schedular/MonitorSchedular";
+import AuditTrailHistory from "../../../../Pages/Home/AuditTrailHistory/AuditTrailHistory";
+import DownloadLogs from "../../../../Pages/Home/AuditTrailHistory/DownloadLogs";
+import UploadLogs from "../../../../Pages/Home/AuditTrailHistory/UploadLogs";
+import RestoreLogs from "../../../../Pages/Home/AuditTrailHistory/RestoreLogs";
+import SchedulerConfigLogs from "../../../../Pages/Home/AuditTrailHistory/SchedulerConfigLogs";
+import InstrumentLogs from "../../../../Pages/Home/AuditTrailHistory/InstrumentLogs";
+import ServerAndLocalFileDeleteLogs from "../../../../Pages/Home/AuditTrailHistory/ServerAndLocalFileDeleteLogs";
 
 
 export const menuConfig = [
@@ -40,7 +47,6 @@ export const menuConfig = [
     subItems: [
       { label: "Data Scheduler", content: <div>Data Scheduler1</div> },
       { label: "View Edit Scheduler", content: <div>View Edit Scheduler</div> },
-      // { label: "Monitor Scheduler", content: <div>Monitor Scheduler</div> },
       { label: "Monitor Scheduler", content: <MonitorSchedular/> },
       { label: "Local File Delete Scheduler", content: <div>Local File Delete Scheduler</div> },
       { label: "Server File Delete Scheduler", content: <div>Server File Delete Scheduler</div> },
@@ -81,14 +87,13 @@ export const menuConfig = [
     icon: <LuFileSearch />,
     label: "Log History",
     subItems: [
-      { label: "Audit Trail History", content: <div>Audit Trail History</div> },
-      { label: "Download Logs", content: <div>Download Logs</div> },
-      { label: "Upload Logs", content: <div>Upload Logs</div> },
-      { label: "Restore Logs", content: <div>Restore Logs</div> },
-      { label: "Server & Local File Delete", content: <div>Server & Local File Delete</div> },
-      { label: "Logs", content: <div>Logs</div> },
-      { label: "Scheduler Config. Logs", content: <div>Scheduler Config. Logs</div> },
-      { label: "Instrument Logs", content: <div>Instrument Logs</div> },
+      { label: "Audit Trail History", content: <AuditTrailHistory/> },
+      { label: "Download Logs", content: <div> <DownloadLogs/> </div> },
+      { label: "Upload Logs", content: <div><UploadLogs/></div> },
+      { label: "Restore Logs", content: <div><RestoreLogs/></div> },
+      { label: "Server & Local File Delete", content: <div><ServerAndLocalFileDeleteLogs/></div> },
+      { label: "Scheduler Config. Logs", content: <div><SchedulerConfigLogs/></div> },
+      { label: "Instrument Logs", content: <div><InstrumentLogs/></div> },
     ],
   },
 

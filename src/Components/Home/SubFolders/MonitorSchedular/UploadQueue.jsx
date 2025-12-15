@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ChevronDown, FileText, SquarePen } from 'lucide-react';
+import { useLanguage } from "../../../../Context/LanguageContext";
+import { useTranslation } from "react-i18next";
 
 const InstrumentGrid = () => {
     const [sortMenuOpen, setSortMenuOpen] = useState(false);
@@ -14,6 +16,8 @@ const InstrumentGrid = () => {
     const [focusedInput, setFocusedInput] = useState(null);
     const [hoveredColumn, setHoveredColumn] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null);
+
+
 
     // Simulate API call
     useEffect(() => {
@@ -239,15 +243,33 @@ const InstrumentGrid = () => {
 
 
 function UploadQueue() {
+    const { currentLanguage, changeLanguage, languages } = useLanguage();
+    const { t } = useTranslation();
+
+    const ActionButton = ({ icon: Icon, label, disabled, onClick, className = "" }) => (
+        <button
+            onClick={onClick}
+            disabled={disabled}
+            className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold rounded whitespace-nowrap
+      hover:scale-90 transition-all
+      ${disabled
+                    ? "bg-slate-100 text-slate-300 cursor-not-allowed"
+                    : "bg-[#f1f5f9] text-[#2883FE] hover:bg-[#E6F0FF]"
+                }
+      ${className}
+    `}
+        >
+            {Icon && <Icon className="w-3.5 h-3.5" />}
+            <span>{label}</span>
+        </button>
+    );
+
+
     return (
-        <div className="flex gap-6 p-6">
-            {/* Left Side - Existing Grid */}
-            {/* <div className="w-1/2">
-            <div className="h-[44px] mb-4"></div>
-                <InstrumentGrid />
-            </div> */}
+        <div className="flex gap-2 px-4 font-roboto">
+
             <div className="w-1/2 flex flex-col h-[calc(100vh-150px)]">
-                <div className="h-[44px] mb-4"></div>
+                <div className="h-[42px] mb-2"></div>
                 <div className="flex-1">
                     <InstrumentGrid />
                 </div>
@@ -256,36 +278,45 @@ function UploadQueue() {
             {/* Right Side - Details Panel */}
             <div className="w-1/2 flex flex-col h-[calc(100vh-150px)]">
                 {/* Buttons */}
-                <div className="flex gap-2 mb-4">
-                    <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded flex items-center gap-2">
-                        <span><FileText /></span> View Details
-                    </button>
-                    <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded flex items-center gap-2">
-                        <span><SquarePen /></span> Update Schedule Mode
-                    </button>
+                <div className="flex justify-end gap-2 mb-2 mt-2">
+                    <ActionButton icon={FileText} label={t('button.viewDetails')} />
+                    <ActionButton icon={SquarePen} label={t('button.updateScheduleMode')} />
                 </div>
+                {/* </div> */}
 
                 {/* Details Table */}
                 <div className="border border-gray-300 rounded-lg overflow-hidden flex-1 overflow-y-auto">
-                    <table className="w-full text-sm">
+                    <table className="w-full text-xs">
                         <tbody>
                             <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold bg-gray-50 text-[#405F78]">Storage Name</td> {/* Remove border-r */}
-                                <td className="px-4 py-2">sdms-ftp</td>
+                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.storageName')} </td> {/* Remove border-r */}
+                                <td className="px-4 py-2 font-semibold text-[#353F49]">sdms-ftp</td>
                             </tr>
                             <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold bg-gray-50 text-[#405F78]">Task Status</td> {/* Remove border-r */}
-                                <td className="px-4 py-2">Active</td>
+                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.taskStatus')}</td> {/* Remove border-r */}
+                                <td className="px-4 py-2 font-semibold text-[#353F49]">Active</td>
                             </tr>
                             <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold bg-gray-50 text-[#405F78]">Schedule ID</td> {/* Remove border-r */}
-                                <td className="px-4 py-2">TS1</td>
+                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.scheduleId')}</td> {/* Remove border-r */}
+                                <td className="px-4 py-2 font-semibold text-[#353F49]">TS1</td>
+                            </tr>
+                            <tr> {/* Remove border-b */}
+                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.taskId')}</td> {/* Remove border-r */}
+                                <td className="px-4 py-2 font-semibold text-[#353F49]">T1</td>
+                            </tr>
+                            <tr> {/* Remove border-b */}
+                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.sourcePath')}</td> {/* Remove border-r */}
+                                <td className="px-4 py-2 font-semibold text-[#353F49]">D:\SDMSFTP\Scheduler</td>
+                            </tr>
+                            <tr> {/* Remove border-b */}
+                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.queue')}</td> {/* Remove border-r */}
+                                <td className="px-4 py-2 font-semibold text-[#353F49]">0</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

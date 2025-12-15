@@ -172,7 +172,7 @@ const AnimatedDropdown = ({
         }
       `}</style>
 
-      <label className="text-sm font-medium text-gray-600 mb-1 block">{label}</label>
+      <label className="text-sm font-medium text-gray-600 mb-3 block">{label}</label>
       <div className="relative">
         <button
           type="button"
