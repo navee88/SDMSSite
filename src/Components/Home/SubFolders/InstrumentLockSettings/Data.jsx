@@ -1,541 +1,712 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { RefreshCw, ChevronDown, X, Search } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
+import React, { useEffect, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { RefreshCw, Search } from "lucide-react";
+import AnimatedDropdown from "../../../Layout/Common/AnimatedDropdown";
 
-// Dropdown Component (Underline style like in image)
-const Dropdown = ({ label, value, options, onChange, disabled, required, error, displayKey, valueKey }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const selectedOption = options.find(opt => opt[valueKey] === value);
-
-  return (
-    <div className="mb-4" ref={dropdownRef}>
-      <label className="block text-sm text-[#4a5f7d] mb-1 font-semibold">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-      <div className="relative">
-        <button
-          type="button"
-          onClick={() => !disabled && setIsOpen(!isOpen)}
-          disabled={disabled}
-          className={`w-full h-9 px-0 pb-1 text-sm text-left bg-transparent border-0 border-b-2 flex items-center justify-between outline-none
-            ${error ? 'border-red-400' : 'border-blue-400'}
-            ${disabled ? 'cursor-not-allowed text-gray-400' : 'hover:border-blue-500 text-gray-900'}
-          `}
-        >
-          <span className={selectedOption ? 'font-medium text-gray-700' : 'text-gray-400'}>
-            {selectedOption ? selectedOption[displayKey] : ''}
-          </span>
-          <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-        </button>
-
-        {isOpen && !disabled && (
-          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto">
-            {options.map((option, idx) => (
-              <div
-                key={idx}
-                onClick={() => {
-                  onChange(option[valueKey]);
-                  setIsOpen(false);
-                }}
-                className={`px-3 py-2 text-sm cursor-pointer ${value === option[valueKey] ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'}`}
-              >
-                {option[displayKey]}
-              </div>
-            ))}
+const InfoBox = ({ data }) => (
+  <div className="border border-gray-300 bg-white min-h-[100px] p-4">
+    {data.length === 0 ? null : (
+      <div className="space-y-2">
+        {data.map((d, i) => (
+          <div key={i} className="flex">
+            <label className="w-[45%] text-sm font-bold text-gray-800">
+              {d.label}:
+            </label>
+            <span className="w-[45%] text-sm font-bold text-[#162ddc]">
+              {d.value}
+            </span>
           </div>
-        )}
+        ))}
       </div>
-    </div>
-  );
-};
-
-// Section Header Component
-const SectionHeader = ({ title, rightContent }) => (
-  <div className="flex items-center justify-between mb-3">
-    <h3 className="text-sm font-semibold text-[#4a5f7d]">{title}</h3>
-    {rightContent && <div className="flex items-center gap-2">{rightContent}</div>}
+    )}
   </div>
 );
 
-// Tab Link Component
-const TabLink = ({ label, active, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`text-sm font-semibold transition-colors px-2 py-1
-      ${active 
-        ? 'text-blue-600 border-b-2 border-blue-600' 
-        : 'text-blue-500 hover:text-blue-700'
-      }
-    `}
-  >
-    {label}
-  </button>
-);
 
-// Refresh Button Component
-const RefreshButton = ({ onClick, label }) => (
-  <button
-    onClick={onClick}
-    className="flex items-center gap-1 text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors"
-  >
-    <RefreshCw className="w-4 h-4" />
-    {label}
-  </button>
-);
-
-// Info Display Component
-const InfoDisplay = ({ data }) => {
-  if (!data || data.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="space-y-2 p-3">
-      {data.map((item, idx) => (
-        <div key={idx} className="flex items-start">
-          <label className="w-[45%] text-sm font-bold text-gray-700">
-            {item.label}:
-          </label>
-          <span className="w-[55%] text-sm font-bold text-[#162ddc]">
-            {item.value}
-          </span>
+const Grid = ({ columns, data, onSelect, selectedKey, rowKey, onRowClick }) => (
+  <div className="border border-gray-300 bg-white">
+    {/* Header */}
+    <div
+      className="grid bg-[#f5f5f5] border-b border-gray-300"
+      style={{ gridTemplateColumns: columns.map((c) => c.width).join(" ") }}
+    >
+      {columns.map((c, i) => (
+        <div key={i} className="px-4 py-2.5 text-sm font-medium text-gray-700 border-r border-gray-300 last:border-r-0">
+          {c.header}
         </div>
       ))}
     </div>
-  );
-};
 
-// Grid Component with search icons
-const DataGrid = ({ columns, data, onRowSelect, selectedRow, rowKey = 'id' }) => {
-  return (
-    <div className="border border-gray-300 bg-white">
-      {/* Header */}
-      <div className="grid gap-px bg-gray-300" style={{ gridTemplateColumns: columns.map(c => c.width || '1fr').join(' ') }}>
-        {columns.map((col, idx) => (
-          <div key={idx} className="bg-gray-100 px-4 py-2">
-            <div className="text-sm font-semibold text-gray-700">{col.header}</div>
-          </div>
-        ))}
-      </div>
+    {/* Search Row */}
+    <div
+      className="grid bg-white border-b border-gray-300"
+      style={{ gridTemplateColumns: columns.map((c) => c.width).join(" ") }}
+    >
+      {columns.map((_, i) => (
+        <div key={i} className="px-4 py-2 border-r border-gray-300 last:border-r-0">
+          <Search size={16} className="text-gray-400" />
+        </div>
+      ))}
+    </div>
 
-      {/* Search Row */}
-      <div className="grid gap-px bg-gray-300 border-t border-gray-300" style={{ gridTemplateColumns: columns.map(c => c.width || '1fr').join(' ') }}>
-        {columns.map((col, idx) => (
-          <div key={idx} className="bg-white px-4 py-2 flex items-center">
-            {col.searchable !== false && (
-              <Search className="w-4 h-4 text-gray-400" />
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Data Rows */}
-      <div className="min-h-[200px] max-h-[300px] overflow-y-auto">
-        {data.length === 0 ? (
-          <div className="flex items-center justify-center py-16 text-gray-500 text-sm">
-            No data to display
-          </div>
-        ) : (
-          <div className="divide-y divide-gray-200">
-            {data.map((row, idx) => (
-              <div
-                key={idx}
-                onClick={() => onRowSelect && onRowSelect(row)}
-                className={`grid gap-px cursor-pointer transition-colors ${
-                  selectedRow && selectedRow[rowKey] === row[rowKey] ? 'bg-blue-50' : 'hover:bg-gray-50'
-                }`}
-                style={{ gridTemplateColumns: columns.map(c => c.width || '1fr').join(' ') }}
-              >
-                {columns.map((col, colIdx) => (
-                  <div key={colIdx} className="px-4 py-2.5">
-                    {col.render ? col.render(row) : (
-                      <span className="text-sm text-gray-900">{row[col.field]}</span>
-                    )}
-                  </div>
-                ))}
+    {/* Rows */}
+    <div className="min-h-[150px] max-h-[300px] overflow-y-auto">
+      {data.length === 0 ? (
+        <div className="text-center text-sm text-gray-600 py-16">
+          No data to display
+        </div>
+      ) : (
+        data.map((row, i) => (
+          <div
+            key={i}
+            onClick={() => {
+              if (onSelect) onSelect(row);
+              if (onRowClick) onRowClick(row);
+            }}
+            className={`grid cursor-pointer border-b border-gray-200 hover:bg-blue-50 ${
+              selectedKey === row[rowKey] ? "bg-blue-50" : "bg-white"
+            }`}
+            style={{ gridTemplateColumns: columns.map((c) => c.width).join(" ") }}
+          >
+            {columns.map((c, j) => (
+              <div key={j} className="px-4 py-2.5 text-sm text-gray-700 border-r border-gray-200 last:border-r-0">
+                {c.renderer ? c.renderer(row, c.field) : row[c.field]}
               </div>
             ))}
           </div>
-        )}
-      </div>
+        ))
+      )}
     </div>
-  );
-};
+  </div>
+);
 
-// Audit Trail Modal
-const AuditTrailModal = ({ isOpen, onClose, onSubmit, t }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [reason, setReason] = useState('');
-  const [error, setError] = useState('');
-
-  const handleSubmit = () => {
-    if (!username || !password) {
-      setError('Please enter username and password');
-      return;
-    }
-    onSubmit({ username, password, reason });
-    setUsername('');
-    setPassword('');
-    setReason('');
-    setError('');
-  };
-
-  if (!isOpen) return null;
-
+const FileViewer = ({ src, fileType, supportedExtensions }) => {
+  const isSupported = supportedExtensions.includes(fileType?.toLowerCase());
+  
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-20">
-      <div className="bg-white rounded shadow-xl w-[400px]">
-        <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200">
-          <h3 className="text-base font-semibold text-gray-900">Audit Trail Verification</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        
-        <div className="p-5">
-          {error && (
-            <div className="mb-3 p-2 bg-red-50 text-red-600 text-sm rounded">
-              {error}
-            </div>
-          )}
-          
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm text-gray-600 mb-1 font-bold">{t('login.username')}</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full h-8 px-2 text-sm border border-gray-300 rounded"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm text-gray-600 mb-1 font-bold">{t('login.password')}</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-8 px-2 text-sm border border-gray-300 rounded"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm text-gray-600 mb-1 font-bold">Reason (Optional)</label>
-              <textarea
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                className="w-full h-20 px-2 py-1 text-sm border border-gray-300 rounded"
-                placeholder="Enter reason..."
-              />
-            </div>
+    
+    <div className="border border-gray-300 bg-white min-h-[200px]">
+      {src && isSupported ? (
+        <iframe
+          src={`${src}#toolbar=0&navpanes=0`}
+          className="w-full h-[200px] border-none"
+          title="File Viewer"
+        />
+      ) : src && !isSupported ? (
+        <div className="flex flex-col items-center justify-center h-[200px] text-gray-400">
+          <div className="text-center">
+            <h2 className="text-lg">File format not supported for preview</h2>
           </div>
         </div>
-
-        <div className="flex justify-end gap-2 px-5 py-3 border-t border-gray-200 bg-gray-50">
-          <button
-            onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700"
-          >
-            {t('button.submit')}
-          </button>
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50"
-          >
-            {t('button.close')}
-          </button>
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 };
 
-// Main Component
-const InstrumentDataPage = () => {
+
+export default function InstrumentDataPage() {
   const { t } = useTranslation();
 
-  // State management
-  const [selectedInstrument, setSelectedInstrument] = useState('');
-  const [activeTab, setActiveTab] = useState('merge');
-  const [instrumentTagInfo, setInstrumentTagInfo] = useState([]);
-  const [fileList, setFileList] = useState([]);
+  const [instrument, setInstrument] = useState("");
+  const [tab, setTab] = useState("merge");
+  const [instruments, setInstruments] = useState([]);
+  
+  const [instrumentTags, setInstrumentTags] = useState([]);
+  const [mergeRows, setMergeRows] = useState([]);
+  const [selectedMerge, setSelectedMerge] = useState(null);
+  const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileTagInfo, setFileTagInfo] = useState([]);
-  const [mergeData, setMergeData] = useState([]);
-  const [selectedMergeRow, setSelectedMergeRow] = useState(null);
-  const [mergeFileRawData, setMergeFileRawData] = useState([]);
-  const [nullData, setNullData] = useState([]);
-  const [selectedNullRow, setSelectedNullRow] = useState(null);
+  const [fileTags, setFileTags] = useState([]);
   const [parsedData, setParsedData] = useState([]);
-  const [showAuditModal, setShowAuditModal] = useState(false);
+  const [mergeFileRawData, setMergeFileRawData] = useState([]);
+  const [nullDataRows, setNullDataRows] = useState([]);
+  
+  const [fileViewerSrc, setFileViewerSrc] = useState("");
+  const [fileViewerType, setFileViewerType] = useState("");
+  const [supportedExtensions, setSupportedExtensions] = useState([]);
+  
+  const [oldRawDataID, setOldRawDataID] = useState(" ");
+  const [newRawDataID, setNewRawDataID] = useState("");
+  const [nullDataRawID, setNullDataRawID] = useState("");
+  
+  const refreshTimerRef = useRef(null);
 
-  // Mock instruments
-  const [instruments] = useState([
-    { nInterInstrumentID: 1, sInstrumentAliasName: 'HPLC-001', sInstrumentID: 'INST001' },
-    { nInterInstrumentID: 2, sInstrumentAliasName: 'GC-002', sInstrumentID: 'INST002' },
-    { nInterInstrumentID: 3, sInstrumentAliasName: 'MS-003', sInstrumentID: 'INST003' }
-  ]);
-
-  // Mock data
-  const mockFileList = [
-    { Reference: '001', 'Task ID': 'TASK001', 'File Name': 'sample_001.txt', 'Upload Status': 'Uploaded', 'Client Name': 'Client A' },
-    { Reference: '002', 'Task ID': 'TASK001', 'File Name': 'sample_002.txt', 'Upload Status': 'Processing', 'Client Name': 'Client B' }
-  ];
-
-  const mockMergeData = [
-    { sRawDataID: 'RAW001', nSequenceNo: 1, nMergeFileCount: 5, sLockID: 'LOCK001', nInstrumentID: 1 },
-    { sRawDataID: 'RAW002', nSequenceNo: 2, nMergeFileCount: 3, sLockID: 'LOCK001', nInstrumentID: 1 }
-  ];
-
-  // Event handlers
-  const handleInstrumentChange = useCallback((value) => {
-    setSelectedInstrument(value);
+  // Load initial data and instruments
+  useEffect(() => {
+    loadTemplateValidation();
     
-    setInstrumentTagInfo([
-      { label: 'Sample', value: 'Sample-001' },
-      { label: 'Test', value: 'Test-XYZ' }
-    ]);
-
-    setFileList(mockFileList);
-    setMergeData(mockMergeData);
-    setSelectedFile(null);
-    setSelectedMergeRow(null);
+    return () => {
+      if (refreshTimerRef.current) {
+        clearInterval(refreshTimerRef.current);
+      }
+    };
   }, []);
 
-  const handleFileSelect = useCallback((file) => {
+  // Handle instrument change
+  useEffect(() => {
+    if (instrument) {
+      handleInstrumentChange();
+    }
+  }, [instrument]);
+
+  const loadTemplateValidation = async () => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/ValidatingTemplateTobeLoad", {});
+      
+      if (response && response.length > 0) {
+        const featureStatus = response[0]["L67Status"];
+        
+        if (response[1] && response[1]["sFileExtensionList"]) {
+          setSupportedExtensions(response[1]["sFileExtensionList"].split(","));
+        }
+        
+        // Load instruments
+        loadInstruments(featureStatus);
+      }
+    } catch (error) {
+      console.error("Error loading template validation:", error);
+    }
+  };
+
+  const loadInstruments = async (featureStatus) => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/LoadInterfaceLockInstrumentNameCombo", {
+        sFeature: featureStatus
+      });
+      
+      if (response && Array.isArray(response)) {
+        setInstruments(response);
+      }
+    } catch (error) {
+      console.error("Error loading instruments:", error);
+    }
+  };
+
+  const handleInstrumentChange = async () => {
+    if (!instrument) return;
+    
+    // Clear selections
+    setSelectedFile(null);
+    setFileViewerSrc("");
+    setFileTags([]);
+    setParsedData([]);
+    
+    const selectedInstrument = instruments.find(inst => inst.nInterInstrumentID === instrument);
+    
+    if (selectedInstrument) {
+      // Load instrument tags
+      loadInstrumentTags(selectedInstrument);
+      
+      // Load latest merged files
+      loadLatestMergedFiles(selectedInstrument);
+      
+      // Load file information
+      loadFileInformation(selectedInstrument);
+      
+      // Check merge count for auto-refresh
+      checkMergeCount(selectedInstrument);
+    }
+  };
+
+  const loadInstrumentTags = async (selectedInstrument) => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/CurrentLockInstrumentTagInfo", {
+        sInstrumentID: selectedInstrument.sInstrumentID,
+        sSiteCode: sessionStorage.getItem("sSiteCode")
+      });
+      
+      if (response && Array.isArray(response)) {
+        const tags = response.map(item => ({
+          label: item.Category,
+          value: item.Value
+        }));
+        setInstrumentTags(tags);
+      }
+    } catch (error) {
+      console.error("Error loading instrument tags:", error);
+    }
+  };
+
+  const loadLatestMergedFiles = async (selectedInstrument) => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/LoadMergeFileDetails", {
+        sInstrumentID: selectedInstrument.sInstrumentID,
+        sLockID: selectedInstrument.sLockID
+      });
+      
+      if (response && Array.isArray(response)) {
+        setMergeRows(response);
+      }
+    } catch (error) {
+      console.error("Error loading merged files:", error);
+    }
+  };
+
+  const loadFileInformation = async (selectedInstrument) => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/InstrumentCaptureTagData", {
+        sInstrumentID: selectedInstrument.sInstrumentID,
+        sTaskID: selectedInstrument.sTaskID
+      });
+      
+      if (response && Array.isArray(response)) {
+        setFiles(response);
+      }
+    } catch (error) {
+      console.error("Error loading file information:", error);
+    }
+  };
+
+  const checkMergeCount = async (selectedInstrument) => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/MergeCountForAutoRefresh", {
+        nInterfaceInstID: selectedInstrument.nInterInstrumentID
+      });
+      
+      if (response && response.MergeCount > 1) {
+        // Start auto-refresh timer
+        if (refreshTimerRef.current) {
+          clearInterval(refreshTimerRef.current);
+        }
+        
+        refreshTimerRef.current = setInterval(() => {
+          loadLatestMergedFiles(selectedInstrument);
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error checking merge count:", error);
+    }
+  };
+
+  const handleMergeRowSelect = async (row) => {
+    setSelectedMerge(row);
+    setNewRawDataID(row.sRawDataID);
+    
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/MergeFileDatas", {
+        nRawData: row.sRawDataID,
+        LockID: row.sLockID,
+        nSequenceNo: row.nSequenceNo,
+        nMergeFileCount: row.nMergeFileCount,
+        nInstrumentID: row.nInstrumentID
+      });
+      
+      if (response) {
+        if (response.NullDataStatus === "Created") {
+          setMergeFileRawData([]);
+          if (response.CreatedList) {
+            alert(response.CreatedList + " " + response.Message);
+            setNullDataRawID(response.CreatedList);
+          }
+        } else {
+          if (oldRawDataID === row.sRawDataID || oldRawDataID === " ") {
+            setOldRawDataID(row.sRawDataID);
+            if (response.MergeData && Array.isArray(response.MergeData)) {
+              setMergeFileRawData(response.MergeData);
+            }
+          } else {
+            setOldRawDataID(row.sRawDataID);
+            setMergeFileRawData(response.MergeData || []);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error loading merge file data:", error);
+    }
+  };
+
+  const handleFileSelect = async (file) => {
     setSelectedFile(file);
     
-    setFileTagInfo([
-      { label: 'Sample ID', value: file.Reference },
-      { label: 'Status', value: file['Upload Status'] }
-    ]);
-
-    setParsedData([
-      { label: 'Field 1', value: '123.45' },
-      { label: 'Field 2', value: '678.90' }
-    ]);
-  }, []);
-
-  const handleMergeRowSelect = useCallback((row) => {
-    setSelectedMergeRow(row);
+    // Load file viewer
+    loadFileViewer(file);
     
-    setMergeFileRawData([
-      { label: 'Raw Data ID', value: row.sRawDataID },
-      { label: 'Sequence', value: row.nSequenceNo.toString() }
-    ]);
-  }, []);
+    // Load file tags
+    loadFileTags(file);
+    
+    // Load parsed data
+    loadParsedData(file);
+  };
 
-  const handleNullRowSelect = useCallback((row) => {
-    setSelectedNullRow(row);
-  }, []);
+  const loadFileViewer = async (file) => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/InterFaceInstrumentFileDownLoad", {
+        sRecordNo: file.Reference,
+        sTaskID: file["Task ID"],
+        sUploadStatus: file["Upload Status"]?.trim(),
+        sBrowserURL: window.location.origin
+      });
+      
+      if (response && response.Rtn?.toLowerCase() === "success") {
+        const urlPath = response.ServerDataViewURL;
+        const fileExtension = urlPath.split(".").pop();
+        setFileViewerType(fileExtension);
+        setFileViewerSrc(urlPath);
+      } else if (response && response.Rtn?.toLowerCase() === "failed") {
+        alert(response.Message);
+        setFileViewerSrc("");
+      }
+    } catch (error) {
+      console.error("Error loading file viewer:", error);
+    }
+  };
 
-  const handleNullDataAck = useCallback(() => {
-    if (!selectedNullRow) {
-      alert('Please select a row');
+  const loadFileTags = async (file) => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/LoadCategoryValueForFiles", {
+        sRecordNo: file.Reference,
+        sTaskID: file["Task ID"],
+        sFileName: file["File Name"]
+      });
+      
+      if (response && Array.isArray(response)) {
+        const tags = response.map(item => ({
+          label: item.Category,
+          value: item.Value
+        }));
+        setFileTags(tags);
+      }
+    } catch (error) {
+      console.error("Error loading file tags:", error);
+    }
+  };
+
+  const loadParsedData = async (file) => {
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/getParsedDataDetails", {
+        sRecordNo: file.Reference,
+        sTaskID: file["Task ID"],
+        sFileName: file["File Name"]
+      });
+      
+      if (response && Array.isArray(response)) {
+        const parsed = response.map(item => {
+          let fieldName = item.FieldName.split("]");
+          if (fieldName && fieldName.length > 0) {
+            fieldName = fieldName[1];
+          }
+          return {
+            label: fieldName,
+            value: item.FieldValue
+          };
+        });
+        setParsedData(parsed);
+      }
+    } catch (error) {
+      console.error("Error loading parsed data:", error);
+    }
+  };
+
+  const loadNullData = async () => {
+    const selectedInstrument = instruments.find(inst => inst.nInterInstrumentID === instrument);
+    
+    if (!selectedInstrument) {
+      alert(t("instrumentlocktag.noinstrumentsfound") || "No Instruments Found");
       return;
     }
-    setShowAuditModal(true);
-  }, [selectedNullRow]);
+    
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/FetchNullDataBasedOnInstrument", {
+        nInterfaceInstID: selectedInstrument.nInterInstrumentID,
+        sLockID: selectedInstrument.sLockID
+      });
+      
+      if (response && Array.isArray(response)) {
+        setNullDataRows(response);
+      }
+    } catch (error) {
+      console.error("Error loading null data:", error);
+    }
+  };
 
-  const handleAuditSubmit = useCallback((auditData) => {
-    console.log('Audit submitted:', auditData);
-    setShowAuditModal(false);
-    setNullData(prev => prev.filter(d => d.sRawDataID !== selectedNullRow.sRawDataID));
-    setSelectedNullRow(null);
-    alert('Acknowledged successfully');
-  }, [selectedNullRow]);
+  const handleNullDataAcknowledgement = async (row) => {
+    if (!row) {
+      alert(t("instrumentlocktag.norecordsfound") || "No Records Found");
+      return;
+    }
+    
+    try {
+      const response = await makeAjaxCall("/InstrumentLock/NullDataAcknowledgement", {
+        nInterfaceInstID: row.nInstrumentID,
+        sRawData: row.sRawDataID,
+        sLockID: row.sLockID
+      });
+      
+      if (response) {
+        // Reload null data grid
+        loadNullData();
+      }
+    } catch (error) {
+      console.error("Error acknowledging null data:", error);
+    }
+  };
 
-  // Column definitions
-  const mergeColumns = [
-    { header: 'Rawdata ID', field: 'sRawDataID', width: '25%' },
-    { header: 'Sequence No', field: 'nSequenceNo', width: '20%' },
-    { header: 'Merge File Count', field: 'nMergeFileCount', width: '20%' },
-    { header: 'LockID', field: 'sLockID', width: '20%' },
-    { header: 'InstrumentID', field: 'nInstrumentID', width: '15%' }
-  ];
+  const handleRefreshLatestFiles = () => {
+    const selectedInstrument = instruments.find(inst => inst.nInterInstrumentID === instrument);
+    if (selectedInstrument) {
+      loadLatestMergedFiles(selectedInstrument);
+      setMergeFileRawData([]);
+    }
+  };
 
-  const fileColumns = [
-    { header: 'Filename', field: 'File Name', width: '40%' },
-    { header: 'Upload Status', field: 'Upload Status', width: '30%' },
-    { header: 'Client Name', field: 'Client Name', width: '30%' }
-  ];
+  const handleRefreshFileInfo = () => {
+    const selectedInstrument = instruments.find(inst => inst.nInterInstrumentID === instrument);
+    if (selectedInstrument) {
+      loadFileInformation(selectedInstrument);
+    }
+  };
 
-  const nullColumns = [
-    { header: 'Rawdata ID', field: 'sRawDataID', width: '20%' },
-    { header: 'Sequence No', field: 'nSequenceNo', width: '15%' },
-    { header: 'Merge File Count', field: 'nMergeFileCount', width: '20%' },
-    { header: 'LockID', field: 'sLockID', width: '20%' },
-    { header: 'InstrumentID', field: 'nInstrumentID', width: '25%' }
-  ];
+  const handleRefreshNullData = () => {
+    loadNullData();
+  };
+
+  const handleTabChange = (newTab) => {
+    setTab(newTab);
+    if (newTab === "null") {
+      loadNullData();
+    }
+  };
+
+  // Helper function for AJAX calls
+  const makeAjaxCall = async (url, passObjDet) => {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ passObj: passObjDet })
+      });
+      
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error("AJAX call failed:", error);
+      throw error;
+    }
+  };
+
+  const handleInstrumentDropdownChange = (e) => {
+    setInstrument(e.target.value);
+  };
+
+  // Renderer for upload status
+  const uploadStatusRenderer = (row, field) => {
+    const status = row[field]?.trim() || "";
+    return (
+      <span className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
+        status.toLowerCase() === "success" ? "bg-green-100 text-green-800" :
+        status.toLowerCase() === "failed" ? "bg-red-100 text-red-800" :
+        "bg-yellow-100 text-yellow-800"
+      }`}>
+        {status}
+      </span>
+    );
+  };
+
+  // Renderer for file name with date
+  const fileNameRenderer = (row, field) => {
+    const fileName = row[field] || "";
+    const createdOn = row["Created On"] || "";
+    return (
+      <div>
+        <div className="font-medium">{fileName}</div>
+        {createdOn && <div className="text-xs text-gray-500">{createdOn}</div>}
+      </div>
+    );
+  };
 
   return (
-    <div className="flex flex-col w-full font-sans bg-white">
-      <div className="px-6 py-6">
-        <div className="max-w-[1400px]">
-          
-          {/* Instrument Selection */}
-          <div className="mb-6 max-w-[340px]">
+    <div className="p-6 bg-[#fafafa] min-h-screen font-sans">
+      <div className="max-w-[1400px]">
+        {/* Instrument Dropdown */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-[#4a6fa5] mb-1">
+            {t("label.instrument")} <span className="text-red-500">*</span>
+          </label>
+          <div className="w-80 mt-1">
             <AnimatedDropdown
-              label={t('label.instrument')}
-              value={selectedInstrument}
+              label=""
+              name="instrument"
+              value={instrument}
               options={instruments}
-              onChange={handleInstrumentChange}
               displayKey="sInstrumentAliasName"
               valueKey="nInterInstrumentID"
-              required
+              onChange={handleInstrumentDropdownChange}
+              isSearchable={true}
             />
           </div>
+        </div>
 
-          {/* Instrument Tag Information */}
-          <div className="mb-6">
-            <SectionHeader title={t('instrumentlocktag.instrumenttagsinformation')} />
-            <div className="border border-gray-300 bg-white min-h-[100px]">
-              <InfoDisplay data={instrumentTagInfo} />
+        {/* Instrument Tag Information */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+            {t("instrumentlocktag.instrumenttagsinformation")}
+          </h3>
+          <InfoBox data={instrumentTags} />
+        </div>
+
+        {/* Latest Merged File Information */}
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-sm font-medium text-[#4a6fa5]">
+              {t("instrumentlocktag.latestmergedfileinformation")}
+            </h3>
+            <div className="flex gap-6">
+              <button
+                className={`text-sm font-medium pb-1 ${
+                  tab === "merge"
+                    ? "text-[#4a9fd8] border-b-2 border-[#4a9fd8]"
+                    : "text-gray-600"
+                }`}
+                onClick={() => handleTabChange("merge")}
+              >
+                {t("instrumentlocktag.mergedata")}
+              </button>
+              <button
+                className={`text-sm font-medium pb-1 ${
+                  tab === "null"
+                    ? "text-[#4a9fd8] border-b-2 border-[#4a9fd8]"
+                    : "text-gray-600"
+                }`}
+                onClick={() => handleTabChange("null")}
+              >
+                {t("instrumentlocktag.viewnulldata")}
+              </button>
             </div>
           </div>
 
-          {/* Latest Merged File Information */}
-          <div className="mb-6">
-            <SectionHeader 
-              title={t('instrumentlocktag.latestmergedfileinformation')}
-              rightContent={
-                <>
-                  <TabLink
-                    label="MergeData"
-                    active={activeTab === 'merge'}
-                    onClick={() => setActiveTab('merge')}
-                  />
-                  <TabLink
-                    label="ViewNullData"
-                    active={activeTab === 'null'}
-                    onClick={() => {
-                      setActiveTab('null');
-                      setNullData([
-                        { sRawDataID: 'NULL001', nSequenceNo: 1, nMergeFileCount: 2, sLockID: 'LOCK001', nInstrumentID: 1 }
-                      ]);
-                    }}
-                  />
-                </>
-              }
-            />
+          {tab === "merge" ? (
+            <>
+              <div className="flex justify-end mb-2">
+                <button 
+                  onClick={handleRefreshLatestFiles}
+                  className="flex items-center gap-1 text-[#4a9fd8] text-sm font-medium"
+                >
+                  <RefreshCw size={16} />
+                  {t("instrumentlocktag.refresh")}
+                </button>
+              </div>
 
-            {activeTab === 'merge' ? (
-              <div>
-                <div className="flex justify-end mb-2">
-                  <RefreshButton onClick={() => {}} label={t('instrumentlocktag.refresh')} />
-                </div>
-                <DataGrid
-                  columns={mergeColumns}
-                  data={mergeData}
-                  onRowSelect={handleMergeRowSelect}
-                  selectedRow={selectedMergeRow}
-                  rowKey="sRawDataID"
-                />
+              <Grid
+                columns={[
+                  { header: t("instrumentlocktag.rawdataid"), field: "sRawDataID", width: "33.33%" },
+                  { header: t("instrumentlocktag.sequenceno"), field: "nSequenceNo", width: "33.33%" },
+                  { header: t("instrumentlocktag.mergefilecount"), field: "nMergeFileCount", width: "33.34%" },
+                ]}
+                data={mergeRows}
+                onSelect={setSelectedMerge}
+                onRowClick={handleMergeRowSelect}
+                selectedKey={selectedMerge?.sRawDataID}
+                rowKey="sRawDataID"
+              />
+            </>
+          ) : (
+            <>
+              <div className="flex justify-end mb-2 gap-2">
+                <button 
+                  onClick={() => handleNullDataAcknowledgement(nullDataRows.find(r => r.selected))}
+                  className="flex items-center gap-1 text-[#4a9fd8] text-sm font-medium px-3 py-1 border border-[#4a9fd8] rounded"
+                >
+                  {t("instrumentlocktag.proceedacknowledgement")}
+                </button>
+                <button 
+                  onClick={handleRefreshNullData}
+                  className="flex items-center gap-1 text-[#4a9fd8] text-sm font-medium"
+                >
+                  <RefreshCw size={16} />
+                  {t("instrumentlocktag.refresh")}
+                </button>
               </div>
-            ) : (
-              <div>
-                <div className="flex justify-end gap-3 mb-2">
-                  <button
-                    onClick={handleNullDataAck}
-                    className="text-blue-600 text-sm font-semibold hover:text-blue-700"
-                  >
-                    Acknowledgement
-                  </button>
-                  <RefreshButton onClick={() => {}} label={t('instrumentlocktag.refresh')} />
-                </div>
-                <DataGrid
-                  columns={nullColumns}
-                  data={nullData}
-                  onRowSelect={handleNullRowSelect}
-                  selectedRow={selectedNullRow}
-                  rowKey="sRawDataID"
-                />
-              </div>
-            )}
+
+              <Grid
+                columns={[
+                  { header: t("instrumentlocktag.rawdataid"), field: "sRawDataID", width: "25%" },
+                  { header: t("instrumentlocktag.sequenceno"), field: "nSequenceNo", width: "15%" },
+                  { header: t("instrumentlocktag.mergefilecount"), field: "nMergeFileCount", width: "15%" },
+                  { header: t("instrumentlocktag.lockid"), field: "sLockID", width: "25%" },
+                  { header: t("instrumentlocktag.instrumentid"), field: "nInstrumentID", width: "20%" },
+                ]}
+                data={nullDataRows}
+                onSelect={(row) => setNullDataRows(prev => prev.map(r => ({ ...r, selected: r === row })))}
+                selectedKey={nullDataRows.find(r => r.selected)?.sRawDataID}
+                rowKey="sRawDataID"
+              />
+            </>
+          )}
+        </div>
+
+        {/* Merged File Raw Data */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+            {t("instrumentlocktag.mergedfilerawdata")}
+          </h3>
+          <InfoBox data={mergeFileRawData.map(item => ({
+            label: item.label || item.Category,
+            value: item.value || item.Value
+          }))} />
+        </div>
+
+        {/* File Information */}
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-sm font-medium text-[#4a6fa5]">
+              {t("instrumentlocktag.fileinformation")}
+            </h3>
+            <button 
+              onClick={handleRefreshFileInfo}
+              className="flex items-center gap-1 text-[#4a9fd8] text-sm font-medium"
+            >
+              <RefreshCw size={16} />
+              {t("instrumentlocktag.refresh")}
+            </button>
           </div>
 
-          {/* Merged File Raw Data */}
-          {selectedMergeRow && (
-            <div className="mb-6">
-              <SectionHeader title={t('instrumentlocktag.mergedfilerawdata')} />
-              <div className="border border-gray-300 bg-white min-h-[200px]">
-                <InfoDisplay data={mergeFileRawData} />
-              </div>
-            </div>
-          )}
+          <Grid
+            columns={[
+              { header: t("instrumentlocktag.filename"), field: "File Name", width: "40%", renderer: fileNameRenderer },
+              { header: t("instrumentlocktag.uploadstatus"), field: "Upload Status", width: "30%", renderer: uploadStatusRenderer },
+              { header: "Client Name", field: "Client Name", width: "30%" },
+            ]}
+            data={files}
+            onSelect={handleFileSelect}
+            selectedKey={selectedFile?.["File Name"]}
+            rowKey="File Name"
+          />
+        </div>
 
-          {/* File Information */}
-          <div className="mb-6">
-            <SectionHeader 
-              title={t('instrumentlocktag.fileinformation')}
-              rightContent={<RefreshButton onClick={() => {}} label={t('instrumentlocktag.refresh')} />}
-            />
-            <DataGrid
-              columns={fileColumns}
-              data={fileList}
-              onRowSelect={handleFileSelect}
-              selectedRow={selectedFile}
-              rowKey="Reference"
-            />
-          </div>
+        {/* File Tag Information */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+            {t("instrumentlocktag.filetagsinformation")}
+          </h3>
+          <InfoBox data={fileTags} />
+        </div>
 
-          {/* File Tag Information */}
-          {selectedFile && (
-            <div className="mb-6">
-              <SectionHeader title={t('instrumentlocktag.filetagsinformation')} />
-              <div className="border border-gray-300 bg-white min-h-[100px]">
-                <InfoDisplay data={fileTagInfo} />
-              </div>
-            </div>
-          )}
+        {/* File Raw Data */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+            {t("instrumentlocktag.filerawdata")}
+          </h3>
+          <FileViewer 
+            src={fileViewerSrc} 
+            fileType={fileViewerType}
+            supportedExtensions={supportedExtensions}
+          />
+        </div>
 
-          {/* File Raw Data */}
-          {selectedFile && (
-            <div className="mb-6">
-              <SectionHeader title={t('instrumentlocktag.filerawdata')} />
-              <div className="border border-gray-300 bg-white h-[200px] flex items-center justify-center text-gray-400">
-                File viewer placeholder
-              </div>
-            </div>
-          )}
-
-          {/* Parsed Data */}
-          {selectedFile && (
-            <div className="mb-6">
-              <SectionHeader title={t('instrumentlocktag.parseddata')} />
-              <div className="border border-gray-300 bg-white min-h-[200px]">
-                <InfoDisplay data={parsedData} />
-              </div>
-            </div>
-          )}
-
+        {/* Parsed Data */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+            {t("instrumentlocktag.parseddata")}
+          </h3>
+          <InfoBox data={parsedData} />
         </div>
       </div>
-
-      {/* Audit Trail Modal */}
-      <AuditTrailModal
-        isOpen={showAuditModal}
-        onClose={() => setShowAuditModal(false)}
-        onSubmit={handleAuditSubmit}
-        t={t}
-      />
     </div>
   );
-};
-
-export default InstrumentDataPage;
+}

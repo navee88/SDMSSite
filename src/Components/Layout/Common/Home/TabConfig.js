@@ -6,6 +6,7 @@ import SearchServerData from "../../../Home/SubFolders/SearchServerData/SearchSe
 import MyInstruments from "../../../Home/SubFolders/InstrumentLockSettings/MyInstruments";
 import OtherInstruments from "../../../Home/SubFolders/InstrumentLockSettings/OtherInstruments";
 import InstrumentLockTag from "../../../Home/SubFolders/InstrumentLockSettings/InstrumentLocksandTags";
+import InstrumentDataPage from "../../../Home/SubFolders/InstrumentLockSettings/Data";
 import UploadQueue from "../../../Home/SubFolders/MonitorSchedular/UploadQueue";
 import FailedQueue from "../../../Home/SubFolders/MonitorSchedular/FailedQueue";
 import RestoreMonitor from "../../../Home/SubFolders/MonitorSchedular/RestoreMonitor";
@@ -34,32 +35,32 @@ export const tabConfig = {
     "Restore Monitor": { content: <RestoreMonitor /> },
     "Download Monitor": { content: <DownloadMonitor /> },
   },
-  AuditTrailHistory: {
-    "Audit Trail History": { content: <AuditTrailHistory /> },
-    "CFR Settings": { content: <CFRSettings /> },
-  },
-  DownloadLogs: {
-    "Download Logs": { content: <DownloadLogs /> },
-    "Download Error Logs": { content: <DownloadErrorLogs /> },
-  },
-  UploadLogs: {
-    "Upload Logs": { content: <UploadLogs /> },
-    "Upload Error Logs": { content: <UploadErrorLogs /> },
-    "Manual Upload Logs": { content: <ManualUploadLogs /> },
-  },
-  RestoreLogs: {
-    "Restore Logs": { content: <RestoreLogs /> },
-    "Restore Error Logs": { content: <RestoreErrorLogs /> },
-  },
-  ServerAndLocalFileDeleteLogs:{
-     "Server File Delete Logs": { content: <ServerFileDeleteLogs /> },
-    "Local File Delete Logs": { content: <LocalFileDeleteLogs /> },
-  },
-  SchedulerConfigLogs:{
-    "Scheduler Config. Logs":{content:<SchedulerConfigLogs />}
-  },
-  InstrumentLogs:{
-    "InstrumentLogs":{content:<InstrumentLogs/>}
-  }
+  // AuditTrailHistory: {
+  //   "Audit Trail History": { content: <AuditTrailHistory /> },
+  //   "CFR Settings": { content: <CFRSettings /> },
+  // },
+  // DownloadLogs: {
+  //   "Download Logs": { content: <DownloadLogs /> },
+  //   "Download Error Logs": { content: <DownloadErrorLogs /> },
+  // },
+  // UploadLogs: {
+  //   "Upload Logs": { content: <UploadLogs /> },
+  //   "Upload Error Logs": { content: <UploadErrorLogs /> },
+  //   "Manual Upload Logs": { content: <ManualUploadLogs /> },
+  // },
+  // RestoreLogs: {
+  //   "Restore Logs": { content: <RestoreLogs /> },
+  //   "Restore Error Logs": { content: <RestoreErrorLogs /> },
+  // },
+  // ServerAndLocalFileDeleteLogs:{
+  //    "Server File Delete Logs": { content: <ServerFileDeleteLogs /> },
+  //   "Local File Delete Logs": { content: <LocalFileDeleteLogs /> },
+  // },
+  // SchedulerConfigLogs:{
+  //   "Scheduler Config. Logs":{content:<SchedulerConfigLogs />}
+  // },
+  // InstrumentLogs:{
+  //   "InstrumentLogs":{content:<InstrumentLogs/>}
+  // }
 
 };
