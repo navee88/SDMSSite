@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
     Filter, RotateCcw, RefreshCw, Settings, ChevronUp, ChevronDown, X, CheckSquare,
     FolderDown, Upload, FolderUp, FileClock, History, Tag, FileText, FolderOpen, Download,
@@ -7,11 +7,11 @@ import {
     Search,
 } from 'lucide-react';
 import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import UsersPage from '../../../Layout/Common/Home/Userpage';
 import exportIcon from "../../../../Assests/Icons/export-icon.png"
 import AnimatedInput from '../../../Layout/Common/AnimatedInput';
 import { useLanguage } from "../../../../Context/LanguageContext";
 import { useTranslation } from "react-i18next";
+import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
 
 
 const InstrumentGrid = () => {
@@ -494,6 +494,164 @@ const getCurrentDate = () => {
     return `${year}-${month}-${day}`;
 };
 
+
+const UsersPage = () => {
+    const [userData, setUserData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { currentLanguage, changeLanguage, languages } = useLanguage();
+    const { t } = useTranslation();
+
+    const mockData = [
+        {
+            id: 1,
+            clientName: "DESKTOP-CU9J5T2",
+            fileName: "sample1",
+            taskStatus: "Completed"
+        },
+        {
+            id: 2,
+            clientName: "DESKTOP-CU9J5T2",
+            fileName: "sample2",
+            taskStatus: "Completed"
+        },
+        {
+            id: 3,
+            clientName: "DESKTOP-CU9J5T2",
+            fileName: "sample3",
+            taskStatus: "Completed"
+        },
+        {
+            id: 4,
+            clientName: "DESKTOP-CU9J5T2",
+            fileName: "sample4",
+            taskStatus: "Completed"
+        },
+        {
+            id: 5,
+            clientName: "DESKTOP-CU9J5T2",
+            fileName: "sample5",
+            taskStatus: "Completed"
+        },
+        {
+            id: 6,
+            clientName: "DESKTOP-CU9J5T2",
+            fileName: "sample6",
+            taskStatus: "Completed"
+        },
+        {
+            id: 7,
+            clientName: "DESKTOP-CU9J5T2",
+            fileName: "sample7",
+            taskStatus: "Completed"
+        }
+    ];
+
+
+
+    //   useEffect(() => {
+    //     const fetchUsers = async () => {
+    //       try {
+    //         setLoading(true);
+    //         const response = await axios.get('http://localhost:5173/users');
+    //         setUserData(response.data);
+    //         setLoading(false);
+    //       } catch (err) {
+    //         console.error("Error fetching data:", err);
+    //         setError(err.message || "Something went wrong");
+    //         setLoading(false);
+    //       }
+    //     };
+
+    //     fetchUsers();
+    //   }, []);
+
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setUserData(mockData);
+            setLoading(false);
+        }, 300);
+
+    }, []);
+
+    const userColumns = useMemo(() => [
+        {
+            key: 'clientName',
+            label: 'Client Name',
+            width: 180, // Adjust
+            render: (row) => <span className="text-gray-700">{row.clientName}</span>
+        },
+        {
+            key: 'fileName',
+            label: 'File Name',
+            width: 250,
+            render: (row) => <span className="text-gray-700">{row.fileName}</span>
+        },
+        {
+            key: 'taskStatus',
+            label: 'Task Status',
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.taskStatus}</span>
+        }
+    ], []);
+
+
+    const renderUserDetail = (user) => (
+        <div className="space-y-3 text-[12px]">
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.sourcePath")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.sourcePath}D:\SDMSFTP\SourcePath</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.type")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.type}TS1</div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoreLocation")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoreLocation}D:\SDMSFTP\Restore</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.errorDescription")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}NO Error</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoredBy")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoredBy}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoredOn")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoredOn}</div>
+            </div>
+
+        </div>
+    );
+
+
+    if (loading) {
+        return <div className="p-8 text-center text-gray-500">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="p-8 text-center text-red-500"></div>;
+    }
+
+
+    return (
+        <div className="flex flex-col">
+            <GridLayout
+                columns={userColumns}
+                data={userData}
+                renderDetailPanel={renderUserDetail}
+            />
+        </div>
+    );
+};
+
+
+
 const RestoreMonitor = () => {
     const today = getCurrentDate();
     // const [hideEmpty, setHideEmpty] = useState(true);
@@ -504,7 +662,9 @@ const RestoreMonitor = () => {
     const [recordsDuration, setRecordsDuration] = useState("Current Date");
     const [fromDate, setFromDate] = useState(today);
     const [toDate, setToDate] = useState(today);
-    const [filename, setFilename] = useState("");
+    const [selectedClient, setSelectedClient] = useState("");
+    const [taskId, setTaskId] = useState("");
+    const [fileName, setFileName] = useState("");
 
 
     const menuRef = useRef(null);
@@ -650,7 +810,7 @@ const RestoreMonitor = () => {
     const { currentLanguage, changeLanguage, languages } = useLanguage();
     const { t } = useTranslation();
     return (
-        <div className="flex flex-col w-full font-roboto rounded-md">
+        <div className="flex flex-col w-full font-roboto rounded-md font-[roboto]">
             <div className="bg-[#f0f2f5] px-4 pt-4 pb-2 relative rounded-t-md z-20">
                 {isOpen ? (
                     <div className="flex flex-wrap items-end gap-3.5 mb-2">
@@ -658,10 +818,10 @@ const RestoreMonitor = () => {
                         <div className="w-60">
                             <AnimatedDropdown
                                 label={t("label.clientName")}
-                                value="All"
-                                options={["All", "User A", "User B"]}
-                                onChange={(value) => console.log(value)}
-                                isSearchable={true}
+                                value={selectedClient}
+                                options={["User A", "User B"]}
+                                onChange={(e) => setSelectedClient(e.target.value)}
+                                isSearchable
                             />
                         </div>
 
@@ -669,21 +829,22 @@ const RestoreMonitor = () => {
                         <div className="w-60 mr-40">
                             <AnimatedDropdown
                                 label={t("label.taskId")}
-                                value=""
-                                // options={["Inst 1", "Inst 2"]}
-                                onChange={(value) => console.log(value)}
-                                isSearchable={true}
+                                value={taskId}
+                                options={["Task-001", "Task-002", "Task-003"]}
+                                onChange={(e) => setTaskId(e.target.value)}
+                                isSearchable
                             />
-                        </div>
 
+                        </div>
 
                         <div className="w-60">
                             <AnimatedInput
                                 label={t("label.fileName")}
                                 name="filename"
-                                value={filename}
-                                onChange={(e) => setFilename(e.target.value)}
+                                value={fileName}
+                                onChange={(e) => setFileName(e.target.value)}
                             />
+
                         </div>
 
 
@@ -728,11 +889,11 @@ const RestoreMonitor = () => {
 
                         <div className="flex items-center gap-2">
                             <span className="font-bold text-xs text-slate-600">{t("label.clientName")}:</span>
-                            <span className="font-medium text-xs text-[#0E5BCA] text-slate-800">AGD46</span>
+                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>
-                            <span className="font-medium text-xs text-[#0E5BCA] text-slate-800">---</span>
+                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{fileName || "---"}</span>
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -754,53 +915,14 @@ const RestoreMonitor = () => {
                 </button>
             </div>
 
-            <div className="flex gap-2 px-4">
-                <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
-                    <div className="h-[38px] mb-2"></div>
-                    <div className="flex-1">
-                        <InstrumentGrid />
-                    </div>
+            <div className="px-4 font-roboto h-[calc(100vh-150px)] flex flex-col">
+                {/* UsersPage takes full width & height */}
+                <div className="flex-1 overflow-hidden">
+                    <UsersPage />
                 </div>
+            </div>
 
-                {/* Right Side - Details Panel */}
-                <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
-                    <div className="h-[38px] mb-2"></div>
 
-                    {/* Details Table */}
-                    <div className="border border-gray-300 rounded-lg overflow-hidden flex-1 overflow-y-auto">
-                        <table className="w-full text-xs">
-                            <tbody>
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.sourcePath')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">D:\SDMSFTP\Scheduler</td> */}
-                                </tr>
-
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.type')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">Active</td> */}
-                                </tr>
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.restoreLocation')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">TS1</td> */}
-                                </tr>
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.errorDescription')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">T1</td> */}
-                                </tr>
-
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.restoredBy')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">0</td> */}
-                                </tr>
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.restoredOn')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">0</td> */}
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div >
         </div>
     )
 }

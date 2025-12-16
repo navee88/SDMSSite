@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
     Filter, RotateCcw, RefreshCw, Settings, ChevronUp, ChevronDown, X, CheckSquare,
     FolderDown, Upload, FolderUp, FileClock, History, Tag, FileText, FolderOpen, Download,
@@ -14,11 +14,11 @@ import {
     ArchiveIcon,
 } from 'lucide-react';
 import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import UsersPage from '../../../Layout/Common/Home/Userpage';
 import exportIcon from "../../../../Assests/Icons/export-icon.png"
 import AnimatedInput from '../../../Layout/Common/AnimatedInput';
 import { useLanguage } from "../../../../Context/LanguageContext";
 import { useTranslation } from "react-i18next";
+import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
 
 
 const InstrumentGrid = () => {
@@ -501,6 +501,312 @@ const getCurrentDate = () => {
     return `${year}-${month}-${day}`;
 };
 
+
+const UsersPage = () => {
+    const [userData, setUserData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { currentLanguage, changeLanguage, languages } = useLanguage();
+    const { t } = useTranslation();
+
+    const mockData = [
+        {
+            id: 1,
+            select: false,
+            moduleName: "User Management",
+            actions: "Create",
+            transactionOn: "08/12/2025",
+            reviewStatus: "Pending",
+            requestedClient: "Client A",
+            affectedClient: "Client B",
+            instrumentName: "Instrument X",
+            reason: "N/A"
+        },
+        {
+            id: 2,
+            select: true,
+            moduleName: "Role Management",
+            actions: "Update",
+            transactionOn: "08/12/2025",
+            reviewStatus: "Approved",
+            requestedClient: "Client C",
+            affectedClient: "Client D",
+            instrumentName: "Instrument Y",
+            reason: "N/A"
+        },
+        {
+            id: 3,
+            select: false,
+            moduleName: "Instrument Setup",
+            actions: "Delete",
+            transactionOn: "07/12/2025",
+            reviewStatus: "Rejected",
+            requestedClient: "Client E",
+            affectedClient: "Client F",
+            instrumentName: "Instrument Z",
+            reason: "N/A"
+        },
+        {
+            id: 4,
+            select: false,
+            moduleName: "Client Configuration",
+            actions: "Update",
+            transactionOn: "07/12/2025",
+            reviewStatus: "Pending",
+            requestedClient: "Client G",
+            affectedClient: "Client H",
+            instrumentName: "Instrument A",
+            reason: "N/A"
+        },
+        {
+            id: 5,
+            select: true,
+            moduleName: "Audit Logs",
+            actions: "View",
+            transactionOn: "06/12/2025",
+            reviewStatus: "Approved",
+            requestedClient: "Client I",
+            affectedClient: "Client J",
+            instrumentName: "Instrument B",
+            reason: "N/A"
+        },
+        {
+            id: 6,
+            select: false,
+            moduleName: "Permission Setup",
+            actions: "Create",
+            transactionOn: "06/12/2025",
+            reviewStatus: "Pending",
+            requestedClient: "Client K",
+            affectedClient: "Client L",
+            instrumentName: "Instrument C",
+            reason: "N/A"
+        },
+        {
+            id: 7,
+            select: false,
+            moduleName: "Workflow Engine",
+            actions: "Update",
+            transactionOn: "05/12/2025",
+            reviewStatus: "Rejected",
+            requestedClient: "Client M",
+            affectedClient: "Client N",
+            instrumentName: "Instrument D",
+            reason: "N/A"
+        },
+        {
+            id: 8,
+            select: true,
+            moduleName: "Report Generator",
+            actions: "Generate",
+            transactionOn: "05/12/2025",
+            reviewStatus: "Approved",
+            requestedClient: "Client O",
+            affectedClient: "Client P",
+            instrumentName: "Instrument E",
+            reason: "N/A"
+        },
+        {
+            id: 9,
+            select: false,
+            moduleName: "Notification Service",
+            actions: "Update",
+            transactionOn: "04/12/2025",
+            reviewStatus: "Pending",
+            requestedClient: "Client Q",
+            affectedClient: "Client R",
+            instrumentName: "Instrument F",
+            reason: "N/A"
+        },
+        {
+            id: 10,
+            select: false,
+            moduleName: "Security Settings",
+            actions: "Update",
+            transactionOn: "04/12/2025",
+            reviewStatus: "Approved",
+            requestedClient: "Client S",
+            affectedClient: "Client T",
+            instrumentName: "Instrument G",
+            reason: "N/A"
+        }
+    ];
+
+
+    //   useEffect(() => {
+    //     const fetchUsers = async () => {
+    //       try {
+    //         setLoading(true);
+    //         const response = await axios.get('http://localhost:5173/users');
+    //         setUserData(response.data);
+    //         setLoading(false);
+    //       } catch (err) {
+    //         console.error("Error fetching data:", err);
+    //         setError(err.message || "Something went wrong");
+    //         setLoading(false);
+    //       }
+    //     };
+
+    //     fetchUsers();
+    //   }, []);
+
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setUserData(mockData);
+            setLoading(false);
+        }, 300);
+
+    }, []);
+
+    const userColumns = useMemo(() => [
+        {
+            key: 'select',
+            label: t('label.select'),
+            width: 120,
+            render: (row) => (
+                <label className="inline-flex items-center">
+                    <span
+                        className="
+            w-4 h-4
+            border border-gray-400
+            flex items-center justify-center
+            bg-white
+          "
+                    >
+                        {row.select && (
+                            <svg
+                                className="w-3 h-3 text-black"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        )}
+                    </span>
+                </label>
+            )
+        },
+        {
+            key: 'moduleName',
+            label: t('label.moduleName'),
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.moduleName}</span>
+        },
+        {
+            key: 'actions',
+            label: t('label.actions'),
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.actions}</span>
+        },
+        {
+            key: 'transactionOn',
+            label: t('label.transactionOn'),
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.transactionOn}</span>
+        },
+        {
+            key: 'reviewStatus',
+            label: t('label.reviewStatus'),
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.reviewStatus}</span>
+        },
+        {
+            key: 'requestedClient',
+            label: t('label.requestedClient'),
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.requestedClient}</span>
+        },
+        {
+            key: 'affectedClient',
+            label: t('label.affectedClient'),
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.affectedClient}</span>
+        },
+        {
+            key: 'instrumentName',
+            label: t('label.instrumentName'),
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.instrumentName}</span>
+        },
+        {
+            key: 'reason',
+            label: t('label.reason'),
+            width: 120,
+            render: (row) => <span className="text-gray-700">{row.reason}</span>
+        }
+    ], []);
+
+
+
+    const renderUserDetail = (user) => (
+        <div className="space-y-3 text-[12px]">
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.comments")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.comments}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.userName")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.userName}</div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.profileName")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.profileName}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.systemComments")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.systemComments}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.reviewComments")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewComments}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.reviewedBy")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewedBy}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.reviewedDate")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewedDate}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.reviewDateUTC")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewDateUTC}</div>
+            </div>
+
+
+        </div>
+    );
+
+
+    if (loading) {
+        return <div className="p-8 text-center text-gray-500">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="p-8 text-center text-red-500"></div>;
+    }
+
+
+    return (
+        <div className="flex flex-col">
+            <GridLayout
+                columns={userColumns}
+                data={userData}
+                renderDetailPanel={renderUserDetail}
+            />
+        </div>
+    );
+};
+
+
+
 const AuditTrailHistory = () => {
     const today = getCurrentDate();
     // const [hideEmpty, setHideEmpty] = useState(true);
@@ -512,6 +818,11 @@ const AuditTrailHistory = () => {
     const [fromDate, setFromDate] = useState(today);
     const [toDate, setToDate] = useState(today);
     const [filename, setFilename] = useState("");
+
+    const [selectedUser, setSelectedUser] = useState("All");
+    const [selectedModule, setSelectedModule] = useState("All");
+    const [selectedAuditType, setSelectedAuditType] = useState("All");
+
 
 
     const menuRef = useRef(null);
@@ -661,7 +972,7 @@ const AuditTrailHistory = () => {
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold rounded  whitespace-nowrap hover:scale-90 transition-all
+            className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold font-[roboto] rounded  whitespace-nowrap hover:scale-90 transition-all
       ${disabled
                     ? "bg-slate-100 text-slate-300 cursor-not-allowed"
                     : "bg-[#f1f5f9] text-[#1d8cf8] hover:bg-blue-100"
@@ -682,31 +993,35 @@ const AuditTrailHistory = () => {
                         <div className="w-60 mr-4">
                             <AnimatedDropdown
                                 label={t("label.userName")}
-                                value="All"
+                                value={selectedUser}
                                 options={["All", "User A", "User B"]}
-                                onChange={(value) => console.log(value)}
-                                isSearchable={true}
+                                onChange={(e) => setSelectedUser(e.target.value)}
+                                isSearchable
                             />
+
+
                         </div>
-
-
                         <div className="w-60 mr-4">
                             <AnimatedDropdown
                                 label={t("label.moduleName")}
-                                value="All"
+                                value={selectedModule}
                                 options={["All", "Audit Trail", "CFR Gateway", "CFR Settings"]}
-                                onChange={(value) => console.log(value)}
-                                isSearchable={true}
+                                onChange={(e) => setSelectedModule(e.target.value)}
+                                isSearchable
                             />
+
+
                         </div>
 
                         <div className="w-60 mr-4">
                             <AnimatedDropdown
                                 label={t("label.auditType")}
+                                value={selectedAuditType}
                                 options={["User", "System", "All"]}
-                                value={"All"}
-                                onChange={(e) => setFilename(e.target.value)}
+                                onChange={(e) => setSelectedAuditType(e.target.value)}
                             />
+
+
                         </div>
 
                         <div className="w-60 mr-4">
@@ -745,15 +1060,21 @@ const AuditTrailHistory = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-4 gap-4 py-2.5">
+                    <div className="grid grid-cols-4 gap-4 py-2.5 font-[roboto]">
 
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs text-slate-600">{t("label.clientName")}:</span>
-                            <span className="font-medium text-xs text-[#0E5BCA] text-slate-800">AGD46</span>
+                            <span className="font-bold text-xs text-slate-600">{t("label.userName")}:</span>
+                            <span className="font-medium text-xs text-[#0E5BCA]">
+                                {selectedUser}
+                            </span>
+
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>
-                            <span className="font-medium text-xs text-[#0E5BCA] text-slate-800">---</span>
+                            <span className="font-bold text-xs text-slate-600">{t("label.moduleName")}:</span>
+                            <span className="font-medium text-xs text-[#0E5BCA]">
+                                {selectedModule}
+                            </span>
+
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -775,62 +1096,23 @@ const AuditTrailHistory = () => {
                 </button>
             </div>
 
-            <div className="flex gap-2 px-4">
-                <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
-                    <div className="h-[52px] mb-2"></div>
-                    <div className="flex-1">
-                        <InstrumentGrid />
-                    </div>
+            {/* Buttons */}
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
+                <ActionButton icon={History} label={t('button.reviewHistory')} />
+                <ActionButton icon={FileText} label={t('button.review')} />
+                <ActionButton icon={ArchiveIcon} label={t('button.createArchieve')} />
+                <ActionButton icon={PackageOpenIcon} label={t('button.openArchieve')} />
+                <ActionButton icon={Upload} label={t('button.export')} />
+                <ActionButton icon={Printer} label={t('button.print')} />
+            </div>
+
+
+            <div className="px-4 font-roboto h-[calc(100vh-150px)] flex flex-col">
+                {/* UsersPage takes full width & height */}
+                <div className="flex-1 overflow-hidden">
+                    <UsersPage />
                 </div>
-
-                {/* Right Side - Details Panel */}
-
-                <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
-                    {/* Buttons */}
-                    <div className="flex justify-start gap-2 mb-2 mt-5">
-                        <ActionButton icon={History} label={t('button.reviewHistory')} />
-                        <ActionButton icon={FileText} label={t('button.review')} />
-                        <ActionButton icon={ArchiveIcon} label={t('button.createArchieve')} />
-                        <ActionButton icon={PackageOpenIcon} label={t('button.openArchieve')} />
-                        <ActionButton icon={Upload} label={t('button.export')} />
-                        <ActionButton icon={Printer} label={t('button.print')} />
-                    </div>
-                    {/* <div className="h-[38px] mb-2"></div> */}
-                    {/* Details Table */}
-                    <div className="border border-gray-300 rounded-lg overflow-hidden flex-1 overflow-y-auto">
-                        <table className="w-full text-xs">
-                            <tbody>
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.sourcePath')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">D:\SDMSFTP\Scheduler</td> */}
-                                </tr>
-
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.type')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">Active</td> */}
-                                </tr>
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.restoreLocation')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">TS1</td> */}
-                                </tr>
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.errorDescription')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">T1</td> */}
-                                </tr>
-
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.restoredBy')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">0</td> */}
-                                </tr>
-                                <tr> {/* Remove border-b */}
-                                    <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.restoredOn')}</td> {/* Remove border-r */}
-                                    {/* <td className="px-4 py-1 font-semibold text-sm text-[#353F49]">0</td> */}
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div >
+            </div>
         </div>
     )
 }

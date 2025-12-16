@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, ChevronDown, FileText, SquarePen } from 'lucide-react';
 import { useLanguage } from "../../../../Context/LanguageContext";
 import { useTranslation } from "react-i18next";
+import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+// import axios from 'axios';
 
 const InstrumentGrid = () => {
     const [sortMenuOpen, setSortMenuOpen] = useState(false);
@@ -242,6 +244,177 @@ const InstrumentGrid = () => {
 };
 
 
+
+const UsersPage = () => {
+    const [userData, setUserData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { currentLanguage, changeLanguage, languages } = useLanguage();
+    const { t } = useTranslation();
+
+    const mockData = [
+        {
+            id: 1,
+            clientName: "DESKTOP-CU9J5T2",
+            instrument: "CU-Summary1 (CU-Summary1)",
+            live: true
+        },
+        {
+            id: 2,
+            clientName: "DESKTOP-CU9J5T2",
+            instrument: "CU-Summary1 (CU-Summary1)",
+            live: true
+        },
+        {
+            id: 3,
+            clientName: "DESKTOP-CU9J5T2",
+            instrument: "MU-Summary1 (MU-Summary1)",
+            live: true
+        },
+        {
+            id: 4,
+            clientName: "DESKTOP-CU9J5T2",
+            instrument: "AU-Summary1 (AU-Summary1)",
+            live: true
+        },
+        {
+            id: 5,
+            clientName: "DESKTOP-CU9J5T2",
+            instrument: "CU-Summary1 (CU-Summary1)",
+            live: true
+        },
+        {
+            id: 6,
+            clientName: "DESKTOP-CU9J5T2",
+            instrument: "CU-Summary1 (CU-Summary1)",
+            live: true
+        },
+        {
+            id: 7,
+            clientName: "DESKTOP-CU9J5T2",
+            instrument: "CU-Summary1 (CU-Summary1)",
+            live: true
+        }
+    ];
+
+
+
+    //   useEffect(() => {
+    //     const fetchUsers = async () => {
+    //       try {
+    //         setLoading(true);
+    //         const response = await axios.get('http://localhost:5173/users');
+    //         setUserData(response.data);
+    //         setLoading(false);
+    //       } catch (err) {
+    //         console.error("Error fetching data:", err);
+    //         setError(err.message || "Something went wrong");
+    //         setLoading(false);
+    //       }
+    //     };
+
+    //     fetchUsers();
+    //   }, []);
+
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setUserData(mockData);
+            setLoading(false);
+        }, 300);
+
+    }, []);
+
+
+    const userColumns = useMemo(() => [
+        {
+            key: 'clientName',
+            label: 'Client Name',
+            width: 200,
+            render: (row) => (
+                <span className="text-gray-700">
+                    {row.clientName}
+                </span>
+            )
+        },
+        {
+            key: 'instrument',
+            label: 'Instrument',
+            width: 250,
+            render: (row) => (
+                <span className="text-gray-700">
+                    {row.instrument}
+                </span>
+            )
+        },
+        {
+            key: 'live',
+            label: 'Live',
+            width: 100,
+            render: (row) => (
+                <span className="text-lg">
+                    {row.live ? "✓" : ""}
+                </span>
+            )
+        }
+    ], []);
+
+
+    const renderUserDetail = (user) => (
+        <div className="space-y-3 text-[12px]">
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.storageName")}</div>
+                <div className="col-span-2">{user.storageName}</div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.taskStatus")}</div>
+                <div className="col-span-2">{user.taskStatus}</div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.scheduleId")}</div>
+                <div className="col-span-2">{user.scheduleId}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.taskId")}</div>
+                <div className="col-span-2">{user.taskId}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.sourcePath")}</div>
+                <div className="col-span-2">{user.sourcePath}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.queue")}</div>
+                <div className="col-span-2">{user.queue}</div>
+            </div>
+
+        </div>
+    );
+
+
+    if (loading) {
+        return <div className="p-8 text-center text-gray-500">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="p-8 text-center text-red-500"></div>;
+    }
+
+
+    return (
+        <div className="flex flex-col">
+            <GridLayout
+                columns={userColumns}
+                data={userData}
+                renderDetailPanel={renderUserDetail}
+            />
+        </div>
+    );
+};
+
+
 function UploadQueue() {
     const { currentLanguage, changeLanguage, languages } = useLanguage();
     const { t } = useTranslation();
@@ -266,58 +439,22 @@ function UploadQueue() {
 
 
     return (
-        <div className="flex gap-2 px-4 font-roboto">
+        <div className="px-4 font-roboto h-[calc(100vh-150px)] flex flex-col">
 
-            <div className="w-1/2 flex flex-col h-[calc(100vh-150px)]">
-                <div className="h-[42px] mb-2"></div>
-                <div className="flex-1">
-                    <InstrumentGrid />
-                </div>
+            {/* Top Action Buttons (same place) */}
+            <div className="flex justify-end gap-2 mt-4">
+                <ActionButton icon={FileText} label={t('button.viewDetails')} />
+                <ActionButton icon={SquarePen} label={t('button.updateScheduleMode')} />
             </div>
 
-            {/* Right Side - Details Panel */}
-            <div className="w-1/2 flex flex-col h-[calc(100vh-150px)]">
-                {/* Buttons */}
-                <div className="flex justify-end gap-2 mb-2 mt-2">
-                    <ActionButton icon={FileText} label={t('button.viewDetails')} />
-                    <ActionButton icon={SquarePen} label={t('button.updateScheduleMode')} />
-                </div>
-                {/* </div> */}
-
-                {/* Details Table */}
-                <div className="border border-gray-300 rounded-lg overflow-hidden flex-1 overflow-y-auto">
-                    <table className="w-full text-xs">
-                        <tbody>
-                            <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.storageName')} </td> {/* Remove border-r */}
-                                <td className="px-4 py-2 font-semibold text-[#353F49]">sdms-ftp</td>
-                            </tr>
-                            <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.taskStatus')}</td> {/* Remove border-r */}
-                                <td className="px-4 py-2 font-semibold text-[#353F49]">Active</td>
-                            </tr>
-                            <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.scheduleId')}</td> {/* Remove border-r */}
-                                <td className="px-4 py-2 font-semibold text-[#353F49]">TS1</td>
-                            </tr>
-                            <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.taskId')}</td> {/* Remove border-r */}
-                                <td className="px-4 py-2 font-semibold text-[#353F49]">T1</td>
-                            </tr>
-                            <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.sourcePath')}</td> {/* Remove border-r */}
-                                <td className="px-4 py-2 font-semibold text-[#353F49]">D:\SDMSFTP\Scheduler</td>
-                            </tr>
-                            <tr> {/* Remove border-b */}
-                                <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.queue')}</td> {/* Remove border-r */}
-                                <td className="px-4 py-2 font-semibold text-[#353F49]">0</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            {/* UsersPage takes full width & height */}
+            <div className="flex-1 overflow-hidden">
+                <UsersPage />
             </div>
-        </div >
-    )
+
+        </div>
+    );
+
 }
 
 export default UploadQueue
