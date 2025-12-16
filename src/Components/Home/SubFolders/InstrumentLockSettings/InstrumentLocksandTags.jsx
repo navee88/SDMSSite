@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Lock, Unlock, ChevronDown, X, Edit, CheckSquare } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // Underline Dropdown Component
 const UnderlineDropdown = ({ label, value, options, onChange, disabled, required, error, className = '' }) => {
@@ -80,7 +81,7 @@ const UnderlineTextInput = ({ label, value, onChange, disabled, required, error,
 );
 
 // Merge File Count Row Component
-const MergeFileCountRow = ({ mergeCount, currentCount, onMergeChange, disabled, showMergeFields }) => {
+const MergeFileCountRow = ({ mergeCount, currentCount, onMergeChange, disabled, showMergeFields, t }) => {
   if (!showMergeFields) return null;
   
   return (
@@ -88,7 +89,7 @@ const MergeFileCountRow = ({ mergeCount, currentCount, onMergeChange, disabled, 
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-3">
           <label className="text-sm text-[#405f7d] min-w-[140px] font-bold">
-            Merge File Count
+            {t('instrumentlocktag.mergefilecount')}
           </label>
           <input
             type="number"
@@ -103,7 +104,7 @@ const MergeFileCountRow = ({ mergeCount, currentCount, onMergeChange, disabled, 
         
         <div className="flex items-center gap-3">
           <label className="text-sm text-[#405f7d] min-w-[160px] font-bold">
-            Current Upload File Count
+            {t('instrumentlocktag.currentuploadfilecount')}
           </label>
           <input
             type="number"
@@ -135,7 +136,7 @@ const InlineCheckbox = ({ label, checked, onChange, disabled }) => (
 );
 
 // Tag Grid Component
-const TagGrid = ({ tags, onTagValueClick, isLocked }) => {
+const TagGrid = ({ tags, onTagValueClick, isLocked, t }) => {
   const [tooltipOpen, setTooltipOpen] = useState(null);
   const tooltipRef = useRef(null);
 
@@ -204,6 +205,7 @@ const TagGrid = ({ tags, onTagValueClick, isLocked }) => {
               onTagValueClick(tooltipOpen, value);
               setTooltipOpen(null);
             }}
+            t={t}
           />
         </div>
       )}
@@ -212,7 +214,7 @@ const TagGrid = ({ tags, onTagValueClick, isLocked }) => {
 };
 
 // Tag Tooltip Component
-const TagTooltip = ({ tag, onClose, onSubmit }) => {
+const TagTooltip = ({ tag, onClose, onSubmit, t }) => {
   const [selectedValue, setSelectedValue] = useState(tag.value || '');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -229,7 +231,7 @@ const TagTooltip = ({ tag, onClose, onSubmit }) => {
   return (
     <div className="p-3">
       <div className="flex justify-between items-center mb-3">
-        <h4 className="text-sm font-semibold">Select {tag.tagName}</h4>
+        <h4 className="text-sm font-semibold">{t('instrumentlocktag.pleaseselect')} {tag.tagName} {t('instrumentlocktag.value')}</h4>
         <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
           <X className="w-4 h-4" />
         </button>
@@ -269,13 +271,13 @@ const TagTooltip = ({ tag, onClose, onSubmit }) => {
           disabled={!selectedValue}
           className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600 disabled:bg-gray-300"
         >
-          Submit
+          {t('button.submit')}
         </button>
         <button
           onClick={onClose}
           className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300"
         >
-          Cancel
+          {t('button.cancel')}
         </button>
       </div>
     </div>
@@ -283,7 +285,7 @@ const TagTooltip = ({ tag, onClose, onSubmit }) => {
 };
 
 // Audit Trail Modal
-const AuditTrailModal = ({ isOpen, onClose, onSubmit }) => {
+const AuditTrailModal = ({ isOpen, onClose, onSubmit, t }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [reason, setReason] = useState('');
@@ -291,7 +293,7 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit }) => {
 
   const handleSubmit = () => {
     if (!username || !password) {
-      setError('Please enter username and password');
+      setError(t('login.enterusername') + ' and ' + t('login.password'));
       return;
     }
     onSubmit({ username, password, reason: reason || 'Instrument Lock/Unlock Operation' });
@@ -322,7 +324,7 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit }) => {
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-600 mb-1 font-bold">Username</label>
+              <label className="block text-sm text-gray-600 mb-1 font-bold">{t('login.username')}</label>
               <input
                 type="text"
                 value={username}
@@ -332,7 +334,7 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit }) => {
             </div>
             
             <div>
-              <label className="block text-sm text-gray-600 mb-1 font-bold">Password</label>
+              <label className="block text-sm text-gray-600 mb-1 font-bold">{t('login.password')}</label>
               <input
                 type="password"
                 value={password}
@@ -359,13 +361,13 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit }) => {
             className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 flex items-center gap-2"
           >
             <CheckSquare className="w-3.5 h-3.5" />
-            Submit
+            {t('button.submit')}
           </button>
           <button
             onClick={onClose}
             className="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50"
           >
-            Close
+            {t('button.close')}
           </button>
         </div>
       </div>
@@ -373,8 +375,12 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit }) => {
   );
 };
 
-// Main Component
+// Main Component - Following ServerData Structure
 const InstrumentLockTag = () => {
+  // Translation hook (similar to login page)
+  const { t } = useTranslation();
+
+  // State management (similar to ServerData)
   const [formData, setFormData] = useState({
     client: '',
     instrument: '',
@@ -393,6 +399,7 @@ const InstrumentLockTag = () => {
   const [showUnlockOption] = useState(true);
   const [auditTrailModalOpen, setAuditTrailModalOpen] = useState(false);
 
+  // Options data (similar to ServerData's configuration)
   const [clientOptions] = useState([
     { value: 'client1', label: 'Client A' },
     { value: 'client2', label: 'Client B' },
@@ -424,31 +431,31 @@ const InstrumentLockTag = () => {
   ]);
 
   const [tags, setTags] = useState([
-   
     { tagName: 'Sample', value: '', required: true, editable: true, options: [] },
     { tagName: 'Test', value: '', required: true, editable: true, options: [] }
   ]);
 
-  const handleClientChange = (value) => {
+  // Event handlers (similar to ServerData's handlers)
+  const handleClientChange = useCallback((value) => {
     setFormData(prev => ({ ...prev, client: value }));
-  };
+  }, []);
 
-  const handleInstrumentChange = (value) => {
+  const handleInstrumentChange = useCallback((value) => {
     setFormData(prev => ({ ...prev, instrument: value }));
     setErrors(prev => ({ ...prev, instrument: false }));
-  };
+  }, []);
 
-  const handlePathChange = (value) => {
+  const handlePathChange = useCallback((value) => {
     setFormData(prev => ({ ...prev, path: value }));
     setErrors(prev => ({ ...prev, path: false }));
-  };
+  }, []);
 
-  const handleTemplateChange = (value) => {
+  const handleTemplateChange = useCallback((value) => {
     setFormData(prev => ({ ...prev, template: value }));
     setErrors(prev => ({ ...prev, template: false }));
-  };
+  }, []);
 
-  const handleMergeCountChange = (value) => {
+  const handleMergeCountChange = useCallback((value) => {
     const numValue = parseInt(value);
     if (numValue > 10000) {
       alert('Merge count cannot exceed 10000');
@@ -456,15 +463,15 @@ const InstrumentLockTag = () => {
     } else {
       setFormData(prev => ({ ...prev, mergeFileCount: value }));
     }
-  };
+  }, []);
 
-  const handleTagValueClick = (index, value) => {
+  const handleTagValueClick = useCallback((index, value) => {
     setTags(prev => prev.map((t, idx) => 
       idx === index ? { ...t, value } : t
     ));
-  };
+  }, []);
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const newErrors = {};
     if (!formData.instrument) newErrors.instrument = true;
     if (!formData.path) newErrors.path = true;
@@ -473,45 +480,47 @@ const InstrumentLockTag = () => {
     
     const missingTags = tags.filter(tag => tag.required && !tag.value);
     if (missingTags.length > 0) {
-      alert(`Please select value for: ${missingTags[0].tagName}`);
+      alert(`${t('instrumentlocktag.pleaseselect')} ${missingTags[0].tagName} ${t('instrumentlocktag.value')}`);
       return false;
     }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [formData, tags, t]);
 
-  const handleLock = () => {
+  const handleLock = useCallback(() => {
     if (!validateForm()) return;
     setAuditTrailModalOpen(true);
-  };
+  }, [validateForm]);
 
-  const handleUpdate = () => {
+  const handleUpdate = useCallback(() => {
     if (!validateForm()) return;
-    alert('Instrument updated successfully!');
-  };
+    alert(t('instrumentlocktag.instrumentupdatedsuccessfully'));
+  }, [validateForm, t]);
 
-  const handleUnlock = () => {
-    if (!window.confirm('Are you sure you want to unlock this instrument?')) return;
+  const handleUnlock = useCallback(() => {
+    if (!window.confirm(`${t('instrumentlocktag.unlock')}?`)) return;
     setAuditTrailModalOpen(true);
-  };
+  }, [t]);
 
-  const handleAuditTrailSubmit = (auditValues) => {
+  const handleAuditTrailSubmit = useCallback((auditValues) => {
     console.log('Audit trail submitted:', auditValues);
     setAuditTrailModalOpen(false);
     setIsLocked(!isLocked);
-    alert(`Instrument ${isLocked ? 'unlocked' : 'locked'} successfully!`);
-  };
+    alert(t(isLocked ? 'instrumentlocktag.instrumentunlockedsuccessfully' : 'instrumentlocktag.instrumentlockedsuccessfully'));
+  }, [isLocked, t]);
 
+  // Render (following ServerData structure)
   return (
     <div className="flex flex-col w-full font-sans rounded-md">
+      {/* Main Content Area */}
       <div className="bg-white px-6 py-6">
-        <div className="max-w-[1400px] ">
+        <div className="max-w-[1400px]">
           <div className="grid grid-cols-2 gap-8">
             {/* Left Panel */}
             <div className="max-w-[400px]">
               <UnderlineDropdown
-                label="Client"
+                label={t('label.client')}
                 value={formData.client}
                 options={clientOptions}
                 onChange={handleClientChange}
@@ -519,7 +528,7 @@ const InstrumentLockTag = () => {
               />
 
               <UnderlineDropdown 
-                label="Instrument"
+                label={t('label.instrument')}
                 value={formData.instrument}
                 options={instrumentOptions}
                 onChange={handleInstrumentChange}
@@ -529,7 +538,7 @@ const InstrumentLockTag = () => {
               />
 
               <UnderlineDropdown
-                label="Path"
+                label={t('instrumentlocktag.path')}
                 value={formData.path}
                 options={pathOptions}
                 onChange={handlePathChange}
@@ -539,7 +548,7 @@ const InstrumentLockTag = () => {
               />
 
               <UnderlineDropdown
-                label="LIMS Order"
+                label={t('instrumentlocktag.limsorder')}
                 value={formData.limsOrder}
                 options={limsOrderOptions}
                 onChange={(value) => setFormData(prev => ({ ...prev, limsOrder: value }))}
@@ -547,7 +556,7 @@ const InstrumentLockTag = () => {
               />
 
               <UnderlineTextInput
-                label="Filename"
+                label={t('instrumentlocktag.filename')}
                 value={formData.fileName}
                 onChange={(value) => setFormData(prev => ({ ...prev, fileName: value }))}
                 disabled={isLocked}
@@ -561,11 +570,12 @@ const InstrumentLockTag = () => {
                 onMergeChange={handleMergeCountChange}
                 disabled={isLocked}
                 showMergeFields={showMergeFields}
+                t={t}
               />
 
               {showUnlockOption && (
                 <InlineCheckbox
-                  label="Unlock after Capture"
+                  label={t('instrumentlocktag.unlockaftercapture')}
                   checked={formData.unlockAfterCapture}
                   onChange={(value) => setFormData(prev => ({ ...prev, unlockAfterCapture: value }))}
                   disabled={isLocked}
@@ -576,7 +586,7 @@ const InstrumentLockTag = () => {
             {/* Right Panel */}
             <div>
               <UnderlineDropdown
-                label="Template"
+                label={t('instrumentlocktag.template')}
                 value={formData.template}
                 options={templateOptions}
                 onChange={handleTemplateChange}
@@ -590,6 +600,7 @@ const InstrumentLockTag = () => {
                   tags={tags}
                   onTagValueClick={handleTagValueClick}
                   isLocked={isLocked}
+                  t={t}
                 />
               </div>
             </div>
@@ -603,7 +614,7 @@ const InstrumentLockTag = () => {
                 className="flex items-center gap-2 px-4 py-2 bg-[#2883fe] text-white text-sm font-medium rounded hover:bg-blue-700"
               >
                 <Lock className="w-4 h-4" />
-                Lock
+                {t('instrumentlocktag.lock')}
               </button>
             ) : (
               <button
@@ -611,7 +622,7 @@ const InstrumentLockTag = () => {
                 className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700"
               >
                 <Edit className="w-4 h-4" />
-                Update
+                {t('button.update')}
               </button>
             )}
             
@@ -621,7 +632,7 @@ const InstrumentLockTag = () => {
               className="flex items-center gap-2 px-4 py-2 bg-blue-400 text-white text-sm font-medium rounded hover:bg-blue-500 disabled:bg-[#85bcfa9f]"
             >
               <Unlock className="w-4 h-4" />
-              Unlock
+              {t('instrumentlocktag.unlock')}
             </button>
           </div>
         </div>
@@ -632,6 +643,7 @@ const InstrumentLockTag = () => {
         isOpen={auditTrailModalOpen}
         onClose={() => setAuditTrailModalOpen(false)}
         onSubmit={handleAuditTrailSubmit}
+        t={t}
       />
     </div>
   );

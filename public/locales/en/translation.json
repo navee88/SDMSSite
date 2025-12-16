@@ -131,35 +131,11 @@
     "openArchieve":"Open Archieve",
     "print":"Print"
   },
-  "label": {
-    "email": "E-mail",
-    "verificationcode": "Verification Code",
-    "clientName":"Client Name",
-    "instrument":"Instrument",
-    "fileName":"Filename",
-    "storageName": "Storage Name",
-    "taskStatus": "Task Status",
-    "scheduleId": "Schedule ID",
-    "taskId": "Task ID",
-    "sourcePath": "Source Path",
-    "queue": "Queue",
-    "noOfUploadCount": "No of Upload Count",
-    "type": "Type",
-    "restoreLocation":"Restore Location",
-    "errorDescription":"Error Description",
-    "restoredBy":"Restored By",
-    "restoredOn":"Restored On",
-    "downloadLocation":"Download Location",
-    "downloadedBy":"Downloaded By",
-    "downloadedOn":"Downloaded On",
-    "from":"From",
-    "to":"To",
-    "userName":"Username",
-    "moduleName":"Module Name",
-    "auditType":"Audit Type",
-    "recordsDuration":"Records Duration"
-  },
-  "common": {
-    "incorrectusernameorpassword": "Incorrect Username or Password"
-  }
+ "label": {
+  "email": "E-mail",
+  "verificationcode":"Verification Code"
+},
+"common":{
+  "incorrectusernameorpassword":"Incorrect Username or Password"
+}
 }
