@@ -580,19 +580,22 @@ const UsersPage = () => {
     {
       key: 'clientName',
       label: 'Client Name',
-      width: 180, // Adjust
+      width: 180,
+      enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.clientName}</span>
     },
     {
       key: 'instrument',
       label: 'Instrument',
       width: 250,
+      enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.instrument}</span>
     },
     {
       key: 'storageName',
       label: 'Storage Name',
       width: 120,
+      enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.storageName}</span>
     }
   ], []);
@@ -814,7 +817,8 @@ const UploadMonitor = () => {
                 value={recordsDuration}
                 options={["Current Date", "Last 7 Days", "Last 30 Days", "Last 1 Year", "Custom Date"]}
                 onChange={handleDurationChange}
-                isSearchable={true}
+                // isSearchable={true}
+                allowFreeInput={true}
               />
             </div>
 

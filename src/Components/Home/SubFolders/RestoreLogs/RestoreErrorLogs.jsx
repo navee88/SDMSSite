@@ -585,18 +585,21 @@ const UsersPage = () => {
             key: 'clientName',
             label: 'Client Name',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.clientName}</span>
         },
         {
             key: 'taskStatus',
             label: 'Task Status',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.taskStatus}</span>
         },
         {
             key: 'fileName',
             label: 'File Name',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.fileName}</span>
         }
     ], []);
@@ -821,7 +824,8 @@ const RestoreErrorLogs = () => {
                                 value={selectedClient}
                                 options={options}
                                 onChange={(e) => setSelectedClient(e.target.value)}
-                                isSearchable
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
                         </div>
 
@@ -832,7 +836,8 @@ const RestoreErrorLogs = () => {
                                 value={task}
                                 options={["TS1_D:\SDMSFTP-001", "TS2_D:\SDMSFTP-002", "TS3_D:\SDMSFTP-003"]}
                                 onChange={(e) => setTask(e.target.value)}
-                                isSearchable
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
 
                         </div>
@@ -854,7 +859,8 @@ const RestoreErrorLogs = () => {
                                 value={recordsDuration}
                                 options={["Current Date", "Last 7 Days", "Last 30 Days", "Last 1 Year", "Custom Date"]}
                                 onChange={handleDurationChange}
-                                isSearchable={true}
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
                         </div>
 

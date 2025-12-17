@@ -196,7 +196,8 @@
     "loginUsername":"Login Username",
     "domain":"Domain",
     "fileSource":"File source",
-    "fileStatus":"File status"
+    "fileStatus":"File status",
+    "modifiedData":"Modified Data"
   },
   "statuses": {
     "activated": "Activated",
