@@ -138,6 +138,7 @@
   },
   "label": {
     "email": "E-mail",
+    "client":"Client",
     "verificationcode": "Verification Code",
     "clientName":"Client Name",
     "instrument":"Instrument",
