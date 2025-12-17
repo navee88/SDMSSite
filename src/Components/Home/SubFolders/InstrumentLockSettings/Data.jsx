@@ -537,7 +537,6 @@ export default function InstrumentDataPage() {
               displayKey="sInstrumentAliasName"
               valueKey="nInterInstrumentID"
               onChange={handleInstrumentDropdownChange}
-              isSearchable={true}
             />
           </div>
         </div>
