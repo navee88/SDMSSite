@@ -379,10 +379,11 @@ const ServerData = () => {
               <div className="w-60">
                 <AnimatedDropdown
                   label="Instrument"
-                  value="Inst1"
-                  options={["Inst 1", "Inst 2"]}
+                  value=""
+                  options={["Inst 1", "Inst 2","Apple","Samsung"]}
                   onChange={(value) => console.log(value)}
-                  isSearchable={true}
+                  // isSearchable={true}
+                   allowFreeInput={true}  
                 />
               </div>
             )}
@@ -566,7 +567,9 @@ const ServerData = () => {
 
       </div>
         
-        <div><FtpLayout /> </div>
+        {/* <div><FtpLayout /> </div> */}
+
+        <UsersPage />
        
 
       {showConfig && (

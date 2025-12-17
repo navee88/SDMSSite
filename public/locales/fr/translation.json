@@ -112,7 +112,7 @@
 "verificationcodesentsuccefully": "Code de vérification envoyé avec succès"
 
   },
-  "errormsg":{"somethingwentwrong":"Quelque chose a mal tourné"},
+  "errormsg":{"somethingwentwrong":"Quelque chose a mal tourné","noresultsfound": "Aucun résultat trouvé"},
 
   "button": {
   "login": "Connexion",

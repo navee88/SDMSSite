@@ -98,8 +98,10 @@
     "passwordresetsuccessfully": "Password Reset Successfully",
     "verificationcodesentsuccefully": "Verification Code Sent Successfully"
   },
-  "errormsg": {
-    "somethingwentwrong": "Something went wrong"
+
+  "errormsg":{
+    "somethingwentwrong":"Something went wrong",
+    "noresultsfound":"No Results Found"
   },
   "button": {
     "login": "Login",

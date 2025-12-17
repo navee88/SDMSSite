@@ -3,6 +3,8 @@ import { useOnClickOutside, useDebounceValue, useLocalStorage } from 'usehooks-t
 import { AiOutlineSortAscending } from "react-icons/ai";
 import { TbSortDescendingLetters } from "react-icons/tb";
 import { CgPlayListRemove } from "react-icons/cg";
+import { useTranslation } from "react-i18next";
+
 
 const SearchIcon = () => (
   <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,99 +26,127 @@ const ChevronRightIcon = () => (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
   </svg>
 );
+const CalendarIcon = () => (
+  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+  </svg>
+);
 
 const TableHeaderCell = ({
-  colKey,
-  label,
-  width,
-  isActive,
-  onToggle,
-  onSort,
-  sortConfig,
-  isLast,
-  onResizeStart
+  colKey, label, width, isActive, onToggle, onSort, sortConfig, isLast, onResizeStart, 
+  isSelectionColumn, hideHeaderSelection, enableSort, isAllSelected, onToggleAll
 }) => {
   const containerRef = useRef();
-
-  useOnClickOutside(containerRef, () => {
-    if (isActive) onToggle(null);
-  });
+  useOnClickOutside(containerRef, () => { if (isActive) onToggle(null); });
+  const isSortable = !isSelectionColumn || enableSort;
 
   return (
     <th
-      className="sticky top-0 z-50 px-4 py-3 text-[14px] font-bold text-gray-600 capitalize tracking-wider bg-white border-b border-gray-200 group hover:bg-gray-50 cursor-pointer select-none"
-      style={{
-        width: width,
-        minWidth: width,
-        transform: 'translateZ(0)',
-        willChange: 'transform'
-      }}
+      className={`sticky top-0 z-50 px-4 py-3 text-[14px] font-bold text-gray-600 capitalize tracking-wider bg-white border-b border-gray-200 group hover:bg-gray-50 select-none ${isSortable ? 'cursor-pointer' : 'cursor-default'}`}
+      style={{ width: width || 160, minWidth: width }}
     >
       <div
         ref={containerRef}
-        className="flex items-center justify-between h-full"
-        onClick={() => onToggle(isActive ? null : colKey)}
+        className="flex items-center justify-between h-full gap-2"
+        onClick={() => isSortable && onToggle(isActive ? null : colKey)}
       >
-        <span className="truncate">{label}</span>
-        <div className={`opacity-0 group-hover:opacity-100 transition-opacity ${sortConfig.key === colKey ? 'opacity-100' : ''}`}>
-          <ArrowDownIcon />
+        <div className="flex items-center gap-2 truncate">
+          <span className="truncate text-gray-500">{label}</span>
+          {isSelectionColumn && !hideHeaderSelection && (
+            <div className="flex items-center justify-center h-full">
+              <input type="checkbox" className="cursor-pointer w-[14px] h-[14px] accent-blue-600 rounded border-gray-300 focus:ring-blue-500" checked={isAllSelected} onChange={(e) => { e.stopPropagation(); onToggleAll(); }} onClick={(e) => e.stopPropagation()} />
+            </div>
+          )}
         </div>
-
-        {isActive && (
-          <div
-            className={`absolute top-full z-50 mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg py-1 text-left font-normal normal-case ${
-              isLast ? 'right-0 origin-top-right' : 'left-0 origin-top-left'
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button onClick={() => onSort(colKey, 'asc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sort Ascending <span className='text-[20px] text-green-900'><AiOutlineSortAscending /></span></button>
-            <button onClick={() => onSort(colKey, 'desc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sort Descending <span className='text-[18px] text-green-900'><TbSortDescendingLetters /></span></button>
-            <div className="border-t border-gray-500 my-1 border-1"></div>
-            <button onClick={() => onSort(null, 'asc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Remove Sort <span className='text-[20px] text-red-500'><CgPlayListRemove /></span></button>
-          </div>
+        {isSortable && (
+          <>
+            <div className={`opacity-0 group-hover:opacity-100 transition-opacity ${sortConfig.key === colKey ? 'opacity-100' : ''}`}>
+              <ArrowDownIcon />
+            </div>
+            {isActive && (
+              <div
+                className={`absolute top-full z-50 mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg py-1 text-left font-normal normal-case ${isLast ? 'right-0 origin-top-right' : 'left-0 origin-top-left'}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button onClick={() => onSort(colKey, 'asc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Sort Ascending <span className='text-[20px] text-green-900'><AiOutlineSortAscending /></span>
+                </button>
+                <button onClick={() => onSort(colKey, 'desc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Sort Descending <span className='text-[18px] text-green-900'><TbSortDescendingLetters /></span>
+                </button>
+                <div className="border-t border-gray-500 my-1 border-1"></div>
+                <button onClick={() => onSort(null, 'asc')} className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Remove Sort <span className='text-[20px] text-red-500'><CgPlayListRemove /></span>
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
-
-      <div
-        onMouseDown={(e) => onResizeStart(e, colKey)}
-        onClick={(e) => e.stopPropagation()}
-        className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-blue-400 z-30"
-      />
+      <div onMouseDown={(e) => onResizeStart(e, colKey)} onClick={(e) => e.stopPropagation()} className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-blue-400 z-30" />
     </th>
   );
 };
 
-const GridLayout = ({ columns, data, renderDetailPanel }) => {
-  const [selectedItem, setSelectedItem] = useState(data[0]);
+const GridLayout = ({ 
+  columns, 
+  data, 
+  getRowId, 
+  renderDetailPanel, 
+  enableSelection, 
+  onSelectionChange, 
+  initialSelectedIds = [],
+  hidePagination = false, 
+  manualPagination = false, 
+  totalRows = 0,            
+  page = 1,                 
+  pageSize = 10,            
+  onPageChange,             
+  onPageSizeChange          
+}) => {
+  const { t } = useTranslation();
+  const [selectedItem, setSelectedItem] = useState(null);
   const [filters, setFilters] = useState({});
   const [debouncedFilters] = useDebounceValue(filters, 300);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [activeMenuColumn, setActiveMenuColumn] = useState(null);
-
+  const [selectedIds, setSelectedIds] = useState(new Set());
   const [colWidths, setColWidths] = useState(() =>
-    columns.reduce((acc, col) => ({ ...acc, [col.key]: col.width || 150 }), {})
+    columns.reduce((acc, col) => ({ ...acc, [col.key]: col.width}), {})
   );
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useLocalStorage('commonTableRows', 10);
+  const [localPage, setLocalPage] = useState(1);
+  const [localRowsPerPage, setLocalRowsPerPage] = useLocalStorage('commonTableRows', 10);
 
-  useEffect(() => {
-    if (data.length > 0 && !selectedItem) setSelectedItem(data[0]);
-  }, [data]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [debouncedFilters, sortConfig]);
+  const activePage = manualPagination ? page : localPage;
+  const activeRowsPerPage = manualPagination ? pageSize : localRowsPerPage;
+  
+  const safeData = useMemo(() => {
+    return data.map((row, index) => {
+      const uniqueKey = getRowId ? getRowId(row) : (row.id ? `${row.id}-${index}` : `row-${index}`);
+      return {
+        ...row,
+        _gridId: uniqueKey 
+      };
+    });
+  }, [data, getRowId]);
 
   const processedData = useMemo(() => {
-    let result = [...data];
+    let result = [...safeData];
+
     result = result.filter(row =>
       Object.keys(debouncedFilters).every(key => {
         if (!debouncedFilters[key]) return true;
-        const cellValue = row[key] ? String(row[key]).toLowerCase() : '';
-        return cellValue.includes(debouncedFilters[key].toLowerCase());
+        const cellValue = row[key];
+        const filterValue = debouncedFilters[key];
+        if (/^\d{4}-\d{2}-\d{2}$/.test(filterValue) && typeof cellValue === 'string') {
+          return cellValue.startsWith(filterValue);
+        }
+        const strValue = cellValue ? String(cellValue).toLowerCase() : '';
+        return strValue.includes(filterValue.toLowerCase());
       })
     );
+   
     if (sortConfig.key) {
       result.sort((a, b) => {
         const valA = a[sortConfig.key];
@@ -127,12 +157,82 @@ const GridLayout = ({ columns, data, renderDetailPanel }) => {
       });
     }
     return result;
-  }, [data, debouncedFilters, sortConfig]);
+  }, [safeData, debouncedFilters, sortConfig]);
 
-  const totalPages = Math.ceil(processedData.length / rowsPerPage);
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = processedData.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = useMemo(() => {
+    if (hidePagination) return processedData; 
+    if (manualPagination) return processedData; 
+
+    const indexOfLastRow = activePage * activeRowsPerPage;
+    const indexOfFirstRow = indexOfLastRow - activeRowsPerPage;
+    return processedData.slice(indexOfFirstRow, indexOfLastRow);
+  }, [processedData, activePage, activeRowsPerPage, manualPagination, hidePagination]);
+
+  const totalCount = manualPagination ? (totalRows || 0) : processedData.length;
+  const totalPages = Math.ceil(totalCount / activeRowsPerPage);
+  
+  const indexOfFirstRowCalc = (activePage - 1) * activeRowsPerPage;
+  const displayStart = totalCount === 0 ? 0 : indexOfFirstRowCalc + 1;
+  const displayEnd = Math.min(indexOfFirstRowCalc + currentRows.length, totalCount);
+
+  const handlePageChange = (newPage) => {
+    if (manualPagination) { if (onPageChange) onPageChange(newPage); } 
+    else { setLocalPage(newPage); }
+  };
+
+  const handlePageSizeChange = (newSize) => {
+    if (manualPagination) { if (onPageSizeChange) onPageSizeChange(newSize); } 
+    else { setLocalRowsPerPage(newSize); setLocalPage(1); }
+  };
+
+  useEffect(() => {
+    const newSet = new Set();
+    safeData.forEach(row => {
+
+      if (row.checkStatus === 1 || row.checkStatus === true) {
+        newSet.add(row._gridId);
+      }
+      else if (initialSelectedIds.length > 0 && initialSelectedIds.includes(row._gridId)) {
+        newSet.add(row._gridId);
+      }
+    });
+    setSelectedIds(newSet);
+  }, [initialSelectedIds, safeData]); 
+  const customSelectionColumnKey = useMemo(() => {
+    const col = columns.find(c => c.isSelectionColumn);
+    return col ? col.key : null;
+  }, [columns]);
+  const showDefaultSelectionColumn = enableSelection && !customSelectionColumnKey;
+
+  const selectableRows = currentRows.filter(row => {
+    if (!customSelectionColumnKey) return true;
+    const col = columns.find(c => c.key === customSelectionColumnKey);
+    return col && col.getCheckValue ? col.getCheckValue(row) !== 'NA' : true;
+  });
+
+  const isAllSelected = selectableRows.length > 0 && selectableRows.every(row => selectedIds.has(row._gridId));
+
+  const handleSelectionUpdate = (newSet) => {
+    setSelectedIds(newSet);
+    if (onSelectionChange) {
+      const selectedRows = safeData.filter(row => newSet.has(row._gridId));
+      onSelectionChange(selectedRows);
+    }
+  };
+
+  const toggleAll = () => {
+    const newSet = new Set(selectedIds);
+    if (isAllSelected) selectableRows.forEach(row => newSet.delete(row._gridId));
+    else selectableRows.forEach(row => newSet.add(row._gridId));
+    handleSelectionUpdate(newSet);
+  };
+
+  const toggleRow = (uniqueKey) => {
+    const newSet = new Set(selectedIds);
+    if (newSet.has(uniqueKey)) newSet.delete(uniqueKey);
+    else newSet.add(uniqueKey);
+    handleSelectionUpdate(newSet);
+  };
 
   const handleSort = (key, direction) => {
     setSortConfig({ key, direction });
@@ -140,192 +240,175 @@ const GridLayout = ({ columns, data, renderDetailPanel }) => {
   };
 
   const startResize = (e, colKey) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault(); e.stopPropagation();
     const startX = e.clientX;
     const startWidth = colWidths[colKey];
-
-    const onMouseMove = (moveEvent) => {
-      setColWidths(prev => ({
-        ...prev,
-        [colKey]: Math.max(50, startWidth + (moveEvent.clientX - startX))
-      }));
-    };
-
+    const onMouseMove = (moveEvent) => setColWidths(prev => ({ ...prev, [colKey]: Math.max(50, startWidth + (moveEvent.clientX - startX)) }));
     const onMouseUp = () => {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
       document.body.style.cursor = 'default';
     };
-
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
     document.body.style.cursor = 'col-resize';
   };
 
+  const getCellContent = (row, col, isSelected, index, currentRows) => {
+    if (col.render) return col.render(row, isSelected, index, currentRows);
+    if (col.isDate) {
+      const d = new Date(row[col.key]);
+      const formatted = !isNaN(d) ? d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' }) : '-';
+      return <span className={isSelected ? 'text-gray-900' : 'text-gray-600'}>{formatted}</span>;
+    }
+    return row[col.key];
+  };
+
+  useEffect(() => {
+    if (safeData.length > 0 && !selectedItem) setSelectedItem(safeData[0]);
+  }, [safeData]);
+
+  useEffect(() => {
+    if (!manualPagination) setLocalPage(1);
+  }, [debouncedFilters, sortConfig, manualPagination]);
+
   return (
     <>
       <style>
         {`
-          .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-          }
+          .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+          .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+          .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+          .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         `}
       </style>
 
-      <div className="flex w-full p-4 gap-4 overflow-hidden">
-       <div
-          className={`flex flex-col bg-white rounded-lg shadow-sm border  max-h-[600px] border-gray-200 overflow-hidden min-w-0 ${
-            !renderDetailPanel || processedData.length === 0 ? 'w-full' : 'w-4/5'
-          }`}
-        >
-          <div
-            className="custom-scrollbar"
-            style={{
-              maxHeight: '600px',
-              overflowY: 'auto',
-              scrollbarWidth: 'thin',
-              scrollbarColor: '#cbd5e1 #f1f5f9',
-            }}
-          >
+      <div className="flex w-full p-4 gap-4 overflow-hidden h-full">
+        <div className={`flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden min-w-0 h-[610px] ${!renderDetailPanel ? 'w-full' : 'w-4/5'}`}>
+          <div className="custom-scrollbar flex-grow" style={{ overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
             <table className="table-fixed border-separate border-spacing-0 w-full">
               <thead className="bg-white sticky top-0 z-10">
                 <tr>
+                  {showDefaultSelectionColumn && (
+                    <th className="sticky top-0 z-50 px-4 py-3 w-[50px] bg-white border-b border-gray-200 text-center">
+                      <div className="flex items-center justify-center">
+                        <input type="checkbox" className="cursor-pointer w-5 h-5 accent-blue-600 rounded border-gray-300 focus:ring-blue-500" checked={isAllSelected} onChange={toggleAll} />
+                      </div>
+                    </th>
+                  )}
                   {columns.map((col, index) => (
                     <TableHeaderCell
-                      key={col.key}
-                      colKey={col.key}
-                      label={col.label}
-                      width={colWidths[col.key]}
-                      isActive={activeMenuColumn === col.key}
-                      onToggle={setActiveMenuColumn}
-                      onSort={handleSort}
-                      sortConfig={sortConfig}
-                      isLast={index === columns.length - 1}
-                      onResizeStart={startResize}
+                      key={col.key} colKey={col.key} label={col.label} width={colWidths[col.key]} isActive={activeMenuColumn === col.key} onToggle={setActiveMenuColumn} onSort={handleSort} sortConfig={sortConfig} isLast={index === columns.length - 1} onResizeStart={startResize} isSelectionColumn={col.isSelectionColumn} hideHeaderSelection={col.hideHeaderSelection} enableSort={col.enableSort} isAllSelected={isAllSelected} onToggleAll={toggleAll}
                     />
                   ))}
                 </tr>
+                
                 <tr>
+                  {showDefaultSelectionColumn && <th className="sticky top-[41px] z-20 px-2 py-2 bg-gray-50 border-b border-gray-200"></th>}
                   {columns.map((col) => (
-                    <th
-                      key={col.key}
-                      className="sticky top-[41px] z-20 px-2 py-2 bg-gray-50 border-b border-gray-200"
-                      style={{
-                        transform: 'translateZ(0)',
-                        willChange: 'transform',
-                      }}
-                    >
-                      <div className="relative">
-                        <input
-                          type="text"
-                          className="w-full pl-2 z-10 pr-7 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                          value={filters[col.key] || ''}
-                          onChange={(e) => setFilters({ ...filters, [col.key]: e.target.value })}
-                        />
-                        <div className="absolute right-2 top-1.5"><SearchIcon /></div>
-                      </div>
+                    <th key={col.key} className="sticky top-[41px] z-20 px-2 py-2 bg-gray-50 border-b border-gray-200">
+                      {col.enableSearch ? (
+                        col.inputType === 'date' ? (
+                          <div className="relative flex items-center w-full">
+                            <input 
+                              type="text" 
+                              className="w-full pl-2 pr-8 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-gray-600"
+                              placeholder="YYYY-MM-DD"
+                              value={filters[col.key] || ''} 
+                              onChange={(e) => setFilters({ ...filters, [col.key]: e.target.value })} 
+                            />
+                            <div className="absolute right-2 top-1.5 pointer-events-none"><CalendarIcon /></div>
+                            <input 
+                              type="date"
+                              className="absolute right-0 top-0 bottom-0 w-8 opacity-0 cursor-pointer"
+                              value={filters[col.key] || ''}
+                              onChange={(e) => { if (e.target.value) setFilters({ ...filters, [col.key]: e.target.value }); }}
+                            />
+                          </div>
+                        ) : (
+                          <div className="relative">
+                            <input type="text" className="w-full pl-2 z-10 pr-7 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-blue-500" value={filters[col.key] || ''} onChange={(e) => setFilters({ ...filters, [col.key]: e.target.value })} placeholder="Search..." />
+                            <div className="absolute right-2 top-1.5"><SearchIcon /></div>
+                          </div>
+                        )
+                      ) : <div className="h-[26px]"></div>}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {currentRows.map((row, rowIndex) => {
-                  const isSelected = selectedItem && row.id === selectedItem.id;
+                  const isSelected = selectedItem && row._gridId === selectedItem._gridId;
+                  const isChecked = selectedIds.has(row._gridId);
+                  const rowKey = row._gridId; 
+
                   return (
-                    <tr
-                      key={row.id || rowIndex}
-                      onClick={() => setSelectedItem(row)}
-                      className={`cursor-pointer transition-colors text-sm hover:bg-gray-50 ${
-                        isSelected ? 'bg-blue-50' : 'bg-white'
-                      }`}
-                    >
-                      {columns.map((col) => (
-                        <td
-                          key={`${row.id}-${col.key}`}
-                          className={`px-4 py-3 truncate border-b border-gray-100 border-l-4 ${
-                            isSelected && col.key === columns[0].key
-                              ? 'border-l-blue-600'
-                              : 'border-l-transparent'
-                          }`}
-                        >
-                          {col.render ? col.render(row, isSelected) : row[col.key]}
+                    <tr key={rowKey} onClick={() => setSelectedItem(row)} className={`cursor-pointer transition-colors text-sm hover:bg-gray-50 ${isSelected ? 'bg-blue-50' : 'bg-white'}`}>
+                      {showDefaultSelectionColumn && (
+                        <td className={`px-4 py-3 border-b border-gray-100 text-center align-middle ${isSelected ? 'border-l-4 border-l-blue-600' : 'border-l-4 border-l-transparent'}`}>
+                          <div className="flex items-center justify-center h-full">
+                            <input type="checkbox" checked={isChecked} onChange={() => toggleRow(row._gridId)} onClick={(e) => e.stopPropagation()} className="cursor-pointer w-4 h-4 accent-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+                          </div>
                         </td>
-                      ))}
+                      )}
+                      {columns.map((col, colIndex) => {
+                        let showCheckbox = false;
+                        let isNA = false;
+                        if (col.isSelectionColumn) {
+                          const checkVal = col.getCheckValue ? col.getCheckValue(row) : null;
+                          if (checkVal === 'NA') isNA = true; else showCheckbox = true;
+                        }
+                        const content = getCellContent(row, col, isSelected, rowIndex, currentRows);
+                        return (
+                          <td key={`${rowKey}-${col.key}`} className={`px-4 py-3 truncate border-b border-gray-100 ${!showDefaultSelectionColumn && isSelected && colIndex === 0 ? 'border-l-4 border-l-blue-600' : 'border-l-transparent'} ${!showDefaultSelectionColumn && colIndex === 0 ? 'border-l-4' : ''}`}>
+                            {col.isSelectionColumn ? (
+                              <div className="flex items-center justify-center gap-3">
+                                {isNA && <div className="w-5 h-5 flex items-center justify-center"><span className="text-gray-600 font-semibold select-none text-[13px]">NA</span></div>}
+                                {showCheckbox && <input type="checkbox" checked={isChecked} onChange={() => toggleRow(row._gridId)} onClick={(e) => e.stopPropagation()} className="cursor-pointer w-[15px] h-[15px] accent-blue-600 rounded border-gray-300 focus:ring-blue-500" />}
+                                {content}
+                              </div>
+                            ) : content}
+                          </td>
+                        );
+                      })}
                     </tr>
                   );
                 })}
               </tbody>
             </table>
+            {processedData.length === 0 && <div className="flex w-full items-center justify-center p-8 text-gray-400">{t('errormsg.noresultsfound')}</div>}
           </div>
-          
-          
-          {processedData.length > rowsPerPage && (
-  <div className="px-4 py-3 z-10 border-t border-gray-200 bg-gray-50 flex items-center justify-between text-xs sm:text-sm shrink-0">
-            <div className="flex items-center gap-2 text-gray-600">
-              <span>Rows per page:</span>
-              <select
-                value={rowsPerPage}
-                onChange={(e) => { setRowsPerPage(Number(e.target.value)); setCurrentPage(1); }}
-                className="border border-gray-300 rounded px-1 py-0.5 bg-white focus:outline-none focus:border-blue-500"
-              >
-                {[10, 20, 30, 40, 50].map(n => <option key={n} value={n}>{n}</option>)}
-              </select>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-gray-600">
-                {processedData.length > 0 ? indexOfFirstRow + 1 : 0}-{Math.min(indexOfLastRow, processedData.length)} of {processedData.length}
-              </span>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => setCurrentPage(p => p - 1)}
-                  disabled={currentPage === 1}
-                  className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+
+          {!hidePagination && (
+            <div className="px-4 py-3 z-10 border-t border-gray-200 bg-gray-50 flex items-center justify-between text-xs sm:text-sm shrink-0">
+              <div className="flex items-center gap-2 text-gray-600">
+                <span>Rows per page:</span>
+                <select 
+                  value={activeRowsPerPage} 
+                  onChange={(e) => handlePageSizeChange(Number(e.target.value))} 
+                  className="border border-gray-300 rounded px-1 py-0.5 bg-white focus:outline-none focus:border-blue-500"
                 >
-                  <ChevronLeftIcon />
-                </button>
-                <button
-                  onClick={() => setCurrentPage(p => p + 1)}
-                  disabled={currentPage === totalPages || totalPages === 0}
-                  className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <ChevronRightIcon />
-                </button>
+                  {[10, 20, 30, 40, 50].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-gray-600 font-medium">
+                   {totalCount > 0 ? `${displayStart}-${displayEnd} of ${totalCount}` : '0-0 of 0'}
+                </span> 
+                <div className="flex items-center gap-1">
+                  <button onClick={() => handlePageChange(activePage - 1)} disabled={activePage === 1} className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"><ChevronLeftIcon /></button>
+                  <button onClick={() => handlePageChange(activePage + 1)} disabled={activePage >= totalPages || totalPages === 0} className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"><ChevronRightIcon /></button>
+                </div>
               </div>
             </div>
-          </div>
-            )}
+          )}
         </div>
-      
-
-    {renderDetailPanel && processedData.length > 0 && (
-  <div
-    className="w-3/6 bg-white rounded-md shadow-sm border border-gray-200 p-3 overflow-y-scroll custom-scrollbar"
-    style={{
-              maxHeight: '600px',
-              overflowY: 'auto',
-              scrollbarWidth: 'thin',
-              scrollbarColor: '#cbd5e1 #f1f5f9',
-            }}
-  >
-    {selectedItem
-      ? renderDetailPanel(selectedItem)
-      : <div className="text-gray-400 text-center mt-10">Select an item to view details</div>
-    }
-  </div>
-)}
-
+        
+        {renderDetailPanel && (
+          <div className="w-3/6 bg-white rounded-md shadow-sm border border-gray-200 p-3 overflow-y-scroll custom-scrollbar h-[610px]" style={{ overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
+            {selectedItem && processedData.length > 0 ? renderDetailPanel(selectedItem) : <div className="text-gray-400 text-center mt-10">{t('errormsg.noresultsfound')}</div>}
+          </div>
+        )}
       </div>
     </>
   );

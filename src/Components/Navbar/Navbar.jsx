@@ -72,7 +72,7 @@ function Navbar() {
         <img
           src={SDMS_Logo}
          alt="SDMS_Logo"
-      className="w-20 h-auto text-sm inline-block"
+      className="w-[100px] h-auto text-sm inline-block"
         />
         <p className="text-[10px] mt-[-10px] text-gray-500 ms-[5px] font-bold">
           v7.2_20250520_01

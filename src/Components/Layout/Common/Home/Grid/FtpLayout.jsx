@@ -1,5 +1,5 @@
 import { Grid } from 'lucide-react';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import GridLayout from './GridLayout';
 import axios from 'axios';
 
@@ -12,70 +12,96 @@ function FtpLayout() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [dragging, setDragging] = useState(null); 
+  const [dragging, setDragging] = useState(null);
 
+  const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
+  const [isMiddleCollapsed, setIsMiddleCollapsed] = useState(false);
 
+  // REF: To measure the container's position on the screen
+  const containerRef = useRef(null);
 
-const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
-const [isMiddleCollapsed, setIsMiddleCollapsed] = useState(false);
-
-const toggleLeft = () => {
-  if (isLeftCollapsed) setLeftWidth(300);
-  else setLeftWidth(0);
-  setIsLeftCollapsed(!isLeftCollapsed);
-};
-
-const toggleMiddle = () => {
-  if (isMiddleCollapsed) setMiddleWidth(600);
-  else setMiddleWidth(0);
-  setIsMiddleCollapsed(!isMiddleCollapsed);
-};
-
-
+  // REFS: Keep track of widths without triggering re-renders in the event listener
+  const widthsRef = useRef({ left: leftWidth, right: rightWidth });
 
   useEffect(() => {
-  const handleMouseMove = (e) => {
+    widthsRef.current = { left: leftWidth, right: rightWidth };
+  }, [leftWidth, rightWidth]);
+
+  const toggleLeft = () => {
+    if (isLeftCollapsed) setLeftWidth(300);
+    else setLeftWidth(0);
+    setIsLeftCollapsed(!isLeftCollapsed);
+  };
+
+  const toggleMiddle = () => {
+    if (isMiddleCollapsed) setMiddleWidth(600);
+    else setMiddleWidth(0);
+    setIsMiddleCollapsed(!isMiddleCollapsed);
+  };
+
+  useEffect(() => {
     if (!dragging) return;
 
-    const containerWidth = window.innerWidth; 
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
 
-    if (dragging === 'left') {
-      const newLeft = Math.min(Math.max(e.clientX, 150), containerWidth - rightWidth - 150);
-      setLeftWidth(newLeft);
-    }
+    const handleMouseMove = (e) => {
+      if (!containerRef.current) return;
 
-    if (dragging === 'right') {
-      const newRight = Math.min(
-        Math.max(containerWidth - e.clientX, 150),
-        containerWidth - leftWidth - 150
-      );
-      setRightWidth(newRight);
-    }
-  };
+      // FIX: Calculate positions relative to the container, not the window
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const containerLeft = containerRect.left;
+      const containerWidth = containerRect.width;
+      
+      // Mouse X position relative to the start of the container
+      const mouseRelativeX = e.clientX - containerLeft;
 
-  const handleMouseUp = () => setDragging(null);
+      const currentLeft = widthsRef.current.left;
+      const currentRight = widthsRef.current.right;
 
-  window.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('mouseup', handleMouseUp);
-  return () => {
-    window.removeEventListener('mousemove', handleMouseMove);
-    window.removeEventListener('mouseup', handleMouseUp);
-  };
-}, [dragging, leftWidth, rightWidth]);
+      if (dragging === 'left') {
+        const newLeft = Math.min(
+          Math.max(mouseRelativeX, 150), // Min width 150px
+          containerWidth - currentRight - 150 // Max width (constrained by right panel)
+        );
+        setLeftWidth(newLeft);
+      }
 
+      if (dragging === 'right') {
+        // Calculate distance from the right edge of the container
+        const newRight = Math.min(
+          Math.max(containerWidth - mouseRelativeX, 150),
+          containerWidth - currentLeft - 150
+        );
+        setRightWidth(newRight);
+      }
+    };
+
+    const handleMouseUp = () => {
+      setDragging(null);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [dragging]);
 
   const startDragLeft = () => setDragging('left');
   const startDragRight = () => setDragging('right');
-
-
-  
-
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5173/users');
+        const response = await axios.get('http://localhost:3100/users');
         setUserData(response.data);
         setLoading(false);
       } catch (err) {
@@ -129,66 +155,78 @@ const toggleMiddle = () => {
   }
 
   if (error) {
-    return <div className="p-8 text-center text-red-500"></div>;
+    return <div className="p-8 text-center text-red-500">{error}</div>;
   }
 
- return (
-  <div className="flex h-[600px] w-full ms-1">
+  return (
+    // FIX: Add ref here to measure the container
+    <div ref={containerRef} className="flex h-[600px] w-full ms-1">
+      
+      {/* Left Panel */}
+      <div
+        style={{ width: leftWidth }}
+        className={leftWidth === 0 ? 'hidden' : 'border-2 border-gray-900 p-4 shrink-0 me-1'}
+      >
+        File Layout
+      </div>
 
-    <div
-      style={{ width: leftWidth }}
-      className={leftWidth === 0 ? 'hidden' : 'border-2 border-gray-900 p-4 shrink-0 me-1'}
-    >
-      File Layout
-    </div>
+      {/* Left Resize Handle */}
+      <div
+        className="w-[6px] bg-gray-300 cursor-col-resize flex items-center justify-center shrink-0 hover:bg-gray-400 transition-colors"
+        onMouseDown={startDragLeft}
+      >
+        <button
+          type="button"
+          draggable="false" // FIX: Prevent ghost image
+          onDragStart={(e) => e.preventDefault()}
+          onMouseDown={(e) => e.stopPropagation()} 
+          onClick={(e) => {
+            e.stopPropagation(); 
+            toggleLeft(); 
+          }}
+          className="w-12 h-12 cursor-pointer rounded-sm bg-blue-500 hover:bg-blue-600 flex items-center justify-center text-white shadow-md z-10 select-none"
+        >
+          {isLeftCollapsed ? '>' : '<'}
+        </button>
+      </div>
 
-  
-    <div
-  className="w-[6px] bg-gray-300 cursor-col-resize flex items-center justify-center shrink-0"
-  onMouseDown={startDragLeft}
->
-  <button
-    type="button"
-    onClick={(e) => {
-      e.stopPropagation();       
-      toggleLeft();
-    }}
-    className="w-12 h-12 rounded-sm bg-blue-500 hover:bg-blue-600 flex items-center justify-center text-white"
-  >
-  </button>
-</div>
+      {/* Middle Panel */}
+      <div
+        style={{ width: middleWidth }}
+        className={middleWidth === 0 ? 'hidden' : 'flex-1 min-w-0'}
+      >
+        <GridLayout columns={userColumns} data={userData} />
+      </div>
 
-    <div
-      style={{ width: middleWidth }}
-      className={middleWidth === 0 ? 'hidden' : 'flex-1 min-w-0'}
-    >
-      <GridLayout columns={userColumns} data={userData} />
-    </div>
+     
+      <div
+        className="w-[6px] bg-gray-300 cursor-col-resize flex items-center justify-center shrink-0 hover:bg-gray-400 transition-colors"
+        onMouseDown={startDragRight}
+      >
+        <button
+          type="button"
+          draggable="false" 
+          onDragStart={(e) => e.preventDefault()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleMiddle();
+          }}
+          className="w-12 h-8 cursor-pointer rounded-sm bg-blue-500 hover:bg-blue-600 flex items-center justify-center text-white shadow-md z-10 select-none"
+        >
+           {isMiddleCollapsed ? '<' : '>'}
+        </button>
+      </div>
 
    
-    <div
-  className="w-[6px] bg-gray-300 cursor-col-resize flex items-center justify-center shrink-0"
-  onMouseDown={startDragRight}
->
-  <button
-    type="button"
-    onClick={(e) => {
-      e.stopPropagation();
-      toggleMiddle();
-    }}
-    className="w-12 h-8 rounded-sm bg-blue-500 hover:bg-blue-600 flex items-center justify-center text-white"
-  >
-  </button>
-</div>
-    <div
-      style={{ width: rightWidth }}
-      className={rightWidth === 0 ? 'hidden' : 'border-2 ms-1 border-gray-900 p-4 shrink-0'}
-    >
-      File view layout
+      <div
+        style={{ width: rightWidth }}
+        className={rightWidth === 0 ? 'hidden' : 'border-2 ms-1 border-gray-900 p-4 shrink-0'}
+      >
+        File view layout
+      </div>
     </div>
-  </div>
-);
-
+  );
 }
 
 export default FtpLayout;

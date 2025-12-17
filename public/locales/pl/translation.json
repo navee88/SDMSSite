@@ -110,7 +110,7 @@
 "verificationcodesentsuccefully": "Kod weryfikacyjny został wysłany pomyślnie"
 
   },
-  "errormsg":{"somethingwentwrong":"Coś poszło nie tak"},
+  "errormsg":{"somethingwentwrong":"Coś poszło nie tak","noresultsfound": "Nie znaleziono wyników"},
   "button": {
   "login": "Zaloguj",
   "loggingIn": "Logowanie...",

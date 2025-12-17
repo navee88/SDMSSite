@@ -1,8 +1,13 @@
 import axios from "axios";
 
 export const api = axios.create({
+<<<<<<< Updated upstream
   baseURL: "http://localhost:8094/SDMS_WebService/",
   // baseURL:"http://localhost:9091/SDMS_WebService/",
+=======
+  // baseURL: "http://localhost:8094/SDMS_WebService/",
+  baseURL:"http://localhost:9090/SDMS_WebService/",
+>>>>>>> Stashed changes
   timeout: 60000
 });
 

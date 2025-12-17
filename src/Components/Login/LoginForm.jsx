@@ -584,18 +584,18 @@ showDialog(msg, "warning");
               />
 
               {showTimeZone && (
-                <AnimatedDropdown
-                  label={t('login.timezone')}
-                  name="timeZone"
-                  value={watch("timeZone")}
-                  options={timeZones}
-                  displayKey="sTimeZoneValue"
-                  valueKey="sTimeZoneID"
-                  onChange={(e) => setValue("timeZone", e.target.value)}
-                  direction="down"
-                  isSearchable={true}
-                />
-              )}
+  <AnimatedDropdown
+    label={t('login.timezone')}
+    name="timeZone"
+    value={watch("timeZone")}
+    options={timeZones}
+    displayKey="sTimeZoneValue"
+    valueKey="sTimeZoneID"
+    onChange={(e) => setValue("timeZone", e.target.value)}
+    direction="down"
+    isSearchable={true}
+  />
+)}
 
             
               
@@ -608,8 +608,8 @@ showDialog(msg, "warning");
       valueKey="value"
       onChange={(e) => changeLanguage(e.target.value)}
       direction="up"
+      //  allowFreeInput={true} 
     />
-
             </motion.div>
           )}
         </AnimatePresence>
