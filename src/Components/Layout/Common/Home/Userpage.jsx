@@ -10,8 +10,8 @@ const fetchUsersAPI = async ({ postData }) => {
        const mockData = [
          { id: '1', username: 'jdoe', fullName: 'John Doe', profileName: 'Admin Profile', userGroupName: 'Admins', createdOn: '2023-01-15', userStatus: 'Active', checkStatus: 1, email: 'jdoe@test.com', locktype: "Locked", Modulename: "DataExplore", TasksName: "Open", level: "process" },
          { id: '2', username: 'asmith', fullName: 'Alex Smith', profileName: 'Editor Profile', userGroupName: 'Editors', createdOn: '2023-02-20', userStatus: 'Active', checkStatus: 0, email: 'alex@test.com', locktype: "Unlocked", Modulename: "DataExplore", TasksName: "Download", level: "process" },
-         { id: '3', username: 'bwayne', fullName: 'Bruce Wayne', profileName: 'Viewer Profile', userGroupName: 'Admin', createdOn: '2023-03-10', userStatus: 'Locked', checkStatus: 1, email: 'bwayne@test.com', locktype: "Locked", Modulename: "DataExplore", TasksName: "Restore", level: "queue" },
-         { id: '4', username: 'ckent', fullName: 'Clark Kent', profileName: 'Super User', userGroupName: 'Admins', createdOn: '2023-04-05', userStatus: 'Active', checkStatus: 0, email: 'clark@test.com', locktype: "Unlocked", Modulename: "DataExplore", TasksName: "File Upload", level: "queue" },
+         { id: '3', username: 'bwayne', fullName: 'Bruce Wayne', profileName: 'Viewer Profile', userGroupName: 'Admin', createdOn: '2023-03-10', userStatus: 'Locked', checkStatus: 'NA', email: 'bwayne@test.com', locktype: "Locked", Modulename: "DataExplore", TasksName: "Restore", level: "queue" },
+         { id: '4', username: 'ckent', fullName: 'Clark Kent', profileName: 'Super User', userGroupName: 'Admins', createdOn: '2023-04-05', userStatus: 'Active', checkStatus: 'NA', email: 'clark@test.com', locktype: "Unlocked", Modulename: "DataExplore", TasksName: "File Upload", level: "queue" },
          { id: '3', username: 'bwayne', fullName: 'Bruce Wayne', profileName: 'Admin', userGroupName: 'Viewers', createdOn: '2023-03-10', userStatus: 'Active', checkStatus: 0, email: 'bwayne@test.com', locktype: "Unlocked", Modulename: "Explore", TasksName: "Restore", level: "process" },
          { id: '4', username: 'ckent', fullName: 'Clark Kent', profileName: 'User', userGroupName: 'Admins', createdOn: '2023-04-05', userStatus: 'Active', checkStatus: 1, email: 'clark@test.com', locktype: "Locked", Modulename: "Explore", TasksName: "File Upload", level: "queue" },
        ];
@@ -176,6 +176,8 @@ const UsersPage = () => {
       label: 'Module',
       width: 150,
       enableSearch: true,
+        inputType: 'date', 
+      isDate: true,  
       render: (row, isSelected, index, currentRows) => {
         const prevRow = currentRows[index - 1];
         if (index > 0 && prevRow && prevRow.Modulename === row.Modulename) {

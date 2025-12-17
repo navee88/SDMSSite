@@ -283,7 +283,7 @@ const GridLayout = ({
         `}
       </style>
 
-      <div className="flex w-full p-4 gap-4 overflow-hidden h-full">
+      <div className="flex w-full p-2 gap-4 overflow-hidden h-full">
         <div className={`flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden min-w-0 h-[610px] ${!renderDetailPanel ? 'w-full' : 'w-4/5'}`}>
           <div className="custom-scrollbar flex-grow" style={{ overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
             <table className="table-fixed border-separate border-spacing-0 w-full">

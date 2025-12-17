@@ -65,7 +65,7 @@ function Navbar() {
   }, []);
 
   return (
-    <div className="flex items-center justify-between p-4 bg-white ps-8 border-b-1 border-black">
+    <div className="flex items-center justify-between p-3 bg-white ps-8 border-b-1 border-black">
       
 
       <div className="flex items-center">
