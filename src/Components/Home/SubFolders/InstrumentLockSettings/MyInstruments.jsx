@@ -470,12 +470,15 @@ export default function MyInstrumentsPage() {
               {t("instrumentlocktag.refresh")}
             </button>
           </div>
+            <div className="h-[300px] w-full border p-0 bg-white">
+
           <GridLayout
             columns={lockedInstrumentsColumns}
             data={lockedInstruments}
             renderDetailPanel={renderInstrumentDetail}
             onRowSelect={handleInstrumentSelect}
           />
+        </div>
         </div>
 
         {/* File Upload Zone */}
@@ -505,12 +508,15 @@ export default function MyInstrumentsPage() {
               {t("instrumentlocktag.refresh")}
             </button>
           </div>
+    <div className="h-[300px] w-full border p-0 bg-white">
+
           <GridLayout
             columns={filesColumns}
             data={files}
             renderDetailPanel={renderFileDetail}
             onRowSelect={handleFileSelect}
           />
+        </div>
         </div>
 
         {/* File Tag Information */}
