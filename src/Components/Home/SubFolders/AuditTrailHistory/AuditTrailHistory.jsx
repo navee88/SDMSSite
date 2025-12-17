@@ -663,7 +663,7 @@ const UsersPage = () => {
         {
             key: 'select',
             label: t('label.select'),
-            width: 120,
+            width: 150,
             render: (row) => (
                 <label className="inline-flex items-center">
                     <span
@@ -694,49 +694,49 @@ const UsersPage = () => {
         {
             key: 'moduleName',
             label: t('label.moduleName'),
-            width: 120,
+            width: 150,
             render: (row) => <span className="text-gray-700">{row.moduleName}</span>
         },
         {
             key: 'actions',
             label: t('label.actions'),
-            width: 120,
+            width: 150,
             render: (row) => <span className="text-gray-700">{row.actions}</span>
         },
         {
             key: 'transactionOn',
             label: t('label.transactionOn'),
-            width: 120,
+            width: 200,
             render: (row) => <span className="text-gray-700">{row.transactionOn}</span>
         },
         {
             key: 'reviewStatus',
             label: t('label.reviewStatus'),
-            width: 120,
+            width: 150,
             render: (row) => <span className="text-gray-700">{row.reviewStatus}</span>
         },
         {
             key: 'requestedClient',
             label: t('label.requestedClient'),
-            width: 120,
+            width: 200,
             render: (row) => <span className="text-gray-700">{row.requestedClient}</span>
         },
         {
             key: 'affectedClient',
             label: t('label.affectedClient'),
-            width: 120,
+            width: 200,
             render: (row) => <span className="text-gray-700">{row.affectedClient}</span>
         },
         {
             key: 'instrumentName',
             label: t('label.instrumentName'),
-            width: 120,
+            width: 200,
             render: (row) => <span className="text-gray-700">{row.instrumentName}</span>
         },
         {
             key: 'reason',
             label: t('label.reason'),
-            width: 120,
+            width: 150,
             render: (row) => <span className="text-gray-700">{row.reason}</span>
         }
     ], []);
@@ -980,8 +980,8 @@ const AuditTrailHistory = () => {
       ${className}
     `}
         >
-            {Icon && <Icon className="w-3.5 h-3.5" />}
-            <span>{label}</span>
+            {Icon && <Icon className="w-3.5 h-3.5 strokeWidth={3}" />}
+            <span className="font-[roboto] font-bold">{label}</span>
         </button>
     );
     return (

@@ -12,7 +12,7 @@ import Errordialog from "./Components/Layout/Common/Errordialog";
 import ProtectedRoute from "./Components/Common/ProtectedRoute";
 import Loginlayout from "./Components/Layout/Login/Loginlayout";
 import { LanguageProvider } from "./Context/LanguageContext";
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const Home = lazy(() => import('./Pages/Home/Home'));
 
 const PageWrapper = React.memo(({ children }) => (
@@ -31,14 +31,13 @@ function AnimatedRouteWrapper({ element }) {
   return <PageWrapper>{element}</PageWrapper>;
 }
 
-// Custom hook for Home route transition
+
 function useHomeTransition() {
   const actualLocation = useLocation();
   const [displayLocation, setDisplayLocation] = useState(actualLocation);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    // Apply transition only when navigating to/from Home route
     if (actualLocation.pathname === '/Home' || displayLocation.pathname === '/Home') {
       startTransition(() => {
         setDisplayLocation(actualLocation);
@@ -105,6 +104,15 @@ function AnimatedRoutes() {
   );
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, 
+      retry: 1, 
+    },
+  },
+});
+
 function App() {
   if (window.location.pathname === "/LogilabSDMS" || window.location.pathname === "/LogilabSDMS/") {
     window.location.replace("/LogilabSDMS/Login");
@@ -112,11 +120,13 @@ function App() {
 
   return (
     <>
+    <QueryClientProvider client={queryClient}> 
       <LanguageProvider>
         <Router basename="/LogilabSDMS">
           <AnimatedRoutes />
         </Router>
       </LanguageProvider>
+     </QueryClientProvider>
     </>
   );
 }

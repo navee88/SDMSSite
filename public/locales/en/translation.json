@@ -98,8 +98,10 @@
     "passwordresetsuccessfully": "Password Reset Successfully",
     "verificationcodesentsuccefully": "Verification Code Sent Successfully"
   },
-  "errormsg": {
-    "somethingwentwrong": "Something went wrong"
+
+  "errormsg":{
+    "somethingwentwrong":"Something went wrong",
+    "noresultsfound":"No Results Found"
   },
   "button": {
     "login": "Login",
@@ -129,7 +131,9 @@
     "review":"Review",
     "createArchieve":"Create Archieve",
     "openArchieve":"Open Archieve",
-    "print":"Print"
+    "print":"Print",
+    "add": "Add",
+    "remove": "Remove"
   },
   "label": {
     "email": "E-mail",
@@ -158,7 +162,55 @@
     "userName":"Username",
     "moduleName":"Module Name",
     "auditType":"Audit Type",
-    "recordsDuration":"Records Duration"
+    "recordsDuration":"Records Duration",
+    "comments": "Comments",
+    "username": "Username",
+    "profileName": "Profile Name",
+    "systemComments": "System Comments",
+    "reviewComments": "Review Comments",
+    "reviewedBy": "Reviewed By",
+    "reviewedDate": "Reviewed Date",
+    "reviewDateUTC":"Review Date (UTC Timezone)",
+    "modifiedDate": "Modified Date",
+    "select": "Select",
+    "actions": "Actions",
+    "transactionOn": "Transaction On",
+    "reviewStatus": "Review Status",
+    "requestedClient": "Requested Client",
+    "affectedClient": "Affected Client",
+    "instrumentName": "Instrument Name",
+    "reason": "Reason",
+    "enterReasonsToAdd": "Enter Reasons to Add",
+    "enableAuditTrail": "Enable Audit Trail",
+    "generalSettings": "General Settings",
+    "size":"Size",
+    "versionNo":"Version No",
+    "fileMode":"File Mode",
+    "uploadOn":"Upload On",
+    "checksum":"Checksum",
+    "location":"Location",
+    "taskExecutedOn":"Task executed on",
+    "deleteOn":"Delete On",
+    "taskDescription":"Task Description",
+    "schedulerStatus":"Scheduler Status",
+    "loginUsername":"Login Username",
+    "domain":"Domain",
+    "fileSource":"File source",
+    "fileStatus":"File status"
+  },
+  "statuses": {
+    "activated": "Activated",
+    "approved": "Approved",
+    "checked": "Checked",
+    "created": "Created",
+    "deactivated": "Deactivated",
+    "mapped": "Mapped",
+    "modified": "Modified",
+    "notApproved": "Not Approved",
+    "retired": "Retired",
+    "reviewed": "Reviewed",
+    "started": "Started",
+    "stopped": "Stopped"
   },
   "common": {
     "incorrectusernameorpassword": "Incorrect Username or Password"

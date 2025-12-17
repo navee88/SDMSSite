@@ -663,7 +663,8 @@ const DownloadMonitor = () => {
   const [fromDate, setFromDate] = useState(today);
   const [toDate, setToDate] = useState(today);
   const [filename, setFilename] = useState("");
-  const [selectedClient, setSelectedClient] = useState("");
+  const options =["User A", "User B"];
+  const [selectedClient, setSelectedClient] = useState(options[0]);
   const [taskId, setTaskId] = useState("");
   const [fileName, setFileName] = useState("");
 
@@ -819,7 +820,7 @@ const DownloadMonitor = () => {
               <AnimatedDropdown
                 label={t("label.clientName")}
                 value={selectedClient}
-                options={["User A", "User B"]}
+                options={options}
                 onChange={(e) => setSelectedClient(e.target.value)}
                 isSearchable
               />
@@ -894,7 +895,7 @@ const DownloadMonitor = () => {
 
             <div className="flex items-center gap-2">
               <span className="font-bold text-xs text-slate-600">{t("label.clientName")}:</span>
-              <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient}</span>
+              <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient || "---"}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>

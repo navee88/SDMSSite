@@ -10,6 +10,7 @@ export default function useAxios() {
       const response = await api.post(`/${endpoint}`, payloadata, {
         headers: { "Content-Type": "application/json" },
       });
+      console.log(`API Response from ${endpoint}:`, response.data);
       return response.data;
     } catch (error) {
       throw endpoint;
