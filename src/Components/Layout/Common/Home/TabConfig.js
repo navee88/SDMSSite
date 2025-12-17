@@ -12,6 +12,12 @@ import FailedQueue from "../../../Home/SubFolders/MonitorSchedular/FailedQueue";
 import RestoreMonitor from "../../../Home/SubFolders/MonitorSchedular/RestoreMonitor";
 import DownloadMonitor from "../../../Home/SubFolders/MonitorSchedular/DownloadMonitor";
 import UploadMonitor from "../../../Home/SubFolders/MonitorSchedular/UploadMonitor";
+import AuditTrailHistory from "../../../../Pages/Home/AuditTrailHistory/AuditTrailHistory";
+import DownloadLogs from "../../../../Pages/Home/AuditTrailHistory/DownloadLogs";
+import UploadLogs from "../../../../Pages/Home/AuditTrailHistory/UploadLogs";
+import RestoreLogs from "../../../../Pages/Home/AuditTrailHistory/RestoreLogs";
+import SchedulerConfigLogs from "../../../../Pages/Home/AuditTrailHistory/SchedulerConfigLogs";
+import InstrumentLogs from "../../../../Pages/Home/AuditTrailHistory/InstrumentLogs";
 
 export const tabConfig = {
   DataExplorer: {
@@ -35,32 +41,32 @@ export const tabConfig = {
     "Restore Monitor": { content: <RestoreMonitor /> },
     "Download Monitor": { content: <DownloadMonitor /> },
   },
-  // AuditTrailHistory: {
-  //   "Audit Trail History": { content: <AuditTrailHistory /> },
-  //   "CFR Settings": { content: <CFRSettings /> },
-  // },
-  // DownloadLogs: {
-  //   "Download Logs": { content: <DownloadLogs /> },
-  //   "Download Error Logs": { content: <DownloadErrorLogs /> },
-  // },
-  // UploadLogs: {
-  //   "Upload Logs": { content: <UploadLogs /> },
-  //   "Upload Error Logs": { content: <UploadErrorLogs /> },
-  //   "Manual Upload Logs": { content: <ManualUploadLogs /> },
-  // },
-  // RestoreLogs: {
-  //   "Restore Logs": { content: <RestoreLogs /> },
-  //   "Restore Error Logs": { content: <RestoreErrorLogs /> },
-  // },
-  // ServerAndLocalFileDeleteLogs:{
-  //    "Server File Delete Logs": { content: <ServerFileDeleteLogs /> },
-  //   "Local File Delete Logs": { content: <LocalFileDeleteLogs /> },
-  // },
-  // SchedulerConfigLogs:{
-  //   "Scheduler Config. Logs":{content:<SchedulerConfigLogs />}
-  // },
-  // InstrumentLogs:{
-  //   "InstrumentLogs":{content:<InstrumentLogs/>}
-  // }
+  AuditTrailHistory: {
+    "Audit Trail History": { content: <AuditTrailHistory /> },
+    // "CFR Settings": { content: <CFRSettings /> },
+  },
+  DownloadLogs: {
+    "Download Logs": { content: <DownloadLogs /> },
+    // "Download Error Logs": { content: <DownloadErrorLogs /> },
+  },
+  UploadLogs: {
+    "Upload Logs": { content: <UploadLogs /> },
+    // "Upload Error Logs": { content: <UploadErrorLogs /> },
+    // "Manual Upload Logs": { content: <ManualUploadLogs /> },
+  },
+  RestoreLogs: {
+    "Restore Logs": { content: <RestoreLogs /> },
+    // "Restore Error Logs": { content: <RestoreErrorLogs /> },
+  },
+  ServerAndLocalFileDeleteLogs:{
+    //  "Server File Delete Logs": { content: <ServerFileDeleteLogs /> },
+    // "Local File Delete Logs": { content: <LocalFileDeleteLogs /> },
+  },
+  SchedulerConfigLogs:{
+    "Scheduler Config. Logs":{content:<SchedulerConfigLogs />}
+  },
+  InstrumentLogs:{
+    // "InstrumentLogs":{content:<InstrumentLogs/>}
+  }
 
 };

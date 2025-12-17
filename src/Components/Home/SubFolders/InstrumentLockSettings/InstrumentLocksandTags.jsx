@@ -3,7 +3,7 @@ import { Lock, Unlock, ChevronDown, X, Edit, CheckSquare } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 // Underline Dropdown Component
-const UnderlineDropdown = ({ label, value, options, onChange, disabled, required, error, className = '' }) => {
+const AnimatedDropdown = ({ label, value, options, onChange, disabled, required, error, className = '' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -21,7 +21,7 @@ const UnderlineDropdown = ({ label, value, options, onChange, disabled, required
 
   return (
     <div className={`mb-4 ${className}`} ref={dropdownRef}>
-      <label className="block text-sm text-[#405f7d] mb-0 font-bold">
+      <label className="block text-sm text-[#405f7d] mb-0 font-semibold">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <div className="relative">
@@ -64,7 +64,7 @@ const UnderlineDropdown = ({ label, value, options, onChange, disabled, required
 // Underline Text Input
 const UnderlineTextInput = ({ label, value, onChange, disabled, required, error, className = '' }) => (
   <div className={`mb-4 ${className}`}>
-    <label className="block text-[#405f7d] mb-1 font-bold text-sm">
+    <label className="block text-[#405f7d] mb-1 font-semibold text-sm">
       {label} {required && <span className="text-red-500">*</span>}
     </label>
     <input
@@ -88,7 +88,7 @@ const MergeFileCountRow = ({ mergeCount, currentCount, onMergeChange, disabled, 
     <div className="mb-6">
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-3">
-          <label className="text-sm text-[#405f7d] min-w-[140px] font-bold">
+          <label className="text-sm text-[#405f7d] min-w-[140px] font-semibold">
             {t('instrumentlocktag.mergefilecount')}
           </label>
           <input
@@ -103,7 +103,7 @@ const MergeFileCountRow = ({ mergeCount, currentCount, onMergeChange, disabled, 
         </div>
         
         <div className="flex items-center gap-3">
-          <label className="text-sm text-[#405f7d] min-w-[160px] font-bold">
+          <label className="text-sm text-[#405f7d] min-w-[160px] font-semibold">
             {t('instrumentlocktag.currentuploadfilecount')}
           </label>
           <input
@@ -122,7 +122,7 @@ const MergeFileCountRow = ({ mergeCount, currentCount, onMergeChange, disabled, 
 // Inline Checkbox
 const InlineCheckbox = ({ label, checked, onChange, disabled }) => (
   <div className="flex items-center mb-4 gap-0">
-    <label className="text-sm text-[#405f7d] min-w-[140px] font-bold">
+    <label className="text-sm text-[#405f7d] min-w-[140px] font-semibold">
       {label}
     </label>
     <input
@@ -155,10 +155,10 @@ const TagGrid = ({ tags, onTagValueClick, isLocked, t }) => {
   return (
     <div className="border border-gray-300 rounded relative">
       <div className="grid grid-cols-2 bg-gray-100 border-b border-gray-300">
-        <div className="px-4 py-2 text-sm text-gray-700 border-r border-gray-300 font-bold">
+        <div className="px-4 py-2 text-sm text-gray-700 border-r border-gray-300 font-semibold">
           TagName
         </div>
-        <div className="px-4 py-2 text-sm text-gray-700 font-bold">
+        <div className="px-4 py-2 text-sm text-gray-700 font-semibold">
           TagValue
         </div>
       </div>
@@ -324,7 +324,7 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit, t }) => {
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-600 mb-1 font-bold">{t('login.username')}</label>
+              <label className="block text-sm text-gray-600 mb-1 font-semibold">{t('login.username')}</label>
               <input
                 type="text"
                 value={username}
@@ -334,7 +334,7 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit, t }) => {
             </div>
             
             <div>
-              <label className="block text-sm text-gray-600 mb-1 font-bold">{t('login.password')}</label>
+              <label className="block text-sm text-gray-600 mb-1 font-semibold">{t('login.password')}</label>
               <input
                 type="password"
                 value={password}
@@ -344,7 +344,7 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit, t }) => {
             </div>
             
             <div>
-              <label className="block text-sm text-gray-600 mb-1 font-bold">Reason (Optional)</label>
+              <label className="block text-sm text-gray-600 mb-1 font-semibold">Reason (Optional)</label>
               <textarea
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
@@ -398,6 +398,7 @@ const InstrumentLockTag = () => {
   const [showMergeFields] = useState(true);
   const [showUnlockOption] = useState(true);
   const [auditTrailModalOpen, setAuditTrailModalOpen] = useState(false);
+const [auditAction, setAuditAction] = useState(null); // 'lock' | 'unlock'
 
   // Options data (similar to ServerData's configuration)
   const [clientOptions] = useState([
@@ -488,38 +489,67 @@ const InstrumentLockTag = () => {
     return Object.keys(newErrors).length === 0;
   }, [formData, tags, t]);
 
-  const handleLock = useCallback(() => {
-    if (!validateForm()) return;
-    setAuditTrailModalOpen(true);
-  }, [validateForm]);
+const handleLock = useCallback(() => {
+  if (!validateForm()) return;
+  setAuditAction('lock');
+  setAuditTrailModalOpen(true);
+}, [validateForm]);
+
+const handleUnlock = useCallback(() => {
+  if (!window.confirm(`${t('instrumentlocktag.unlock')}?`)) return;
+  setAuditAction('unlock');
+  setAuditTrailModalOpen(true);
+}, [t]);
+
 
   const handleUpdate = useCallback(() => {
     if (!validateForm()) return;
     alert(t('instrumentlocktag.instrumentupdatedsuccessfully'));
   }, [validateForm, t]);
 
-  const handleUnlock = useCallback(() => {
-    if (!window.confirm(`${t('instrumentlocktag.unlock')}?`)) return;
-    setAuditTrailModalOpen(true);
-  }, [t]);
+const handleAuditTrailSubmit = useCallback((auditValues) => {
+  console.log('Audit trail submitted:', auditValues);
 
-  const handleAuditTrailSubmit = useCallback((auditValues) => {
-    console.log('Audit trail submitted:', auditValues);
-    setAuditTrailModalOpen(false);
-    setIsLocked(!isLocked);
-    alert(t(isLocked ? 'instrumentlocktag.instrumentunlockedsuccessfully' : 'instrumentlocktag.instrumentlockedsuccessfully'));
-  }, [isLocked, t]);
+  setAuditTrailModalOpen(false);
+
+  if (auditAction === 'lock') {
+    setIsLocked(true);
+    alert(t('instrumentlocktag.instrumentlockedsuccessfully'));
+  }
+
+  if (auditAction === 'unlock') {
+    setIsLocked(false);
+    alert(t('instrumentlocktag.instrumentunlockedsuccessfully'));
+  }
+
+  setAuditAction(null);
+}, [auditAction, t]);
+
+const PrimaryButton = ({ icon: Icon, label, onClick, disabled }) => (
+  <button
+    onClick={!disabled ? onClick : undefined}
+    disabled={disabled}
+    className={`flex items-center gap-1 px-2.5 py-2 transition-all text-[11px] font-bold rounded shadow-sm whitespace-nowrap
+      ${disabled 
+        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+        : 'bg-white text-blue-600 hover:bg-blue-50 hover:scale-90'}
+    `}
+  >
+    <Icon className="w-4 h-4 stroke-[3]" />
+    <span>{label}</span>
+  </button>
+);
 
   // Render (following ServerData structure)
   return (
-    <div className="flex flex-col w-full font-sans rounded-md">
+    <div className="flex flex-col w-full font-roboto rounded-md">
       {/* Main Content Area */}
       <div className="bg-white px-6 py-6">
-        <div className="max-w-[1400px]">
-          <div className="grid grid-cols-2 gap-8">
+        <div className="max-w-[1300px]">
+          <div className="grid grid-cols-2 gap-0">
             {/* Left Panel */}
             <div className="max-w-[400px]">
-              <UnderlineDropdown
+              <AnimatedDropdown
                 label={t('label.client')}
                 value={formData.client}
                 options={clientOptions}
@@ -527,7 +557,7 @@ const InstrumentLockTag = () => {
                 disabled={isLocked}
               />
 
-              <UnderlineDropdown 
+              <AnimatedDropdown 
                 label={t('label.instrument')}
                 value={formData.instrument}
                 options={instrumentOptions}
@@ -537,7 +567,7 @@ const InstrumentLockTag = () => {
                 error={errors.instrument}
               />
 
-              <UnderlineDropdown
+              <AnimatedDropdown
                 label={t('instrumentlocktag.path')}
                 value={formData.path}
                 options={pathOptions}
@@ -547,7 +577,7 @@ const InstrumentLockTag = () => {
                 error={errors.path}
               />
 
-              <UnderlineDropdown
+              <UnderlineTextInput
                 label={t('instrumentlocktag.limsorder')}
                 value={formData.limsOrder}
                 options={limsOrderOptions}
@@ -585,7 +615,8 @@ const InstrumentLockTag = () => {
 
             {/* Right Panel */}
             <div>
-              <UnderlineDropdown
+              <AnimatedDropdown
+              
                 label={t('instrumentlocktag.template')}
                 value={formData.template}
                 options={templateOptions}
@@ -594,7 +625,6 @@ const InstrumentLockTag = () => {
                 required
                 error={errors.template}
               />
-
               <div className="mt-6">
                 <TagGrid
                   tags={tags}
@@ -607,34 +637,30 @@ const InstrumentLockTag = () => {
           </div>
 
           {/* Bottom Buttons */}
-          <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
-            {!isLocked ? (
-              <button
-                onClick={handleLock}
-                className="flex items-center gap-2 px-4 py-2 bg-[#2883fe] text-white text-sm font-medium rounded hover:bg-blue-700"
-              >
-                <Lock className="w-4 h-4" />
-                {t('instrumentlocktag.lock')}
-              </button>
-            ) : (
-              <button
-                onClick={handleUpdate}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700"
-              >
-                <Edit className="w-4 h-4" />
-                {t('button.update')}
-              </button>
-            )}
-            
-            <button
-              onClick={handleUnlock}
-              disabled={!isLocked}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-400 text-white text-sm font-medium rounded hover:bg-blue-500 disabled:bg-[#85bcfa9f]"
-            >
-              <Unlock className="w-4 h-4" />
-              {t('instrumentlocktag.unlock')}
-            </button>
-          </div>
+<div className="flex justify-end gap-2 mt-8 pt-6 border-t border-gray-200">
+  {!isLocked ? (
+    <PrimaryButton
+      icon={Lock}
+      label={t('instrumentlocktag.lock')}
+      onClick={handleLock}
+    />
+  ) : (
+    <PrimaryButton
+      icon={Edit}
+      label={t('button.update')}
+      onClick={handleUpdate}
+    />
+  )}
+
+  {isLocked && (
+    <PrimaryButton
+      icon={Unlock}
+      label={t('instrumentlocktag.unlock')}
+      onClick={handleUnlock}
+    />
+  )}
+</div>
+
         </div>
       </div>
 
