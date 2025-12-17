@@ -98,7 +98,7 @@
     "passwordresetsuccessfully": "Password Reset Successfully",
     "verificationcodesentsuccefully": "Verification Code Sent Successfully"
   },
-
+ 
   "errormsg":{
     "somethingwentwrong":"Something went wrong",
     "noresultsfound":"No Results Found"
@@ -133,19 +133,20 @@
     "openArchieve":"Open Archieve",
     "print":"Print",
     "add": "Add",
-    "remove": "Remove"
+    "remove": "Remove",
+    "upload":"Upload"
   },
   "label": {
     "email": "E-mail",
+    "client":"Client",
     "verificationcode": "Verification Code",
-    "clientName": "Client Name",
-    "instrument": "Instrument",
-    "fileName": "Filename",
+    "clientName":"Client Name",
+    "instrument":"Instrument",
+    "fileName":"Filename",
     "storageName": "Storage Name",
     "taskStatus": "Task Status",
     "scheduleId": "Schedule ID",
     "taskId": "Task ID",
-    "task":"Task",
     "sourcePath": "Source Path",
     "queue": "Queue",
     "noOfUploadCount": "No of Upload Count",
@@ -211,9 +212,75 @@
     "retired": "Retired",
     "reviewed": "Reviewed",
     "started": "Started",
-    "stopped": "Stopped"
+    "stopped": "Stopped",
+    "client":"Client"
+ 
   },
-  "common": {
-    "incorrectusernameorpassword": "Incorrect Username or Password"
-  }
+ 
+"common":{
+  "incorrectusernameorpassword":"Incorrect Username or Password"
+},
+"instrumentlocktag":{
+ 
+  "instrumentlockandtags": "Instrument Lock and Tags",
+  "data": "Data",
+  "myinstruments": "My Instruments",
+  "othersinstruments": "Other Instruments",
+  "path": "Path",
+  "limsorder": "LIMS Order",
+  "filename": "File Name",
+  "mergefilecount": "Merge File Count",
+  "currentuploadfilecount": "Current Upload File Count",
+  "unlockaftercapture": "Unlock after Capture",
+  "template": "Template",
+  "templateName": "Template Name",
+  "lock_update": "Lock / Update",
+  "unlock": "Unlock",
+  "status":"Status",
+  "instrumenttagsinformation": "Instrument Tag Information",
+  "instrumentdata": "Instrument Data",
+  "latestmergedfileinformation": "Latest Merged File Information",
+  "mergedfilerawdata": "Merged File Raw Data",
+  "filerawdata": "File Raw Data",
+  "parseddata": "Parsed Data",
+  "refresh": "Refresh",
+  "fileinformation": "File Information",
+  "filetagsinformation": "File Tag Information",
+  "lockedinstrumentdetails": "Locked Instrument Details",
+  "uploadstatus": "Upload Status",
+  "rawdataid": "Rawdata ID",
+  "sequenceno": "Sequence No",
+  "tasksourcepath": "Task Source Path",
+  "lockeduser": "Locked User",
+  "LockedOn": "Locked On",
+  "loggedon": "Logged On",
+  "lock": "Lock",
+  "pleaseselect": "Please select the",
+  "value": "Value",
+  "confirmationtagsalreadyexist": "Tags has already been used. Do you want to re-use same tags for New Data Capture?",
+  "pleaseselectanyofthetagvalue": "Please select any of the Tag Value",
+  "instrumentlockedsuccessfully": "Instrument Locked Successfully",
+  "tryagaintolockorupdate": "Try again to lock/update",
+  "enteringduplicatetagvalues": "Entering Duplicate Tag Values",
+  "filealreadyinparsingyoucantchangethelimsorder": "LIMS Order cannot be changed due to File Parsing",
+  "instrumentwillbeautomaticallyunlockedaftercapturingthemetadata": "After Meta Data Capture, Instrument will be Unlocked Automatically",
+  "errorupdatinginterfaceinstrument": "There is an error while Updating Interfacer instrument",
+  "instrumentunlockedsuccessfully": "Instrument Unlocked Successfully",
+  "thisinstrumentisalreadylockedbyotheruser": "This instrument has already been locked by another user",
+  "interfacenotconnected": "Interfacer Instrument is not connected. Are you sure that you want to proceed to lock the instrument?",
+  "instrumentupdatedsuccessfully": "Instrument has been Updated Successfully",
+  "mergecountshouldnotbelesserthancurrentparsingcount": "Please change the Merge Count Value since the File is already in Parsing. Note: Merge Count should not be Lesser than Current Parsing Count",
+  "mergedata": "Merge Data",
+  "viewnulldata": "View Null Data",
+  "proceedacknowledgement": "Acknowledgement",
+  "lockid": "Lock ID",
+  "instrumentid": "Instrument ID",
+  "noinstrumentsfound":"No Instruments Found",
+  "norecordsfound":"No Records Found",
+  "dragdrop": "Drag & Drop ",
+  "or": "or ",
+  "clickhere": "click here ",
+  "tobrowseoraccesscamera": " to browse or access camera ",
+  "toaddfile": " to add file"
+}
 }

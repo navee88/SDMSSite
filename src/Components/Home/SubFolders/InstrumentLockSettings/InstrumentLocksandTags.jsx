@@ -135,154 +135,209 @@ const InlineCheckbox = ({ label, checked, onChange, disabled }) => (
   </div>
 );
 
-// Tag Grid Component
+// Tag Grid Component with Tooltip Popup (matching original jQuery behavior)
 const TagGrid = ({ tags, onTagValueClick, isLocked, t }) => {
-  const [tooltipOpen, setTooltipOpen] = useState(null);
-  const tooltipRef = useRef(null);
+  const [tooltipState, setTooltipState] = useState({
+    isOpen: false,
+    tagIndex: null,
+    position: { top: 0, left: 0 },
+    searchTerm: '',
+    selectedValue: '',
+    options: []
+  });
 
-  const handleTooltipClick = (index, event) => {
-    if (tooltipOpen === index) {
-      setTooltipOpen(null);
-    } else {
-      setTooltipOpen(index);
-      if (tooltipRef.current) {
-        tooltipRef.current.style.top = `${event.clientY - 250}px`;
-        tooltipRef.current.style.left = `${event.clientX - 275}px`;
-      }
+  const handleEditClick = (tag, index, event) => {
+    if (!isLocked && tag.editable) {
+      // Get click position for tooltip placement
+      const rect = event.currentTarget.getBoundingClientRect();
+      
+      // Load options for this tag (simulating AJAX call from original code)
+      const options = tag.options && tag.options.length > 0 ? tag.options : [
+        { value: 'Pantoprazole tablets IP', label: 'Pantoprazole tablets IP' },
+        { value: 'Caffeine Oral Citrate', label: 'Caffeine Oral Citrate' },
+        { value: 'Assay by HPLC', label: 'Assay by HPLC' },
+        { value: 'Identification', label: 'Identification' },
+        { value: 'Disintegration time', label: 'Disintegration time' },
+        { value: 'Dissolution', label: 'Dissolution' }
+      ];
+
+      setTooltipState({
+        isOpen: true,
+        tagIndex: index,
+        position: {
+          top: rect.top - 250,
+          left: rect.left - 355
+        },
+        searchTerm: '',
+        selectedValue: tag.value || '',
+        options: options
+      });
     }
   };
 
+  const handleTooltipSubmit = () => {
+    if (tooltipState.tagIndex !== null && tooltipState.selectedValue) {
+      onTagValueClick(tooltipState.tagIndex, tooltipState.selectedValue);
+    }
+    setTooltipState({
+      isOpen: false,
+      tagIndex: null,
+      position: { top: 0, left: 0 },
+      searchTerm: '',
+      selectedValue: '',
+      options: []
+    });
+  };
+
+  const handleTooltipClose = () => {
+    setTooltipState({
+      isOpen: false,
+      tagIndex: null,
+      position: { top: 0, left: 0 },
+      searchTerm: '',
+      selectedValue: '',
+      options: []
+    });
+  };
+
+  const handleOptionClick = (optionValue) => {
+    setTooltipState(prev => ({
+      ...prev,
+      selectedValue: optionValue
+    }));
+  };
+
+  const handleSearchChange = (value) => {
+    setTooltipState(prev => ({
+      ...prev,
+      searchTerm: value
+    }));
+  };
+
+  const filteredOptions = tooltipState.options.filter(opt => 
+    opt.label.toLowerCase().includes(tooltipState.searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="border border-gray-300 rounded relative">
-      <div className="grid grid-cols-2 bg-gray-100 border-b border-gray-300">
-        <div className="px-4 py-2 text-sm text-gray-700 border-r border-gray-300 font-semibold">
-          TagName
+    <>
+      <div className="border border-gray-300 rounded relative">
+        <div className="grid grid-cols-2 bg-gray-100 border-b border-gray-300">
+          <div className="px-4 py-2 text-sm text-gray-700 border-r border-gray-300 font-semibold">
+            TagName
+          </div>
+          <div className="px-4 py-2 text-sm text-gray-700 font-semibold">
+            TagValue
+          </div>
         </div>
-        <div className="px-4 py-2 text-sm text-gray-700 font-semibold">
-          TagValue
+        
+        <div className="bg-white min-h-[250px]">
+          {tags.length === 0 ? (
+            <div className="px-4 py-12 text-center text-sm text-gray-400">No tags available</div>
+          ) : (
+            tags.map((tag, idx) => (
+              <div 
+                key={idx} 
+                className={`grid grid-cols-2 border-b border-gray-200 last:border-b-0 ${
+                  tooltipState.isOpen && tooltipState.tagIndex === idx ? 'bg-blue-50' : 
+                  !tag.value ? 'bg-[#fff]' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className="px-4 py-2.5 text-sm text-gray-900 border-r border-gray-300 flex items-center">
+                  {tag.tagName}
+                  {tag.required && <span className="text-red-500 ml-1">*</span>}
+                </div>
+                <div className="px-4 py-2.5 text-sm text-gray-900 flex items-center justify-between gap-2">
+                  <span className="flex-1">{tag.value || ''}</span>
+                  {tag.editable && !isLocked && (
+                    <button
+                      onClick={(e) => handleEditClick(tag, idx, e)}
+                      className="ml-2 text-blue-600 hover:text-blue-800"
+                      title="Edit tag value"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
         </div>
-      </div>
-      
-      <div className="bg-white min-h-[250px]">
-        {tags.length === 0 ? (
-          <div className="px-4 py-12 text-center text-sm text-gray-400">No tags available</div>
-        ) : (
-          tags.map((tag, idx) => (
-            <div 
-              key={idx} 
-              className={`grid grid-cols-2 border-b border-gray-200 last:border-b-0 ${!tag.value ? 'bg-[#fff]' : 'hover:bg-gray-50'}`}
-            >
-              <div className="px-4 py-2.5 text-sm text-gray-900 border-r border-gray-300 flex items-center">
-                {tag.tagName}
-                {tag.required && <span className="text-red-500 ml-1">*</span>}
-              </div>
-              <div className="px-4 py-2.5 text-sm text-gray-900 flex items-center justify-between group">
-                <span className="flex-1">{tag.value || ''}</span>
-                {tag.editable && !isLocked && (
-                  <button
-                    onClick={(e) => handleTooltipClick(idx, e)}
-                    className="ml-2 text-gray-600 hover:text-blue-600"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            </div>
-          ))
-        )}
       </div>
 
-      {tooltipOpen !== null && (
+      {/* Tooltip Popup (matching tooltipster behavior from original code) */}
+      {tooltipState.isOpen && (
         <div 
-          ref={tooltipRef}
-          className="fixed z-[100] bg-white border border-gray-300 rounded shadow-lg w-[350px]"
-          style={{ top: '100px', left: '100px' }}
+          className="fixed z-[100] bg-white border border-gray-300 rounded shadow-xl w-[350px]"
+          style={{
+            top: `${Math.max(20, tooltipState.position.top)}px`,
+            left: `${Math.max(20, tooltipState.position.left)}px`
+          }}
         >
-          <TagTooltip 
-            tag={tags[tooltipOpen]}
-            onClose={() => setTooltipOpen(null)}
-            onSubmit={(value) => {
-              onTagValueClick(tooltipOpen, value);
-              setTooltipOpen(null);
-            }}
-            t={t}
-          />
+          <div className="p-3">
+            <div className="flex justify-between items-center mb-3">
+              <h4 className="text-sm font-semibold text-gray-800">
+                {t('instrumentlocktag.pleaseselect')} {tags[tooltipState.tagIndex]?.tagName} {t('instrumentlocktag.value')}
+              </h4>
+              <button onClick={handleTooltipClose} className="text-gray-400 hover:text-gray-600">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <div className="mb-3">
+              <input
+                type="text"
+                placeholder="Looking for"
+                value={tooltipState.searchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="w-full h-8 px-3 text-sm border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                autoFocus
+              />
+            </div>
+            
+            <div className="max-h-52 overflow-y-auto border border-gray-300 rounded mb-3">
+              {filteredOptions.length === 0 ? (
+                <div className="text-center py-8 text-sm text-gray-500">No options available</div>
+              ) : (
+                filteredOptions.map((option, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => handleOptionClick(option.value)}
+                    onDoubleClick={handleTooltipSubmit}
+                    className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 border-b border-gray-200 last:border-b-0 ${
+                      tooltipState.selectedValue === option.value ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700'
+                    }`}
+                  >
+                    {option.label}
+                  </div>
+                ))
+              )}
+            </div>
+            
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={handleTooltipSubmit}
+                disabled={!tooltipState.selectedValue}
+                className="px-3 py-1.5 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center gap-1"
+              >
+                <CheckSquare className="w-3.5 h-3.5" />
+                {t('button.submit')}
+              </button>
+              <button
+                onClick={handleTooltipClose}
+                className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs rounded hover:bg-gray-50 flex items-center gap-1"
+              >
+                <X className="w-3.5 h-3.5" />
+                {t('button.cancel')}
+              </button>
+            </div>
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
-// Tag Tooltip Component
-const TagTooltip = ({ tag, onClose, onSubmit, t }) => {
-  const [selectedValue, setSelectedValue] = useState(tag.value || '');
-  const [searchTerm, setSearchTerm] = useState('');
 
-  const options = tag.options || [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' }
-  ];
-
-  const filteredOptions = options.filter(opt => 
-    opt.label.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  return (
-    <div className="p-3">
-      <div className="flex justify-between items-center mb-3">
-        <h4 className="text-sm font-semibold">{t('instrumentlocktag.pleaseselect')} {tag.tagName} {t('instrumentlocktag.value')}</h4>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-          <X className="w-4 h-4" />
-        </button>
-      </div>
-      
-      <div className="mb-3">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full h-8 px-2 text-sm border border-gray-300 rounded"
-        />
-      </div>
-      
-      <div className="max-h-48 overflow-y-auto">
-        {filteredOptions.length === 0 ? (
-          <div className="text-center py-4 text-sm text-gray-500">No options available</div>
-        ) : (
-          filteredOptions.map((option, idx) => (
-            <div
-              key={idx}
-              onClick={() => setSelectedValue(option.value)}
-              className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 ${
-                selectedValue === option.value ? 'bg-blue-50 border border-blue-200' : ''
-              }`}
-            >
-              {option.label}
-            </div>
-          ))
-        )}
-      </div>
-      
-      <div className="flex justify-end gap-2 mt-3 pt-3 border-t">
-        <button
-          onClick={() => onSubmit(selectedValue)}
-          disabled={!selectedValue}
-          className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600 disabled:bg-gray-300"
-        >
-          {t('button.submit')}
-        </button>
-        <button
-          onClick={onClose}
-          className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300"
-        >
-          {t('button.cancel')}
-        </button>
-      </div>
-    </div>
-  );
-};
 
 // Audit Trail Modal
 const AuditTrailModal = ({ isOpen, onClose, onSubmit, t }) => {
@@ -375,12 +430,10 @@ const AuditTrailModal = ({ isOpen, onClose, onSubmit, t }) => {
   );
 };
 
-// Main Component - Following ServerData Structure
+// Main Component
 const InstrumentLockTag = () => {
-  // Translation hook (similar to login page)
   const { t } = useTranslation();
 
-  // State management (similar to ServerData)
   const [formData, setFormData] = useState({
     client: '',
     instrument: '',
@@ -398,9 +451,8 @@ const InstrumentLockTag = () => {
   const [showMergeFields] = useState(true);
   const [showUnlockOption] = useState(true);
   const [auditTrailModalOpen, setAuditTrailModalOpen] = useState(false);
-const [auditAction, setAuditAction] = useState(null); // 'lock' | 'unlock'
+  const [auditAction, setAuditAction] = useState(null);
 
-  // Options data (similar to ServerData's configuration)
   const [clientOptions] = useState([
     { value: 'client1', label: 'Client A' },
     { value: 'client2', label: 'Client B' },
@@ -436,7 +488,6 @@ const [auditAction, setAuditAction] = useState(null); // 'lock' | 'unlock'
     { tagName: 'Test', value: '', required: true, editable: true, options: [] }
   ]);
 
-  // Event handlers (similar to ServerData's handlers)
   const handleClientChange = useCallback((value) => {
     setFormData(prev => ({ ...prev, client: value }));
   }, []);
@@ -489,65 +540,60 @@ const [auditAction, setAuditAction] = useState(null); // 'lock' | 'unlock'
     return Object.keys(newErrors).length === 0;
   }, [formData, tags, t]);
 
-const handleLock = useCallback(() => {
-  if (!validateForm()) return;
-  setAuditAction('lock');
-  setAuditTrailModalOpen(true);
-}, [validateForm]);
+  const handleLock = useCallback(() => {
+    if (!validateForm()) return;
+    setAuditAction('lock');
+    setAuditTrailModalOpen(true);
+  }, [validateForm]);
 
-const handleUnlock = useCallback(() => {
-  if (!window.confirm(`${t('instrumentlocktag.unlock')}?`)) return;
-  setAuditAction('unlock');
-  setAuditTrailModalOpen(true);
-}, [t]);
-
+  const handleUnlock = useCallback(() => {
+    if (!window.confirm(`${t('instrumentlocktag.unlock')}?`)) return;
+    setAuditAction('unlock');
+    setAuditTrailModalOpen(true);
+  }, [t]);
 
   const handleUpdate = useCallback(() => {
     if (!validateForm()) return;
     alert(t('instrumentlocktag.instrumentupdatedsuccessfully'));
   }, [validateForm, t]);
 
-const handleAuditTrailSubmit = useCallback((auditValues) => {
-  console.log('Audit trail submitted:', auditValues);
+  const handleAuditTrailSubmit = useCallback((auditValues) => {
+    console.log('Audit trail submitted:', auditValues);
+    setAuditTrailModalOpen(false);
 
-  setAuditTrailModalOpen(false);
+    if (auditAction === 'lock') {
+      setIsLocked(true);
+      alert(t('instrumentlocktag.instrumentlockedsuccessfully'));
+    }
 
-  if (auditAction === 'lock') {
-    setIsLocked(true);
-    alert(t('instrumentlocktag.instrumentlockedsuccessfully'));
-  }
+    if (auditAction === 'unlock') {
+      setIsLocked(false);
+      alert(t('instrumentlocktag.instrumentunlockedsuccessfully'));
+    }
 
-  if (auditAction === 'unlock') {
-    setIsLocked(false);
-    alert(t('instrumentlocktag.instrumentunlockedsuccessfully'));
-  }
+    setAuditAction(null);
+  }, [auditAction, t]);
 
-  setAuditAction(null);
-}, [auditAction, t]);
+  const PrimaryButton = ({ icon: Icon, label, onClick, disabled }) => (
+    <button
+      onClick={!disabled ? onClick : undefined}
+      disabled={disabled}
+      className={`flex items-center gap-1 px-2.5 py-2 transition-all text-[11px] font-bold rounded shadow-sm whitespace-nowrap
+        ${disabled 
+          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          : 'bg-white text-blue-600 hover:bg-blue-50 hover:scale-90'}
+      `}
+    >
+      <Icon className="w-4 h-4 stroke-[3]" />
+      <span>{label}</span>
+    </button>
+  );
 
-const PrimaryButton = ({ icon: Icon, label, onClick, disabled }) => (
-  <button
-    onClick={!disabled ? onClick : undefined}
-    disabled={disabled}
-    className={`flex items-center gap-1 px-2.5 py-2 transition-all text-[11px] font-bold rounded shadow-sm whitespace-nowrap
-      ${disabled 
-        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-        : 'bg-white text-blue-600 hover:bg-blue-50 hover:scale-90'}
-    `}
-  >
-    <Icon className="w-4 h-4 stroke-[3]" />
-    <span>{label}</span>
-  </button>
-);
-
-  // Render (following ServerData structure)
   return (
     <div className="flex flex-col w-full font-roboto rounded-md">
-      {/* Main Content Area */}
       <div className="bg-white px-6 py-6">
         <div className="max-w-[1300px]">
           <div className="grid grid-cols-2 gap-0">
-            {/* Left Panel */}
             <div className="max-w-[400px]">
               <AnimatedDropdown
                 label={t('label.client')}
@@ -580,7 +626,6 @@ const PrimaryButton = ({ icon: Icon, label, onClick, disabled }) => (
               <UnderlineTextInput
                 label={t('instrumentlocktag.limsorder')}
                 value={formData.limsOrder}
-                options={limsOrderOptions}
                 onChange={(value) => setFormData(prev => ({ ...prev, limsOrder: value }))}
                 disabled={isLocked}
               />
@@ -613,10 +658,8 @@ const PrimaryButton = ({ icon: Icon, label, onClick, disabled }) => (
               )}
             </div>
 
-            {/* Right Panel */}
             <div>
               <AnimatedDropdown
-              
                 label={t('instrumentlocktag.template')}
                 value={formData.template}
                 options={templateOptions}
@@ -636,35 +679,32 @@ const PrimaryButton = ({ icon: Icon, label, onClick, disabled }) => (
             </div>
           </div>
 
-          {/* Bottom Buttons */}
-<div className="flex justify-end gap-2 mt-8 pt-6 border-t border-gray-200">
-  {!isLocked ? (
-    <PrimaryButton
-      icon={Lock}
-      label={t('instrumentlocktag.lock')}
-      onClick={handleLock}
-    />
-  ) : (
-    <PrimaryButton
-      icon={Edit}
-      label={t('button.update')}
-      onClick={handleUpdate}
-    />
-  )}
+          <div className="flex justify-end gap-2 mt-8 pt-6 border-t border-gray-200">
+            {!isLocked ? (
+              <PrimaryButton
+                icon={Lock}
+                label={t('instrumentlocktag.lock')}
+                onClick={handleLock}
+              />
+            ) : (
+              <PrimaryButton
+                icon={Edit}
+                label={t('button.update')}
+                onClick={handleUpdate}
+              />
+            )}
 
-  {isLocked && (
-    <PrimaryButton
-      icon={Unlock}
-      label={t('instrumentlocktag.unlock')}
-      onClick={handleUnlock}
-    />
-  )}
-</div>
-
+            {isLocked && (
+              <PrimaryButton
+                icon={Unlock}
+                label={t('instrumentlocktag.unlock')}
+                onClick={handleUnlock}
+              />
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Audit Trail Modal */}
       <AuditTrailModal
         isOpen={auditTrailModalOpen}
         onClose={() => setAuditTrailModalOpen(false)}
