@@ -258,43 +258,36 @@ const UsersPage = () => {
             id: 1,
             clientName: "DESKTOP-CU9J5T2",
             instrument: "CU-Summary1 (CU-Summary1)",
-            live: true
         },
         {
             id: 2,
             clientName: "DESKTOP-CU9J5T2",
             instrument: "CU-Summary1 (CU-Summary1)",
-            live: true
         },
         {
             id: 3,
             clientName: "DESKTOP-CU9J5T2",
             instrument: "MU-Summary1 (MU-Summary1)",
-            live: true
         },
         {
             id: 4,
             clientName: "DESKTOP-CU9J5T2",
             instrument: "AU-Summary1 (AU-Summary1)",
-            live: true
         },
         {
             id: 5,
             clientName: "DESKTOP-CU9J5T2",
             instrument: "CU-Summary1 (CU-Summary1)",
-            live: true
         },
         {
             id: 6,
             clientName: "DESKTOP-CU9J5T2",
             instrument: "CU-Summary1 (CU-Summary1)",
-            live: true
         },
         {
             id: 7,
             clientName: "DESKTOP-CU9J5T2",
             instrument: "CU-Summary1 (CU-Summary1)",
-            live: true
         }
     ];
 
@@ -341,7 +334,7 @@ const UsersPage = () => {
         },
         {
             key: 'instrument',
-            label: t("label.Instrument"),
+            label: t("label.instrument"),
             width: 250,
             enableSearch: true,
             render: (row) => (
@@ -352,7 +345,7 @@ const UsersPage = () => {
         },
         {
             key: 'live',
-            label: 'Live',
+            label: t("label.live"),
             width: 100,
             enableSearch: true,
             render: (row) => (
