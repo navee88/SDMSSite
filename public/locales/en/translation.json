@@ -101,7 +101,9 @@
  
   "errormsg":{
     "somethingwentwrong":"Something went wrong",
-    "noresultsfound":"No Results Found"
+    "noresultsfound":"No Results Found",
+    "incompletedatafields": "Incomplete Data Fields"
+ 
   },
   "button": {
     "login": "Login",
@@ -135,7 +137,9 @@
     "add": "Add",
     "remove": "Remove",
     "upload":"Upload",
-    "update":"Update"
+    "update":"Update",
+    "save":"Save",
+    "check":"Check"
   },
   "label": {
     "email": "E-mail",
@@ -201,7 +205,13 @@
     "fileStatus":"File status",
     "modifiedData":"Modified Data",
     "task":"Task",
-    "filter":"Filter"
+    "filter":"Filter",
+    "siteAddress":"Site Address",
+    "contactPerson":"Contact Person",
+    "mobileNo":"Mobile No",
+    "faxNo":"Fax No",
+    "siteName":"Site Name",
+    "siteCode":"Site code"
   },
   "statuses": {
     "activated": "Activated",

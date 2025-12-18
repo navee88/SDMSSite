@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import TabsHeader from "../../../Components/Layout/Common/Home/TabsHeader";
 import { tabConfig } from ".././../../Components/Layout/Common/Home/TabConfig";
 
-export default function AuditTrailHistory() {
-  const [page, setPage] = useState("AuditTrailHistory");
-  const [selectedTab, setSelectedTab] = useState(2);
+export default function BaseMaster() {
+  const [page, setPage] = useState("BaseMaster");
+  const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
     setSelectedTab(0);

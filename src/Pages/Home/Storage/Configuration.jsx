@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import TabsHeader from "../../../Components/Layout/Common/Home/TabsHeader";
 import { tabConfig } from ".././../../Components/Layout/Common/Home/TabConfig";
 
-export default function DataExplorer() {
-  const [page, setPage] = useState("DataExplorer");
+export default function Configuration() {
+  const [page, setPage] = useState("Configuration");
   const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {

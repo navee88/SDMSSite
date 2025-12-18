@@ -90,7 +90,7 @@ const AnimatedDropdown = ({
       {label && (
         <label className="mb-1 block text-xs font-semibold text-gray-600">
           {label}
-          {required && <span className="ml-1 text-red-500">*</span>}
+          {required && <span className="ml-1 text-red-700">*</span>}
         </label>
       )}
  

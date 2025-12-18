@@ -14,14 +14,24 @@ import UserManagement from "../../../../Pages/Home/UserManagment/UserManagement"
 import Passwordpolicy from "../../../../Pages/Home/UserManagment/Passwordpolicy";
 import InstrumentLockSettings from "../../../../Pages/Home/LockSettings/InstrumentLockSettings";
 import MonitorScheduler from "../../../../Pages/Home/Scheduler/MonitorScheduler";
-import AuditTrailHistory from "../../../../Pages/Home/AuditTrailHistory/AuditTrailHistory";
-import DownloadLogs from "../../../../Pages/Home/AuditTrailHistory/DownloadLogs";
-import UploadLogs from "../../../../Pages/Home/AuditTrailHistory/UploadLogs";
-import RestoreLogs from "../../../../Pages/Home/AuditTrailHistory/RestoreLogs";
-import SchedulerConfigLogs from "../../../../Pages/Home/AuditTrailHistory/SchedulerConfigLogs";
-import InstrumentLogs from "../../../../Pages/Home/AuditTrailHistory/InstrumentLogs";
-import ServerAndLocalFileDeleteLogs from "../../../../Pages/Home/AuditTrailHistory/ServerAndLocalFileDeleteLogs";
+import AuditTrailHistory from "../../../../Pages/Home/LogHistory/AuditTrailHistory";
+import DownloadLogs from "../../../../Pages/Home/LogHistory/DownloadLogs";
+import UploadLogs from "../../../../Pages/Home/LogHistory/UploadLogs";
+import RestoreLogs from "../../../../Pages/Home/LogHistory/RestoreLogs";
+import SchedulerConfigLogs from "../../../../Pages/Home/LogHistory/SchedulerConfigLogs";
+import InstrumentLogs from "../../../../Pages/Home/LogHistory/InstrumentLogs";
+import ServerAndLocalFileDeleteLogs from "../../../../Pages/Home/LogHistory/ServerAndLocalFileDeleteLogs";
 import DownloadScheduler from "../../../../Pages/Home/Scheduler/DownloadScheduler";
+import DataScheduler from "../../../../Pages/Home/Scheduler/DataScheduler";
+import BaseMaster from "../../../../Pages/Home/Masters/BaseMaster";
+import ParentParserKey from "../../../../Pages/Home/Masters/ParentParserKey";
+import TagsAndTemplates from "../../../../Pages/Home/Masters/TagsAndTemplates";
+import ViewEditScheduler from "../../../../Pages/Home/Scheduler/ViewEditScheduler";
+import LocalFileDeleteScheduler from "../../../../Pages/Home/Scheduler/LocalFileDeleteScheduler";
+import ServerFileDeleteScheduler from "../../../../Pages/Home/Scheduler/ServerFileDeleteScheduler";
+import ClientServiceMonitor from "../../../../Pages/Home/Scheduler/ClientServiceMonitor";
+import Configuration from "../../../../Pages/Home/Storage/Configuration";
+import Rights from "../../../../Pages/Home/Storage/Rights";
 
 
 export const menuConfig = [
@@ -46,13 +56,13 @@ export const menuConfig = [
     icon: <RiCalendarScheduleLine />,
     label: "Scheduler",
     subItems: [
-      { label: "Data Scheduler", content: <div>Data Scheduler1</div> },
-      { label: "View Edit Scheduler", content: <div>View Edit Scheduler</div> },
+      { label: "Data Scheduler", content: <div><DataScheduler/></div> },
+      { label: "View Edit Scheduler", content: <div><ViewEditScheduler/></div> },
       { label: "Monitor Scheduler", content: <MonitorScheduler/> },
-      { label: "Local File Delete Scheduler", content: <div>Local File Delete Scheduler</div> },
-      { label: "Server File Delete Scheduler", content: <div>Server File Delete Scheduler</div> },
+      { label: "Local File Delete Scheduler", content: <div><LocalFileDeleteScheduler/></div> },
+      { label: "Server File Delete Scheduler", content: <div><ServerFileDeleteScheduler/></div> },
       { label: "Download Scheduler", content: <DownloadScheduler/> },
-      { label: "Client Service Monitor", content: <div>Client Service Monitor</div> },
+      { label: "Client Service Monitor", content: <div><ClientServiceMonitor/></div> },
     ],
   },
 
@@ -60,9 +70,9 @@ export const menuConfig = [
     icon: <FontAwesomeIcon icon={faSitemap} />,
     label: "Masters",
     subItems: [
-      { label: "Base Master", content: <div>Base Master</div> },
-      { label: "Tags and Templates", content: <div>Tags and Templates</div> },
-      { label: "Parent Parser Key", content: <div>Parent Parser Key</div> },
+      { label: "Base Master", content: <div><BaseMaster/></div> },
+      { label: "Tags and Templates", content: <div><TagsAndTemplates/></div> },
+      { label: "Parent Parser Key", content: <div><ParentParserKey/></div> },
     ],
   },
 
@@ -70,8 +80,8 @@ export const menuConfig = [
     icon: <RiFileCloudLine />,
     label: "Storage",
     subItems: [
-      { label: "Configuration", content: <div>Configuration</div> },
-      { label: "Rights", content: <div>Rights</div> },
+      { label: "Configuration", content: <div><Configuration/></div> },
+      { label: "Rights", content: <div><Rights/></div> },
     ],
   },
 

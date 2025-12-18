@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import TabsHeader from "../../../Components/Layout/Common/Home/TabsHeader";
-import { tabConfig } from ".././../../Components/Layout/Common/Home/TabConfig";
+import { tabConfig } from "../../../Components/Layout/Common/Home/TabConfig";
 
-export default function InstrumentLockSettings() {
-  const [page, setPage] = useState("InstrumentLockSettings");
+export default function DownloadLogs() {
+  const [page, setPage] = useState("DownloadLogs");
   const [selectedTab, setSelectedTab] = useState(2);
 
   useEffect(() => {

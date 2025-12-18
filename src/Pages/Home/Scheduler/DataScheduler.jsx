@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import TabsHeader from "../../../Components/Layout/Common/Home/TabsHeader";
 import { tabConfig } from ".././../../Components/Layout/Common/Home/TabConfig";
 
-export default function InstrumentLockSettings() {
-  const [page, setPage] = useState("InstrumentLockSettings");
-  const [selectedTab, setSelectedTab] = useState(2);
+export default function DataScheduler() {
+  const [page, setPage] = useState("DataScheduler");
+  const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
     setSelectedTab(0);

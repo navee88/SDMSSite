@@ -1,12 +1,11 @@
-import DataLogger from "../../../Home/SubFolders/DataExplorer/DataLogger";
-import ServerData from "../../../Home/SubFolders/DataExplorer/ServerData";
-import TemplateView from "../../../Home/SubFolders/DataExplorer/TemplateView";
-import SearchServerData from "../../../Home/SubFolders/SearchServerData/SearchServerData";
-import MyInstruments from "../../../Home/SubFolders/InstrumentLockSettings/MyInstruments";
-import OtherInstruments from "../../../Home/SubFolders/InstrumentLockSettings/OtherInstruments";
-import InstrumentLockTag from "../../../Home/SubFolders/InstrumentLockSettings/InstrumentLocksandTags";
-import InstrumentDataPage from "../../../Home/SubFolders/InstrumentLockSettings/Data";
-
+import DataLogger from "../../../Home/SubFolders/FTPDataView/DataExplorer/DataLogger";
+import ServerData from "../../../Home/SubFolders/FTPDataView/DataExplorer/ServerData";
+import TemplateView from "../../../Home/SubFolders/FTPDataView/DataExplorer/TemplateView";
+import SearchServerData from "../../../Home/SubFolders/FTPDataView/SearchServerData/SearchServerData";
+import MyInstruments from "../../../Home/SubFolders/LockSettings/InstrumentLockSettings/MyInstruments";
+import OtherInstruments from "../../../Home/SubFolders/LockSettings/InstrumentLockSettings/OtherInstruments";
+import InstrumentLockTag from "../../../Home/SubFolders/LockSettings/InstrumentLockSettings/InstrumentLocksandTags";
+import InstrumentDataPage from "../../../Home/SubFolders/LockSettings/InstrumentLockSettings/Data";
 import UploadQueue from "../../../Home/SubFolders/Scheduler/MonitorScheduler/UploadQueue";
 import FailedQueue from "../../../Home/SubFolders/Scheduler/MonitorScheduler/FailedQueue";
 import RestoreMonitor from "../../../Home/SubFolders/Scheduler/MonitorScheduler/RestoreMonitor";
@@ -25,27 +24,32 @@ import ServerFileDeleteLogs from "../../../Home/SubFolders/LogHistory/Server&Loc
 import LocalFileDeleteLogs from "../../../Home/SubFolders/LogHistory/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
 import InstrumentLogs from "../../../Home/SubFolders/LogHistory/InstrumentLogs/InstrumentLogs";
 import SchedulerConfigLogs from "../../../Home/SubFolders/LogHistory/SchedulerConfigLogs/SchedulerConfigLogs";
-
-import UploadQueue from "../../../Home/SubFolders/MonitorSchedular/UploadQueue";
-import FailedQueue from "../../../Home/SubFolders/MonitorSchedular/FailedQueue";
-import RestoreMonitor from "../../../Home/SubFolders/MonitorSchedular/RestoreMonitor";
-import DownloadMonitor from "../../../Home/SubFolders/MonitorSchedular/DownloadMonitor";
-import UploadMonitor from "../../../Home/SubFolders/MonitorSchedular/UploadMonitor";
-import CFRSettings from "../../../Home/SubFolders/AuditTrailHistory/CFRSettings";
-import AuditTrailHistory from "../../../Home/SubFolders/AuditTrailHistory/AuditTrailHistory";
-import DownloadErrorLogs from "../../../Home/SubFolders/DownloadLogs/DownloadErrorLogs";
-import DownloadLogs from "../../../Home/SubFolders/DownloadLogs/DownloadLogs";
-import UploadErrorLogs from "../../../Home/SubFolders/UploadLogs/UploadErrorLogs";
-import UploadLogs from "../../../Home/SubFolders/UploadLogs/UploadLogs";
-import ManualUploadLogs from "../../../Home/SubFolders/UploadLogs/ManualUploadLogs";
-import RestoreLogs from "../../../Home/SubFolders/RestoreLogs/RestoreLogs";
-import RestoreErrorLogs from "../../../Home/SubFolders/RestoreLogs/RestoreErrorLogs";
-import ServerFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDeleteLogs/ServerFileDeleteLogs";
-import LocalFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
-import InstrumentLogs from "../../../Home/SubFolders/InstrumentLogs/InstrumentLogs";
-import SchedulerConfigLogs from "../../../Home/SubFolders/SchedulerConfigLogs/SchedulerConfigLogs";
-import AutoDownloadConfiguration from "../../../Home/SubFolders/DownloadSchedular/AutoDownloadConfiguration";
-import ViewDownloadConfiguration from "../../../Home/SubFolders/DownloadSchedular/ViewDownloadConfiguration";
+import AutoDownloadConfiguration from "../../../Home/SubFolders/Scheduler/DownloadScheduler/AutoDownloadConfiguration";
+import ViewDownloadConfiguration from "../../../Home/SubFolders/Scheduler/DownloadScheduler/ViewDownloadConfiguration";
+import ClientServiceMonitor from "../../../Home/SubFolders/Scheduler/ClientServiceMonitor/ClientServiceMonitor";
+import Domain from "../../../Home/SubFolders/Masters/BaseMaster/Domain";
+import Client from "../../../Home/SubFolders/Masters/BaseMaster/Client";
+import Instrument from "../../../Home/SubFolders/Masters/BaseMaster/Instrument";
+import Site from "../../../Home/SubFolders/Masters/BaseMaster/Site";
+import TagMaster from "../../../Home/SubFolders/Masters/TagsAndTemplate/TagMaster";
+import TemplateMapping from "../../../Home/SubFolders/Masters/TagsAndTemplate/TemplateMapping";
+import ParserKey from "../../../Home/SubFolders/Masters/ParentParserKey/ParserKey";
+import ServerConfiguration from "../../../Home/SubFolders/Storage/Configuration/ServerConfiguration";
+import ServerDriveConfiguration from "../../../Home/SubFolders/Storage/Configuration/ServerDriveConfiguration";
+import StorageConfiguration from "../../../Home/SubFolders/Storage/Configuration/StorageConfiguration";
+import StorageUserMapping from "../../../Home/SubFolders/Storage/Rights/StorageUserMapping";
+import UserGroup from "../../../Home/SubFolders/UserManagementFolder/UserManagement/UserGroup";
+import UserMaster from "../../../Home/SubFolders/UserManagementFolder/UserManagement/UserMaster";
+import UserRights from "../../../Home/SubFolders/UserManagementFolder/UserManagement/UserRights";
+import OnlineUsers from "../../../Home/SubFolders/UserManagementFolder/UserManagement/OnlineUsers";
+import Passwordpolicy from "../../../../Pages/Home/UserManagment/Passwordpolicy";
+import DataScheduler from "../../../Home/SubFolders/Scheduler/DataScheduler/DataScheduler";
+import DeactivatedTask from "../../../Home/SubFolders/Scheduler/ViewEditScheduler/DeactivatedTask";
+import ActivatedTask from "../../../Home/SubFolders/Scheduler/ViewEditScheduler/ActivatedTask";
+import RetiredTask from "../../../Home/SubFolders/Scheduler/ViewEditScheduler/RetiredTask";
+import EditTask from "../../../Home/SubFolders/Scheduler/ViewEditScheduler/EditTask";
+import LocalFileDeleteScheduler from "../../../Home/SubFolders/Scheduler/LocalFileDeleteScheduler/LocalFileDeleteScheduler";
+import ServerFileDeleteScheduler from "../../../Home/SubFolders/Scheduler/ServerFileDeleteScheduler/ServerFileDeleteScheduler";
 
 export const tabConfig = {
   //completed
@@ -65,59 +69,77 @@ export const tabConfig = {
     "My Instruments": { content: <MyInstruments /> },
     "Other Instruments": { content: <OtherInstruments /> },
   },
-  //completed
-  MonitorSchedular: {
-    "Upload Queue": { content: <MonitorScheduler /> },
+  DataScheduler:{
+    "Data Scheduler": { content: <DataScheduler /> },
+  },
+  ViewEditScheduler:{
+    "Deactivated Task": { content: <DeactivatedTask /> },
+    "Activated Task": { content: <ActivatedTask /> },
+    "Retired Task": { content: <RetiredTask /> },
+    "Edit Task": { content: <EditTask /> },
+  },
+    //completed
+  MonitorScheduler: {
+    "Upload Queue": { content: <UploadQueue /> },
     "Failed Queue": { content: <FailedQueue /> },
     "Upload Monitor": { content: <UploadMonitor /> },
     "Restore Monitor": { content: <RestoreMonitor /> },
     "Download Monitor": { content: <DownloadMonitor /> },
   },
-  LocalFileScheduler:{
+  //completed
+  LocalFileDeleteScheduler:{
     "Local File Delete Scheduler": { content: <LocalFileDeleteScheduler /> },
   },
   ServerFileDeleteScheduler:{
-    "Server File Delete Scheduler": { content: <DownloadMonitor /> },
+    "Server File Delete Scheduler": { content: <ServerFileDeleteScheduler /> },
   },
     //completed
-  DownloadSchedular:{
+  DownloadScheduler:{
     "Auto Download Configuration":{content:<AutoDownloadConfiguration/>},
     "View Download Configuration":{content:<ViewDownloadConfiguration/>}
 
   },
+  //completed
   ClientServiceMonitor:{
-    "Client Service Monitor":{content:<AutoDownloadConfiguration/>},
+    "Client Service Monitor":{content:<ClientServiceMonitor/>},
   },
+  //completed
   BaseMaster:{
-    "Domain": { content: <UploadLogs /> },
-    "Client": { content: <UploadErrorLogs /> },
-    "Instrument": { content: <ManualUploadLogs /> },
-    "Site": { content: <UploadLogs /> },
+    "Domain": { content: <Domain /> },
+    "Client": { content: <Client /> },
+    "Instrument": { content: <Instrument /> },
+    "Site": { content: <Site /> },
 
   },
-  TagsandTemplates:{
-    "Tag Master": { content: <ManualUploadLogs /> },
-    "Template Mapping": { content: <UploadLogs /> },
+  //completed
+  TagsAndTemplates:{
+    "Tag Master": { content: <TagMaster /> },
+    "Template Mapping": { content: <TemplateMapping /> },
   },
+  //completed
   ParentParserKey:{
-    "Parser Key": { content: <ManualUploadLogs /> },
+    "Parser Key": { content: <ParserKey /> },
   },
+  //completed
   Configuration:{
-    "Server Configuration": { content: <UploadLogs /> },
-    "Server Drive Configuration": { content: <UploadErrorLogs /> },
-    "Storage Configuration": { content: <ManualUploadLogs /> },
+    "Server Configuration": { content: <ServerConfiguration /> },
+    "Server Drive Configuration": { content: <ServerDriveConfiguration /> },
+    "Storage Configuration": { content: <StorageConfiguration /> },
   },
+  //completed
   Rights:{
-    "Storage User Mapping": { content: <UploadLogs /> },
+    "Storage User Mapping": { content: <StorageUserMapping /> },
   },
+  //completed
   UserManagement:{
-    "User Group": { content: <UploadLogs /> },
-    "User Master": { content: <UploadErrorLogs /> },
-    "User Rights": { content: <ManualUploadLogs /> },
-    "Online Users": { content: <UploadLogs /> },
+    "User Group": { content: <UserGroup /> },
+    "User Master": { content: <UserMaster /> },
+    "User Rights": { content: <UserRights /> },
+    "Online Users": { content: <OnlineUsers /> },
   },
+  //completed
   PasswordPolicy:{
-    "Password Policy": { content: <UploadLogs /> },
+    "Password Policy": { content: <Passwordpolicy /> },
   },
     //completed
   AuditTrailHistory: {
