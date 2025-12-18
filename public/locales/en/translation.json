@@ -200,7 +200,8 @@
     "fileSource":"File source",
     "fileStatus":"File status",
     "modifiedData":"Modified Data",
-    "task":"Task"
+    "task":"Task",
+    "filter":"Filter"
   },
   "statuses": {
     "activated": "Activated",
@@ -287,5 +288,79 @@
   "tagName":"Tag Name",
   "tagValue":"Tag Value",
   "noTagValue":"No Tag Value"
-}
+},
+  "scheduler": {
+    "clientstatus": "Client Status",
+    "instrumentstatus": "Instrument Status",
+    "mustchoosetriggertime": "Must choose Trigger time",
+    "mustchooseendtime": "Must choose End Time",
+    "deactivescheduler": "Deactivate Scheduler",
+    "activescheduler": "Activate Scheduler",
+    "retiredscheduler": "Retire Scheduler",
+    "editscheduler": "Edit Scheduler",
+ 
+    "uploadqueue": "Upload Queue",
+    "failedqueue": "Failed Queue",
+    "uploadmonitor": "Upload Monitor",
+    "restoremonitor": "Restore Monitor",
+    "downloadmonitor": "Download Monitor",
+ 
+    "view": "View",
+    "deactive": "Deactive",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+ 
+    "deactivatedtask": "Deactivated Task",
+    "activatedtask": "Activated Task",
+    "retire": "Retire",
+    "active": "Active",
+ 
+    "editsave": "Edit Save",
+    "filesettings": "File Settings",
+ 
+    "instrumentname": "Instrument Name",
+    "testname": "Test Name",
+    "methodname": "Method Name",
+    "elnstatus": "ELN Status",
+ 
+    "auto": "Auto",
+    "yes": "Yes",
+ 
+    "networkinterface": "Network Interface",
+    "rs232": "RS232",
+    "tcp": "TCP",
+ 
+    "enableparsing": "Enable Parsing",
+ 
+    "localpath": "Local Path",
+    "uncpath": "UNC Path",
+    "sourcepath": "Source Path",
+ 
+    "unccredentials": "UNC Credentials",
+    "destination": "Destination",
+    "backuppolicy": "Backup Policy",
+ 
+    "includesubfolder": "Include Subfolder",
+    "completetree": "Complete Tree",
+    "level": "Level",
+ 
+    "copyfiles": "Copy Files (Leave local copy)",
+    "movepermanently": "Move Files (Do not leave local copy)",
+    "deletelocalcopy": "Delete Local Copy",
+ 
+    "filesolderthan": "Files older than",
+    "backupperiod": "Backup Period",
+ 
+    "triggeron": "Trigger on",
+    "expirydatetime": "Expiry Date & Time",
+ 
+    "filedeletepolicy": "File Policy",
+    "enablefilelink": "Enable File Link",
+    "applydeletepolicyforserverfiles": "Apply Delete Policy for Server Files",
+ 
+    "compliancepolicy": "Compliance Policy",
+    "download": "Download",
+    "manualpathnote": "NOTE:- Browse is not supported. Manually copy the path",
+    "source": "Source"
+  }
 }

@@ -10,7 +10,7 @@ import { FaUser, FaCog } from "react-icons/fa";
 
 import DataExplorer from "../../../../Pages/Home/FTP/DataExplorer";
 import Searchserverdata from "../../../../Pages/Home/FTP/Searchserverdata";
-import UserManagment from "../../../../Pages/Home/UserManagment/UserManagment";
+import UserManagement from "../../../../Pages/Home/UserManagment/UserManagement";
 import Passwordpolicy from "../../../../Pages/Home/UserManagment/Passwordpolicy";
 import InstrumentLockSettings from "../../../../Pages/Home/LockSettings/InstrumentLockSettings";
 import MonitorScheduler from "../../../../Pages/Home/Scheduler/MonitorScheduler";
@@ -79,7 +79,7 @@ export const menuConfig = [
     icon: <FaUser />,
     label: "User Management",
     subItems: [
-      { label: "User Management", content: <UserManagment /> },
+      { label: "User Management", content: <UserManagement /> },
       { label: "Password Policy", content: <Passwordpolicy /> },
     ],
   },

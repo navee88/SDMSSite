@@ -1,9 +1,15 @@
 import axios from "axios";
 
 export const api = axios.create({
-  // baseURL:"http://localhost:9090/SDMS_WebService/",
-  baseURL: "http://localhost:8094/SDMS_WebService/",
-  // baseURL:"http://localhost:9093/SDMS_WebService/",
+<<<<<<< HEAD
+  // baseURL: "http://localhost:8094/SDMS_WebService/",
+  baseURL:"http://localhost:9090/SDMS_WebService/",
+
+=======
+  //baseURL: "http://localhost:8094/SDMS_WebService/",
+  baseURL:"http://localhost:9093/SDMS_WebService/",
+ 
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
   timeout: 60000
 });
 

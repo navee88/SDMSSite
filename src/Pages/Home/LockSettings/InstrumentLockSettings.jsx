@@ -7,7 +7,7 @@ export default function InstrumentLockSettings() {
   const [selectedTab, setSelectedTab] = useState(2);
 
   useEffect(() => {
-    setSelectedTab(0);
+    setSelectedTab(3);
   }, [page]);
 
   const pageTabsObj = tabConfig[page] || {};
