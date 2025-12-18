@@ -578,21 +578,21 @@ const UsersPage = () => {
     const userColumns = useMemo(() => [
         {
             key: 'clientName',
-            label: 'Client Name',
+            label: t('label.clientName'),
             width: 180,
             enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.clientName}</span>
         },
         {
             key: 'fileName',
-            label: 'File Name',
+            label: t('label.fileName'),
             width: 250,
             enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.fileName}</span>
         },
         {
             key: 'taskStatus',
-            label: 'Task Status',
+            label: t('label.taskStatus'),
             width: 120,
             enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.taskStatus}</span>
@@ -936,4 +936,3 @@ const RestoreMonitor = () => {
 }
 
 export default RestoreMonitor
-
