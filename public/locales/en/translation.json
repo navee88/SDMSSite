@@ -134,7 +134,8 @@
     "print":"Print",
     "add": "Add",
     "remove": "Remove",
-    "upload":"Upload"
+    "upload":"Upload",
+    "update":"Update"
   },
   "label": {
     "email": "E-mail",
@@ -280,6 +281,9 @@
   "or": "or ",
   "clickhere": "click here ",
   "tobrowseoraccesscamera": " to browse or access camera ",
-  "toaddfile": " to add file"
+  "toaddfile": " to add file",
+  "tagName":"Tag Name",
+  "tagValue":"Tag Value",
+  "noTagValue":"No Tag Value"
 }
 }
