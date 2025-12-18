@@ -13,8 +13,7 @@ const InstrumentGrid = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [searchValues, setSearchValues] = useState({
         siteName: '',
-        siteCode: '',
-        
+        siteCode: '',  
     });
     const [focusedInput, setFocusedInput] = useState(null);
     const [hoveredColumn, setHoveredColumn] = useState(null);
@@ -30,13 +29,13 @@ const InstrumentGrid = () => {
     const fetchData = async () => {
         // Simulated API response
         const apiData = [
-            { id: 1, siteName: 'DESKTOP-CU9J5T2', siteCode: 'CU-Summary1 (CU-Summary1)', live: true },
-            { id: 2, siteName: 'DESKTOP-CU9J5T2', siteCode: 'CU-Summary1 (CU-Summary1)', live: true },
-            { id: 3, siteName: 'DESKTOP-CU9J5T2', siteCode: 'MU-Summary1 (MU-Summary1)', live: true },
-            { id: 4, siteName: 'DESKTOP-CU9J5T2', siteCode: 'AU-Summary1 (AU-Summary1)', live: true },
-            { id: 5, siteName: 'DESKTOP-CU9J5T2', siteCode: 'CU-Summary1 (CU-Summary1)', live: true },
-            { id: 6, siteName: 'DESKTOP-CU9J5T2', siteCode: 'CU-Summary1 (CU-Summary1)', live: false },
-            { id: 7, siteName: 'DESKTOP-CU9J5T2', siteCode: 'CU-Summary1 (CU-Summary1)', live: true },
+            { id: 1, siteName: 'MU-001', siteCode: 'CU-Summary1 (CU-Summary1)', live: true },
+            { id: 2, siteName: 'MU-002', siteCode: 'CU-Summary1 (CU-Summary1)', live: true },
+            { id: 3, siteName: 'MU-003', siteCode: 'MU-Summary1 (MU-Summary1)', live: true },
+            { id: 4, siteName: 'MU-004', siteCode: 'AU-Summary1 (AU-Summary1)', live: true },
+            { id: 5, siteName: 'MU-005', siteCode: 'CU-Summary1 (CU-Summary1)', live: true },
+            { id: 6, siteName: 'MU-006', siteCode: 'CU-Summary1 (CU-Summary1)', live: false },
+            { id: 7, siteName: 'MU-007', siteCode: 'CU-Summary1 (CU-Summary1)', live: true },
         ];
         setData(apiData);
         setFilteredData(apiData);
@@ -256,44 +255,44 @@ const UsersPage = () => {
     const mockData = [
         {
             id: 1,
-            siteName: "DESKTOP-CU9J5T2",
-            siteCode: "CU-Summary1 (CU-Summary1)",
+            siteCode: "MU-001",
+            siteName: "Kolkata",
             live: true
         },
         {
             id: 2,
-            siteName: "DESKTOP-CU9J5T2",
-            siteCode: "CU-Summary1 (CU-Summary1)",
+            siteCode: "MU-002",
+            siteName: "Chennai",
             live: true
         },
         {
             id: 3,
-            siteName: "DESKTOP-CU9J5T2",
-            siteCode: "MU-Summary1 (MU-Summary1)",
+            siteCode: "MU-003",
+            siteName: "Mumbai",
             live: true
         },
         {
             id: 4,
-            siteName: "DESKTOP-CU9J5T2",
-            siteCode: "AU-Summary1 (AU-Summary1)",
+            siteCode: "MU-004",
+            siteName: "Bangalore",
             live: true
         },
         {
             id: 5,
-            siteName: "DESKTOP-CU9J5T2",
-            siteCode: "CU-Summary1 (CU-Summary1)",
+            siteCode: "MU-005",
+            siteName: "Mumbai",
             live: true
         },
         {
             id: 6,
-            siteName: "DESKTOP-CU9J5T2",
-            siteCode: "CU-Summary1 (CU-Summary1)",
+            siteCode: "MU-006",
+            siteName: "Bangalore",
             live: true
         },
         {
             id: 7,
-            siteName: "DESKTOP-CU9J5T2",
-            siteCode: "CU-Summary1 (CU-Summary1)",
+            siteCode: "MU-007",
+            siteName: "Chennai",
             live: true
         }
     ];
@@ -329,17 +328,6 @@ const UsersPage = () => {
 
     const userColumns = useMemo(() => [
         {
-            key: 'siteName',
-            label: t('label.siteName'),
-            width: 200,
-            enableSearch: true,
-            render: (row) => (
-                <span className="text-gray-700">
-                    {row.siteName}
-                </span>
-            )
-        },
-        {
             key: 'siteCode',
             label: t('label.siteCode'),
             width: 250,
@@ -350,6 +338,17 @@ const UsersPage = () => {
                 </span>
             )
         },
+         {
+            key: 'siteName',
+            label: t('label.siteName'),
+            width: 200,
+            enableSearch: true,
+            render: (row) => (
+                <span className="text-gray-700">
+                    {row.siteName}
+                </span>
+            )
+        }
     ], []);
 
 
