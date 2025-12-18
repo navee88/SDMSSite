@@ -371,7 +371,6 @@
     "compliancepolicy": "Compliance Policy",
     "download": "Download",
     "manualpathnote": "NOTE:- Browse is not supported. Manually copy the path",
-    "source": "Source",
-    "world":"world"
+    "source": "Source"
   }
 }
