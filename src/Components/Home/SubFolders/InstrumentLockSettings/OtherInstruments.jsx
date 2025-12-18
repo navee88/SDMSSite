@@ -1,6 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { RefreshCw, Search, Check } from "lucide-react";
+import { RefreshCw, Check } from "lucide-react";
+import GridLayout from "../../../Layout/Common/Home/Grid/GridLayout";
+
+/* ----------------------------------------------------
+   PRIMARY BUTTON COMPONENT
+---------------------------------------------------- */
+const PrimaryButton = ({ 
+  icon: Icon, 
+  label, 
+  disabled, 
+  onClick, 
+  className = "",
+  variant = "primary" // primary, secondary, danger
+}) => {
+  const baseClasses = "flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold rounded whitespace-nowrap hover:scale-90 transition-all";
+  
+  const variantClasses = {
+    primary: disabled 
+      ? "bg-slate-100 text-slate-300 cursor-not-allowed" 
+      : "bg-[#f1f5f9] text-[#2883FE] hover:bg-[#E6F0FF]",
+    secondary: disabled
+      ? "bg-slate-100 text-slate-300 cursor-not-allowed"
+      : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50",
+    danger: disabled
+      ? "bg-slate-100 text-slate-300 cursor-not-allowed"
+      : "bg-red-50 text-red-600 border border-red-200 hover:bg-red-100"
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+    >
+      {Icon && <Icon className="w-3.5 h-3.5" />}
+      <span>{label}</span>
+    </button>
+  );
+};
 
 /* ----------------------------------------------------
    INFO BOX COMPONENT
@@ -25,73 +63,6 @@ const InfoBox = ({ data }) => (
 );
 
 /* ----------------------------------------------------
-   GRID COMPONENT
----------------------------------------------------- */
-const Grid = ({ columns, data, onSelect, selectedKey, rowKey, onRowClick, showUTCColumn = true }) => {
-  // Filter columns based on showUTCColumn prop
-  const visibleColumns = showUTCColumn 
-    ? columns 
-    : columns.filter(col => col.field !== "sUTCCreatedOn");
-
-  return (
-    <div className="border border-gray-300 bg-white">
-      {/* Header */}
-      <div
-        className="grid bg-[#f5f5f5] border-b border-gray-300"
-        style={{ gridTemplateColumns: visibleColumns.map((c) => c.width).join(" ") }}
-      >
-        {visibleColumns.map((c, i) => (
-          <div key={i} className="px-4 py-2.5 text-sm font-medium text-gray-700 border-r border-gray-300 last:border-r-0">
-            {c.header}
-          </div>
-        ))}
-      </div>
-
-      {/* Search Row */}
-      <div
-        className="grid bg-white border-b border-gray-300"
-        style={{ gridTemplateColumns: visibleColumns.map((c) => c.width).join(" ") }}
-      >
-        {visibleColumns.map((_, i) => (
-          <div key={i} className="px-4 py-2 border-r border-gray-300 last:border-r-0">
-            <Search size={16} className="text-gray-400" />
-          </div>
-        ))}
-      </div>
-
-      {/* Rows */}
-      <div className="min-h-[150px] max-h-[300px] overflow-y-auto">
-        {data.length === 0 ? (
-          <div className="text-center text-sm text-gray-600 py-16">
-            No data to display
-          </div>
-        ) : (
-          data.map((row, i) => (
-            <div
-              key={i}
-              onClick={() => {
-                if (onSelect) onSelect(row);
-                if (onRowClick) onRowClick(row);
-              }}
-              className={`grid cursor-pointer border-b border-gray-200 hover:bg-blue-50 ${
-                selectedKey === row[rowKey] ? "bg-blue-50" : "bg-white"
-              }`}
-              style={{ gridTemplateColumns: visibleColumns.map((c) => c.width).join(" ") }}
-            >
-              {visibleColumns.map((c, j) => (
-                <div key={j} className="px-4 py-2.5 text-sm text-gray-700 border-r border-gray-200 last:border-r-0">
-                  {c.renderer ? c.renderer(row, c.field) : row[c.field]}
-                </div>
-              ))}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
-
-/* ----------------------------------------------------
    MAIN PAGE
 ---------------------------------------------------- */
 export default function OthersInstrumentsPage() {
@@ -103,7 +74,116 @@ export default function OthersInstrumentsPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileTags, setFileTags] = useState([]);
   const [featureStatus, setFeatureStatus] = useState(false);
-  const [showUTCColumn, setShowUTCColumn] = useState(true); // Can be controlled via props or settings
+
+  // Memoized column definitions for locked instruments grid
+  const lockedInstrumentsColumns = useMemo(() => [
+    {
+      key: 'sInstrumentAliasName',
+      label: t("label.instrument") || "Instrument",
+      width: 200,
+      enableSearch: true,
+      render: (row, isSelected) => (
+        <div className="py-1">
+          <div className={`font-semibold ${isSelected ? 'text-gray-900' : 'text-gray-800'}`}>
+            {row.sInstrumentAliasName}
+          </div>
+          <div className="text-xs text-gray-500">{row.sCreatedOn}</div>
+        </div>
+      )
+    },
+    {
+      key: 'sUsername',
+      label: t("instrumentlocktag.lockeduser") || "Locked User",
+      width: 150,
+      enableSearch: true,
+      render: (row, isSelected) => (
+        <span className={isSelected ? 'text-gray-900' : 'text-gray-700'}>
+          {row.sUsername}
+        </span>
+      )
+    },
+    {
+      key: 'sCreatedOn',
+      label: t("instrumentlocktag.LockedOn") || "Locked On",
+      width: 150,
+      enableSearch: true,
+      render: (row, isSelected) => (
+        <span className={isSelected ? 'text-gray-900' : 'text-gray-700'}>
+          {row.sCreatedOn}
+        </span>
+      )
+    },
+    {
+      key: 'sTaskSourcePath',
+      label: t("instrumentlocktag.tasksourcepath") || "Task Source Path",
+      width: 250,
+      enableSearch: true,
+      render: (row, isSelected) => (
+        <span className={isSelected ? 'text-gray-900' : 'text-gray-700'}>
+          {row.sTaskSourcePath}
+        </span>
+      )
+    },
+    {
+      key: 'sTemplateName',
+      label: t("instrumentlocktag.templateName") || "Template Name",
+      width: 200,
+      enableSearch: true,
+      render: (row, isSelected) => (
+        <span className={isSelected ? 'text-gray-900' : 'text-gray-700'}>
+          {row.sTemplateName}
+        </span>
+      )
+    }
+  ], [t]);
+
+  // Memoized column definitions for files grid
+  const filesColumns = useMemo(() => [
+    {
+      key: 'ActualFileName',
+      label: t("instrumentlocktag.filename") || "File Name",
+      width: 400,
+      enableSearch: true,
+      render: (row, isSelected) => (
+        <div className="py-1">
+          <div className={`font-medium ${isSelected ? 'text-gray-900' : 'text-gray-800'}`}>
+            {row.ActualFileName}
+          </div>
+          <div className="text-xs text-gray-500">{row["Created On"]}</div>
+        </div>
+      )
+    },
+    {
+      key: 'Upload Status',
+      label: t("instrumentlocktag.uploadstatus") || "Upload Status",
+      width: 150,
+      noFilter: true,
+      render: (row, isSelected) => {
+        const status = row["Upload Status"]?.trim();
+        if (!status) return null;
+        const isUploaded = status === "Uploaded";
+        return (
+          <div className="flex items-center justify-center">
+            <Check 
+              className={isUploaded ? "text-green-500" : "text-orange-500"} 
+              size={20} 
+            />
+          </div>
+        );
+      }
+    },
+    {
+      key: 'Client Name',
+      label: t("label.clientName") || "Client Name",
+      width: 400,
+      enableSearch: true,
+      render: (row, isSelected) => (
+        <span className={isSelected ? 'text-gray-900' : 'text-gray-700'}>
+          {row["Client Name"]}
+        </span>
+      )
+    }
+  ], [t]);
 
   // Load initial data
   useEffect(() => {
@@ -220,143 +300,56 @@ export default function OthersInstrumentsPage() {
     }
   };
 
-  // Renderer for instrument name with date
-  const instrumentNameRenderer = (row, field) => {
-    return (
-      <div className="py-1">
-        <div className="font-semibold text-gray-800">{row.sInstrumentAliasName}</div>
-        <div className="text-xs text-gray-500">{row.sCreatedOn}</div>
-      </div>
-    );
-  };
-
-  // Renderer for file name with date
-  const fileNameRenderer = (row, field) => {
-    return (
-      <div className="py-1">
-        <div className="font-medium text-gray-800">{row.ActualFileName}</div>
-        <div className="text-xs text-gray-500">{row["Created On"]}</div>
-      </div>
-    );
-  };
-
-  // Renderer for upload status
-  const uploadStatusRenderer = (row, field) => {
-    const status = row["Upload Status"]?.trim();
-    if (!status) return null;
-    
-    const isUploaded = status === "Uploaded";
-    return (
-      <div className="flex items-center justify-center">
-        <Check 
-          className={isUploaded ? "text-green-500" : "text-orange-500"} 
-          size={20} 
-        />
-      </div>
-    );
-  };
-
   return (
     <div className="p-6 bg-[#fafafa] min-h-screen font-sans">
-      <div className="max-w-[1400px]">
+      <div className="max-w-[1400px] space-y-6">
         {/* Locked Instrument Details */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
+        <div>
+          <div className="flex justify-between items-center mb-4">
             <h3 className="text-sm font-medium text-[#4a6fa5]">
               {t("instrumentlocktag.lockedinstrumentdetails")}
             </h3>
-            <button 
+            <PrimaryButton 
               onClick={handleRefreshInstruments}
-              className="flex items-center gap-1 text-[#4a9fd8] text-sm font-medium"
-            >
-              <RefreshCw size={16} />
-              {t("instrumentlocktag.refresh")}
-            </button>
+              icon={RefreshCw}
+              label={t("instrumentlocktag.refresh") || "Refresh"}
+            />
           </div>
 
-          <Grid
-            columns={[
-              { 
-                header: t("label.instrument") || "Instrument", 
-                field: "sInstrumentAliasName", 
-                width: "20%",
-                renderer: instrumentNameRenderer
-              },
-              { 
-                header: t("instrumentlocktag.lockeduser") || "Locked User", 
-                field: "sUsername", 
-                width: "20%" 
-              },
-              { 
-                header: t("instrumentlocktag.LockedOn") || "Locked On", 
-                field: "sCreatedOn", 
-                width: "20%" 
-              },
-              {  
-                header: t("instrumentlocktag.tasksourcepath") || "Task Source Path", 
-                field: "sTaskSourcePath", 
-                width: "20%" 
-              },
-              { 
-                header: t("instrumentlocktag.templateName") || "Template Name", 
-                field: "sTemplateName", 
-                width: "20%" 
-              },
-            ]}
-            data={lockedInstruments}
-            onSelect={setSelectedInstrument}
-            onRowClick={handleInstrumentSelect}
-            selectedKey={selectedInstrument?.sTaskID}
-            rowKey="sTaskID"
-            showUTCColumn={showUTCColumn}
-          />
+            <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+              <GridLayout
+                columns={lockedInstrumentsColumns}
+                data={lockedInstruments}
+                onRowSelect={handleInstrumentSelect}
+              />
+          </div>
         </div>
 
         {/* File Information */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
+        <div>
+          <div className="flex justify-between items-center mb-4">
             <h3 className="text-sm font-medium text-[#4a6fa5]">
               {t("instrumentlocktag.fileinformation")}
             </h3>
-            <button 
+            <PrimaryButton 
               onClick={handleRefreshFiles}
-              className="flex items-center gap-1 text-[#4a9fd8] text-sm font-medium"
-            >
-              <RefreshCw size={16} />
-              {t("instrumentlocktag.refresh")}
-            </button>
+              icon={RefreshCw}
+              label={t("instrumentlocktag.refresh") || "Refresh"}
+            />
           </div>
 
-          <Grid
-            columns={[
-              { 
-                header: t("instrumentlocktag.filename") || "File Name", 
-                field: "File Name", 
-                width: "40%",
-                renderer: fileNameRenderer
-              },
-              { 
-                header: t("instrumentlocktag.uploadstatus") || "Upload Status", 
-                field: "Upload Status", 
-                width: "20%",
-                renderer: uploadStatusRenderer
-              },
-              { 
-                header: t("label.clientName") || "Client Name", 
-                field: "Client Name", 
-                width: "40%" 
-              },
-            ]}
-            data={files}
-            onSelect={handleFileSelect}
-            selectedKey={selectedFile?.["File Name"]}
-            rowKey="File Name"
-          />
+            <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+              <GridLayout
+                columns={filesColumns}
+                data={files}
+                onRowSelect={handleFileSelect}
+              />
+          </div>
         </div>
 
         {/* File Tag Information */}
         {!featureStatus && (
-          <div className="mb-6">
+          <div>
             <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
               {t("instrumentlocktag.filetagsinformation")}
             </h3>

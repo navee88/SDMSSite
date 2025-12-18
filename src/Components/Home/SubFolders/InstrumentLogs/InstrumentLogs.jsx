@@ -510,7 +510,7 @@ const UsersPage = () => {
             fileSource: "file_source1",
             fileName: "sample1",
             fileStatus: "Completed",
-            transactionOn:"25-11-2025"
+            transactionOn: "25-11-2025"
         },
         {
             id: 2,
@@ -518,7 +518,7 @@ const UsersPage = () => {
             fileSource: "file_source2",
             fileName: "sample2",
             fileStatus: "Completed",
-            transactionOn:"25-01-2025"
+            transactionOn: "25-01-2025"
         },
         {
             id: 3,
@@ -526,15 +526,15 @@ const UsersPage = () => {
             fileSource: "file_source3",
             fileName: "sample3",
             fileStatus: "Completed",
-            transactionOn:"13-11-2025"
+            transactionOn: "13-11-2025"
         },
         {
             id: 4,
-           taskID: "TS_4",
+            taskID: "TS_4",
             fileSource: "file_source4",
             fileName: "sample4",
             fileStatus: "Completed",
-            transactionOn:"10-07-2025"
+            transactionOn: "10-07-2025"
 
         },
         {
@@ -543,16 +543,16 @@ const UsersPage = () => {
             fileSource: "file_source5",
             fileName: "sample5",
             fileStatus: "Completed",
-            transactionOn:"13-09-2025"
+            transactionOn: "13-09-2025"
 
         },
         {
             id: 6,
-             taskID: "TS_6",
+            taskID: "TS_6",
             fileSource: "file_source6",
             fileName: "sample6",
             fileStatus: "Completed",
-            transactionOn:"18-05-2025"
+            transactionOn: "18-05-2025"
 
         },
         {
@@ -561,7 +561,7 @@ const UsersPage = () => {
             fileSource: "file_source7",
             fileName: "sample7",
             fileStatus: "Completed",
-            transactionOn:"29-11-2025"
+            transactionOn: "29-11-2025"
 
         }
     ];
@@ -599,30 +599,35 @@ const UsersPage = () => {
             key: 'taskId',
             label: 'Task ID',
             width: 80,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.taskID}</span>
         },
         {
             key: 'fileSource',
             label: 'File Source',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.fileSource}</span>
         },
         {
             key: 'fileName',
             label: 'File Name',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.fileName}</span>
         },
-         {
+        {
             key: 'fileStatus',
             label: 'File Status',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.fileStatus}</span>
         },
-         {
+        {
             key: 'transactionOn',
             label: 'Transaction On',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.transactionOn}</span>
         }
     ], []);
@@ -856,9 +861,10 @@ const InstrumentLogs = () => {
                             <AnimatedDropdown
                                 label={t("label.clientName")}
                                 value={selectedClient}
-                                options={["All","User A", "User B"]}
+                                options={["All", "User A", "User B"]}
                                 onChange={(e) => setSelectedClient(e.target.value)}
-                                isSearchable
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
                         </div>
 
@@ -867,9 +873,10 @@ const InstrumentLogs = () => {
                             <AnimatedDropdown
                                 label={t("label.instrument")}
                                 value={instrument}
-                                options={["All","INST-001", "INST-002", "INST-003"]}
+                                options={["All", "INST-001", "INST-002", "INST-003"]}
                                 onChange={(e) => setInstrument(e.target.value)}
-                                isSearchable
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
 
                         </div>
@@ -881,7 +888,8 @@ const InstrumentLogs = () => {
                                 value={recordsDuration}
                                 options={["Current Date", "Last 7 Days", "Last 30 Days", "Last 1 Year", "Custom Date"]}
                                 onChange={handleDurationChange}
-                                isSearchable={true}
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
                         </div>
 

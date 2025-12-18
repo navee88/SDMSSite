@@ -580,19 +580,22 @@ const UsersPage = () => {
     {
       key: 'clientName',
       label: 'Client Name',
-      width: 180, // Adjust
+      width: 180,
+      enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.clientName}</span>
     },
     {
       key: 'fileName',
       label: 'File Name',
       width: 250,
+      enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.fileName}</span>
     },
     {
       key: 'taskStatus',
       label: 'Task Status',
       width: 120,
+      enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.taskStatus}</span>
     }
   ], []);
@@ -663,7 +666,7 @@ const DownloadMonitor = () => {
   const [fromDate, setFromDate] = useState(today);
   const [toDate, setToDate] = useState(today);
   const [filename, setFilename] = useState("");
-  const options =["User A", "User B"];
+  const options = ["User A", "User B"];
   const [selectedClient, setSelectedClient] = useState(options[0]);
   const [taskId, setTaskId] = useState("");
   const [fileName, setFileName] = useState("");
@@ -822,7 +825,8 @@ const DownloadMonitor = () => {
                 value={selectedClient}
                 options={options}
                 onChange={(e) => setSelectedClient(e.target.value)}
-                isSearchable
+                // isSearchable={true}
+                allowFreeInput={true}
               />
 
             </div>
@@ -834,7 +838,8 @@ const DownloadMonitor = () => {
                 value={taskId}
                 options={["Task-001", "Task-002", "Task-003"]}
                 onChange={(e) => setTaskId(e.target.value)}
-                isSearchable
+                // isSearchable={true}
+                allowFreeInput={true}
               />
 
             </div>
@@ -856,7 +861,8 @@ const DownloadMonitor = () => {
                 value={recordsDuration}
                 options={["Current Date", "Last 7 Days", "Last 30 Days", "Last 1 Year", "Custom Date"]}
                 onChange={handleDurationChange}
-                isSearchable={true}
+                // isSearchable={true}
+                allowFreeInput={true}
               />
             </div>
 

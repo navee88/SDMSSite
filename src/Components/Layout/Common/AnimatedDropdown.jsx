@@ -12,7 +12,13 @@ const AnimatedDropdown = ({
   direction = "down",
   isSearchable = false,
   allowFreeInput = false,
+<<<<<<< HEAD
   disabled = false
+=======
+  disabled = false,
+  required = false,
+  showError = false
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,7 +27,11 @@ const AnimatedDropdown = ({
   const dropdownRef = useRef(null);
   const searchInputRef = useRef(null);
   const optionsRefs = useRef([]);
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
   const getValue = (opt) =>
     valueKey && typeof opt === "object" ? opt[valueKey] : opt;
  
@@ -33,7 +43,11 @@ const AnimatedDropdown = ({
     const selected = options.find(opt => getValue(opt) === value);
     return selected ? getLabel(selected) : value;
   };
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
   const filteredOptions = useMemo(() => {
     if ((!isSearchable && !allowFreeInput) || !searchTerm) return options;
  
@@ -44,13 +58,23 @@ const AnimatedDropdown = ({
         .includes(searchTerm.toLowerCase())
     );
   }, [options, searchTerm, isSearchable, allowFreeInput]);
+<<<<<<< HEAD
  
+=======
+
+  const hasError = required && showError && !value;
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
   useEffect(() => {
     if (isOpen && isSearchable && searchInputRef.current && !disabled) {
       searchInputRef.current.focus();
     }
   }, [isOpen, isSearchable, disabled]);
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
@@ -66,6 +90,7 @@ const AnimatedDropdown = ({
     return () =>
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+<<<<<<< HEAD
  
   useEffect(() => {
     if (focusedIndex >= 0 && optionsRefs.current[focusedIndex]) {
@@ -79,6 +104,12 @@ const AnimatedDropdown = ({
   const handleSelect = (opt) => {
     if (disabled) return;
  
+=======
+
+  const handleSelect = (opt) => {
+    if (disabled) return;
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
     onChange({
       target: {
         name,
@@ -90,6 +121,7 @@ const AnimatedDropdown = ({
     setSearchTerm("");
     setFocusedIndex(-1);
   };
+<<<<<<< HEAD
  
   const handleKeyDown = (e) => {
     if (disabled) return;
@@ -145,6 +177,21 @@ const AnimatedDropdown = ({
         </label>
       )}
  
+=======
+
+  const containerClasses =
+    direction === "up" ? "bottom-full mb-1" : "top-full mt-1";
+
+  return (
+    <div className="relative mb-4" ref={dropdownRef}>
+      {label && (
+        <label className="mb-1 block text-xs font-semibold text-gray-600">
+          {label}
+          {required && <span className="ml-1 text-red-500">*</span>}
+        </label>
+      )}
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
       <div className="relative">
         <input
           type="text"
@@ -160,6 +207,7 @@ const AnimatedDropdown = ({
           }}
           onClick={() => {
             if (disabled) return;
+<<<<<<< HEAD
             if (!allowFreeInput) {
               setIsOpen(prev => !prev);
             }
@@ -167,6 +215,13 @@ const AnimatedDropdown = ({
           onChange={(e) => {
             if (disabled || !allowFreeInput) return;
  
+=======
+            if (!allowFreeInput) setIsOpen(prev => !prev);
+          }}
+          onChange={(e) => {
+            if (disabled || !allowFreeInput) return;
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
             const val = e.target.value;
             setSearchTerm(val);
             setIsOpen(true);
@@ -180,14 +235,23 @@ const AnimatedDropdown = ({
             ${
               disabled
                 ? "border-gray-200 text-gray-400 cursor-not-allowed"
+<<<<<<< HEAD
                 : isOpen
                   ? "border-blue-500 text-blue-600 cursor-pointer"
                   : "border-gray-300 cursor-pointer"
+=======
+                : hasError
+                  ? "border-red-500 text-red-600"
+                  : isOpen
+                    ? "border-blue-500 text-blue-600"
+                    : "border-gray-300"
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
             }
           `}
         />
  
         <ChevronDown
+<<<<<<< HEAD
           onClick={() => {
             if (!disabled) setIsOpen(prev => !prev);
           }}
@@ -199,11 +263,26 @@ const AnimatedDropdown = ({
                 : isOpen
                   ? "rotate-180 text-blue-500 cursor-pointer"
                   : "text-gray-400 cursor-pointer"
+=======
+          onClick={() => !disabled && setIsOpen(prev => !prev)}
+          className={`
+            absolute right-0 top-1 h-4 w-4
+            ${
+              disabled
+                ? "text-gray-300"
+                : isOpen
+                  ? "rotate-180 text-blue-500"
+                  : "text-gray-400"
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
             }
           `}
         />
       </div>
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
       {isOpen && !disabled && (
         <div
           className={`
@@ -228,6 +307,7 @@ const AnimatedDropdown = ({
           )}
  
           <div className="overflow-y-auto">
+<<<<<<< HEAD
             {filteredOptions.map((opt, i) => {
               const isSelected = getValue(opt) === value;
  
@@ -252,6 +332,20 @@ const AnimatedDropdown = ({
               );
             })}
  
+=======
+            {filteredOptions.map((opt, i) => (
+              <div
+                key={i}
+                ref={(el) => (optionsRefs.current[i] = el)}
+                onClick={() => handleSelect(opt)}
+                onMouseEnter={() => setFocusedIndex(i)}
+                className="cursor-pointer px-3 py-2 text-sm hover:bg-slate-100"
+              >
+                {getLabel(opt)}
+              </div>
+            ))}
+
+>>>>>>> daf3eebd19a3e155a0b2021bec1fe77ba8e6fae2
             {filteredOptions.length === 0 && (
               <div className="px-3 py-2 text-center text-xs text-gray-400">
                 No results found
