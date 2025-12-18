@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ChevronDown, Search } from "lucide-react";
- 
+
 const AnimatedDropdown = ({
   label,
   name,
@@ -14,31 +14,32 @@ const AnimatedDropdown = ({
   allowFreeInput = false,
   disabled = false,
   required = false,
-  showError = false
+  showError = false,
+  borderColor
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [focusedIndex, setFocusedIndex] = useState(-1);
- 
+
   const dropdownRef = useRef(null);
   const searchInputRef = useRef(null);
   const optionsRefs = useRef([]);
- 
+
   const getValue = (opt) =>
     valueKey && typeof opt === "object" ? opt[valueKey] : opt;
- 
+
   const getLabel = (opt) =>
     displayKey && typeof opt === "object" ? opt[displayKey] : opt;
- 
+
   const getDisplayValue = () => {
     if (!value) return "";
     const selected = options.find(opt => getValue(opt) === value);
     return selected ? getLabel(selected) : value;
   };
- 
+
   const filteredOptions = useMemo(() => {
     if ((!isSearchable && !allowFreeInput) || !searchTerm) return options;
- 
+
     return options.filter(opt =>
       getLabel(opt)
         .toString()
@@ -46,15 +47,15 @@ const AnimatedDropdown = ({
         .includes(searchTerm.toLowerCase())
     );
   }, [options, searchTerm, isSearchable, allowFreeInput]);
- 
+
   const hasError = required && showError && !value;
- 
+
   useEffect(() => {
     if (isOpen && isSearchable && searchInputRef.current && !disabled) {
       searchInputRef.current.focus();
     }
   }, [isOpen, isSearchable, disabled]);
- 
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -66,25 +67,25 @@ const AnimatedDropdown = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
- 
+
   const handleSelect = (opt) => {
     if (disabled) return;
- 
+
     onChange({
       target: {
         name,
         value: getValue(opt)
       }
     });
- 
+
     setIsOpen(false);
     setSearchTerm("");
     setFocusedIndex(-1);
   };
- 
+
   const containerClasses =
     direction === "up" ? "bottom-full mb-1" : "top-full mt-1";
- 
+
   return (
     <div className="relative mb-4" ref={dropdownRef}>
       {label && (
@@ -93,7 +94,7 @@ const AnimatedDropdown = ({
           {required && <span className="ml-1 text-red-700">*</span>}
         </label>
       )}
- 
+
       <div className="relative">
         <input
           type="text"
@@ -113,44 +114,44 @@ const AnimatedDropdown = ({
           }}
           onChange={(e) => {
             if (disabled || !allowFreeInput) return;
- 
+
             const val = e.target.value;
             setSearchTerm(val);
             setIsOpen(true);
- 
+
             onChange({
               target: { name, value: val }
             });
           }}
           className={`
             w-full border-b-2 bg-transparent pb-1 text-sm font-semibold outline-none
-            ${
-              disabled
-                ? "border-gray-200 text-gray-400 cursor-not-allowed"
-                : hasError
-                  ? "border-red-500 text-red-600"
-                  : isOpen
-                    ? "border-blue-500 text-blue-600"
-                    : "border-gray-300"
+            ${disabled
+              ? "border-gray-200 text-gray-400 cursor-not-allowed"
+              : hasError
+                ? "border-red-500 text-red-600"
+                : isOpen
+                  ? "border-blue-500 text-blue-600" 
+                  : borderColor
+                    ? borderColor                   
+                    : "border-gray-300 text-gray-700"
             }
           `}
         />
- 
+
         <ChevronDown
           onClick={() => !disabled && setIsOpen(prev => !prev)}
           className={`
             absolute right-0 top-1 h-4 w-4
-            ${
-              disabled
-                ? "text-gray-300"
-                : isOpen
-                  ? "rotate-180 text-blue-500"
-                  : "text-gray-400"
+            ${disabled
+              ? "text-gray-300"
+              : isOpen
+                ? "rotate-180 text-blue-500"
+                : "text-gray-400"
             }
           `}
         />
       </div>
- 
+
       {isOpen && !disabled && (
         <div
           className={`
@@ -173,7 +174,7 @@ const AnimatedDropdown = ({
               </div>
             </div>
           )}
- 
+
           <div className="overflow-y-auto">
             {filteredOptions.map((opt, i) => (
               <div
@@ -186,7 +187,7 @@ const AnimatedDropdown = ({
                 {getLabel(opt)}
               </div>
             ))}
- 
+
             {filteredOptions.length === 0 && (
               <div className="px-3 py-2 text-xs text-gray-400 text-center">
                 No results found
@@ -198,5 +199,5 @@ const AnimatedDropdown = ({
     </div>
   );
 };
- 
+
 export default React.memo(AnimatedDropdown);
