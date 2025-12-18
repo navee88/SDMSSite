@@ -5,13 +5,13 @@ import {
     CheckCircle, List, MoreVertical, MousePointer2, Calendar,
     UploadIcon,
     Search,
+    RotateCwIcon,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+import { useLanguage } from '../../../../../Context/LanguageContext';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
+
 
 
 const InstrumentGrid = () => {
@@ -505,45 +505,63 @@ const UsersPage = () => {
     const mockData = [
         {
             id: 1,
-            clientName: "DESKTOP-CU9J5T2",
+            taskID: "TS_1",
+            fileSource: "file_source1",
             fileName: "sample1",
-            taskStatus: "Completed"
+            fileStatus: "Completed",
+            transactionOn: "25-11-2025"
         },
         {
             id: 2,
-            clientName: "DESKTOP-CU9J5T2",
+            taskID: "TS_2",
+            fileSource: "file_source2",
             fileName: "sample2",
-            taskStatus: "Completed"
+            fileStatus: "Completed",
+            transactionOn: "25-01-2025"
         },
         {
             id: 3,
-            clientName: "DESKTOP-CU9J5T2",
+            taskID: "TS_3",
+            fileSource: "file_source3",
             fileName: "sample3",
-            taskStatus: "Completed"
+            fileStatus: "Completed",
+            transactionOn: "13-11-2025"
         },
         {
             id: 4,
-            clientName: "DESKTOP-CU9J5T2",
+            taskID: "TS_4",
+            fileSource: "file_source4",
             fileName: "sample4",
-            taskStatus: "Completed"
+            fileStatus: "Completed",
+            transactionOn: "10-07-2025"
+
         },
         {
             id: 5,
-            clientName: "DESKTOP-CU9J5T2",
+            taskID: "TS_5",
+            fileSource: "file_source5",
             fileName: "sample5",
-            taskStatus: "Completed"
+            fileStatus: "Completed",
+            transactionOn: "13-09-2025"
+
         },
         {
             id: 6,
-            clientName: "DESKTOP-CU9J5T2",
+            taskID: "TS_6",
+            fileSource: "file_source6",
             fileName: "sample6",
-            taskStatus: "Completed"
+            fileStatus: "Completed",
+            transactionOn: "18-05-2025"
+
         },
         {
             id: 7,
-            clientName: "DESKTOP-CU9J5T2",
+            taskID: "TS_7",
+            fileSource: "file_source7",
             fileName: "sample7",
-            taskStatus: "Completed"
+            fileStatus: "Completed",
+            transactionOn: "29-11-2025"
+
         }
     ];
 
@@ -577,25 +595,39 @@ const UsersPage = () => {
 
     const userColumns = useMemo(() => [
         {
-            key: 'clientName',
-            label: 'Client Name',
-            width: 180,
+            key: 'taskId',
+            label: 'Task ID',
+            width: 80,
             enableSearch: true,
-            render: (row) => <span className="text-gray-700">{row.clientName}</span>
+            render: (row) => <span className="text-gray-700">{row.taskID}</span>
+        },
+        {
+            key: 'fileSource',
+            label: 'File Source',
+            width: 120,
+            enableSearch: true,
+            render: (row) => <span className="text-gray-700">{row.fileSource}</span>
         },
         {
             key: 'fileName',
             label: 'File Name',
-            width: 250,
+            width: 120,
             enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.fileName}</span>
         },
         {
-            key: 'taskStatus',
-            label: 'Task Status',
+            key: 'fileStatus',
+            label: 'File Status',
             width: 120,
             enableSearch: true,
-            render: (row) => <span className="text-gray-700">{row.taskStatus}</span>
+            render: (row) => <span className="text-gray-700">{row.fileStatus}</span>
+        },
+        {
+            key: 'transactionOn',
+            label: 'Transaction On',
+            width: 120,
+            enableSearch: true,
+            render: (row) => <span className="text-gray-700">{row.transactionOn}</span>
         }
     ], []);
 
@@ -604,31 +636,37 @@ const UsersPage = () => {
         <div className="space-y-3 text-[12px]">
 
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.sourcePath")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.sourcePath}D:\SDMSFTP\SourcePath</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.loginUsername")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.size}Administrator</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.type")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.type}TS1</div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoreLocation")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoreLocation}D:\SDMSFTP\Restore</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.domain")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.domain}DESKTOP-CU9J5T2</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.errorDescription")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}NO Error</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.taskId")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.taskId}TS_1</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoredBy")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoredBy}</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.fileSource")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.fileSource}</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoredOn")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoredOn}</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.fileName")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.fileName}</div>
             </div>
-
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.fileStatus")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.fileStatus}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.transactionOn")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.transactionOn}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.comments")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.comments}</div>
+            </div>
         </div>
     );
 
@@ -655,7 +693,7 @@ const UsersPage = () => {
 
 
 
-const RestoreMonitor = () => {
+const InstrumentLogs = () => {
     const today = getCurrentDate();
     // const [hideEmpty, setHideEmpty] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
@@ -665,9 +703,8 @@ const RestoreMonitor = () => {
     const [recordsDuration, setRecordsDuration] = useState("Current Date");
     const [fromDate, setFromDate] = useState(today);
     const [toDate, setToDate] = useState(today);
-    const options = ["User A", "User B"]
-    const [selectedClient, setSelectedClient] = useState(options[0]);
-    const [taskId, setTaskId] = useState("");
+    const [selectedClient, setSelectedClient] = useState("All");
+    const [instrument, setInstrument] = useState("All");
     const [fileName, setFileName] = useState("");
 
 
@@ -819,11 +856,11 @@ const RestoreMonitor = () => {
                 {isOpen ? (
                     <div className="flex flex-wrap items-end gap-3.5 mb-2">
 
-                        <div className="w-60">
+                        <div className="w-60 mr-2">
                             <AnimatedDropdown
                                 label={t("label.clientName")}
                                 value={selectedClient}
-                                options={options}
+                                options={["All", "User A", "User B"]}
                                 onChange={(e) => setSelectedClient(e.target.value)}
                                 // isSearchable={true}
                                 allowFreeInput={true}
@@ -831,30 +868,20 @@ const RestoreMonitor = () => {
                         </div>
 
 
-                        <div className="w-60 mr-40">
+                        <div className="w-60 mr-4">
                             <AnimatedDropdown
-                                label={t("label.taskId")}
-                                value={taskId}
-                                options={["Task-001", "Task-002", "Task-003"]}
-                                onChange={(e) => setTaskId(e.target.value)}
+                                label={t("label.instrument")}
+                                value={instrument}
+                                options={["All", "INST-001", "INST-002", "INST-003"]}
+                                onChange={(e) => setInstrument(e.target.value)}
                                 // isSearchable={true}
                                 allowFreeInput={true}
                             />
 
                         </div>
 
-                        <div className="w-60">
-                            <AnimatedInput
-                                label={t("label.fileName")}
-                                name="filename"
-                                value={fileName}
-                                onChange={(e) => setFileName(e.target.value)}
-                            />
 
-                        </div>
-
-
-                        <div className="w-60">
+                        <div className="w-60 mr-2">
                             <AnimatedDropdown
                                 label={t("label.recordsDuration")}
                                 value={recordsDuration}
@@ -888,6 +915,7 @@ const RestoreMonitor = () => {
                         <div className="flex items-end gap-2 pb-2 ml-4">
                             <PrimaryButton icon={Filter} label={t('button.filter')} />
                             <PrimaryButton icon={RefreshCw} label={t('button.refresh')} />
+                            <PrimaryButton icon={RotateCwIcon} label={t('button.reset')} />
                             <PrimaryButton icon={UploadIcon} label={t('button.export')} />
                         </div>
                     </div>
@@ -896,11 +924,11 @@ const RestoreMonitor = () => {
 
                         <div className="flex items-center gap-2">
                             <span className="font-bold text-xs text-slate-600">{t("label.clientName")}:</span>
-                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient || "---"}</span>
+                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient || "All"}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>
-                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{fileName || "---"}</span>
+                            <span className="font-bold text-xs text-slate-600">{t("label.instrument")}:</span>
+                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{instrument || "All"}</span>
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -934,5 +962,7 @@ const RestoreMonitor = () => {
     )
 }
 
-export default RestoreMonitor
+export default InstrumentLogs
+
+
 

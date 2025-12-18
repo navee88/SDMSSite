@@ -6,12 +6,12 @@ import {
   UploadIcon,
   Search,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
+import { useLanguage } from '../../../../../Context/LanguageContext';
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+
 
 
 const InstrumentGrid = () => {
@@ -576,7 +576,6 @@ const UsersPage = () => {
       enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.clientName}</span>
     },
-
     {
       key: 'fileName',
       label: 'File Name',
@@ -600,15 +599,15 @@ const UsersPage = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.location")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}D:/SDMSFTP/Uploads</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.errorDescription")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}No Error</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
         <div className="font-semibold text-700 text-[#405F7D]">{t("label.userName")}</div>
         <div className="col-span-2 font-semibold text-[#353F49]">{user.userName}</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.taskExecutedOn")}</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.uploadOn")}</div>
         <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedOn}</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
@@ -641,7 +640,7 @@ const UsersPage = () => {
 
 
 
-const ManualUploadLogs = () => {
+const UploadErrorLogs = () => {
   const today = getCurrentDate();
   // const [hideEmpty, setHideEmpty] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
@@ -821,7 +820,7 @@ const ManualUploadLogs = () => {
               <AnimatedDropdown
                 label={t("label.task")}
                 value={task}
-                options={["TS1_D:/SDMSFTP-001", "TS2_D:/SDMSFTP-002", "TS3_D:/SDMSFTP-003"]}
+                options={["TS1_D:\SDMSFTP-001", "TS2_D:\SDMSFTP-002", "TS3_D:\SDMSFTP-003"]}
                 onChange={(e) => setTask(e.target.value)}
                 // isSearchable={true}
                 allowFreeInput={true}
@@ -920,5 +919,5 @@ const ManualUploadLogs = () => {
   )
 }
 
-export default ManualUploadLogs
+export default UploadErrorLogs
 

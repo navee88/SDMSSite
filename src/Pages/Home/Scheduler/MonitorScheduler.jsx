@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import TabsHeader from "../../../Components/Layout/Common/Home/TabsHeader";
 import { tabConfig } from ".././../../Components/Layout/Common/Home/TabConfig";
 
-export default function MonitorSchedular() {
-  const [page, setPage] = useState("MonitorSchedular");
+export default function MonitorScheduler() {
+  const [page, setPage] = useState("MonitorScheduler");
   const [selectedTab, setSelectedTab] = useState(2);
 
   useEffect(() => {

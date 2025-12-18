@@ -6,12 +6,14 @@ import {
     UploadIcon,
     Search,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
+
+
+
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
+import { useLanguage } from '../../../../../Context/LanguageContext';
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
 
 
 const InstrumentGrid = () => {
@@ -506,48 +508,48 @@ const UsersPage = () => {
         {
             id: 1,
             clientName: "DESKTOP-CU9J5T2",
-            taskName: "TS_1",
-            sourcePath: "D:/SDMS/Source1"
+            taskType: "TS_1",
+            fileName: "sample1"
 
         },
         {
             id: 2,
             clientName: "DESKTOP-CU9J5T2",
-            taskName: "TS_2",
-            fileName: "D:/SDMS/Source2"
+            taskType: "TS_2",
+            fileName: "sample2"
         },
         {
             id: 3,
             clientName: "DESKTOP-CU9J5T2",
-            taskName: "TS_3",
-            fileName: "D:/SDMS/Source3",
+            taskType: "TS_3",
+            fileName: "sample3",
         },
         {
             id: 4,
             clientName: "DESKTOP-CU9J5T2",
-            taskName: "TS_4",
-            fileName: "D:/SDMS/Source4"
+            taskType: "TS_4",
+            fileName: "sample4"
 
         },
         {
             id: 5,
             clientName: "DESKTOP-CU9J5T2",
-            taskName: "TS_5",
-            fileName: "D:/SDMS/Source5"
+            taskType: "TS_5",
+            fileName: "sample5"
 
         },
         {
             id: 6,
             clientName: "DESKTOP-CU9J5T2",
-            taskName: "TS_6",
-            fileName: "D:/SDMS/Source6"
+            taskType: "TS_6",
+            fileName: "sample6"
 
         },
         {
             id: 7,
             clientName: "DESKTOP-CU9J5T2",
-            taskName: "TS_7",
-            fileName: "D:/SDMS/Source7"
+            taskType: "TS_7",
+            fileName: "sample7"
 
         }
     ];
@@ -584,23 +586,23 @@ const UsersPage = () => {
         {
             key: 'clientName',
             label: 'Client Name',
-            width: 120,
+            width: 180, // Adjust
             enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.clientName}</span>
         },
         {
-            key: 'taskName',
-            label: 'Task Name',
-            width: 120,
+            key: 'taskType',
+            label: 'Task Type',
+            width: 250,
             enableSearch: true,
-            render: (row) => <span className="text-gray-700">{row.taskName}</span>
+            render: (row) => <span className="text-gray-700">{row.taskType}</span>
         },
         {
-            key: 'sourcePath',
-            label: 'Source Path',
+            key: 'fileName',
+            label: 'File Name',
             width: 120,
             enableSearch: true,
-            render: (row) => <span className="text-gray-700">{row.sourcePath}</span>
+            render: (row) => <span className="text-gray-700">{row.fileName}</span>
         }
     ], []);
 
@@ -609,20 +611,29 @@ const UsersPage = () => {
         <div className="space-y-3 text-[12px]">
 
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.schedulerStatus")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.schedulerStatus}Completed</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.size")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.size}4 Gb</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.taskDescription")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.taskDescription}Task was Completed</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.versionNo")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.versionNo}2</div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadLocation")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadLocation}D:\SDMSFTP\Restore</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.userName")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoredBy}</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.errorDescription")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}No Error</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.taskExecutedOn")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoredOn}</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadedBy")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedBy}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadedOn")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedOn}</div>
             </div>
         </div>
     );
@@ -650,7 +661,7 @@ const UsersPage = () => {
 
 
 
-const SchedulerConfigLogs = () => {
+const DownloadErrorLogs = () => {
     const today = getCurrentDate();
     // const [hideEmpty, setHideEmpty] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
@@ -662,6 +673,8 @@ const SchedulerConfigLogs = () => {
     const [toDate, setToDate] = useState(today);
     const options = ["User A", "User B"];
     const [selectedClient, setSelectedClient] = useState(options[0]);
+    const [task, setTask] = useState("");
+    const [fileName, setFileName] = useState("");
 
 
     const menuRef = useRef(null);
@@ -812,7 +825,7 @@ const SchedulerConfigLogs = () => {
                 {isOpen ? (
                     <div className="flex flex-wrap items-end gap-3.5 mb-2">
 
-                        <div className="w-60 mr-6">
+                        <div className="w-60 mr-2">
                             <AnimatedDropdown
                                 label={t("label.clientName")}
                                 value={selectedClient}
@@ -822,6 +835,30 @@ const SchedulerConfigLogs = () => {
                                 allowFreeInput={true}
                             />
                         </div>
+
+
+                        <div className="w-60 mr-6">
+                            <AnimatedDropdown
+                                label={t("label.task")}
+                                value={task}
+                                options={["TS1_D:\SDMSFTP-001", "TS2_D:\SDMSFTP-002", "TS3_D:\SDMSFTP-003"]}
+                                onChange={(e) => setTask(e.target.value)}
+                                // isSearchable={true}
+                                allowFreeInput={true}
+                            />
+
+                        </div>
+
+                        <div className="w-60 mr-2">
+                            <AnimatedInput
+                                label={t("label.fileName")}
+                                name="filename"
+                                value={fileName}
+                                onChange={(e) => setFileName(e.target.value)}
+                            />
+
+                        </div>
+
 
                         <div className="w-60 mr-2">
                             <AnimatedDropdown
@@ -868,6 +905,11 @@ const SchedulerConfigLogs = () => {
                             <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient || "---"}</span>
                         </div>
                         <div className="flex items-center gap-2">
+                            <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>
+                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{fileName || "---"}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
                             <span className="font-bold text-xs text-slate-600">{t("label.from")}:</span>
                             <span className="font-medium text-xs text-[#0E5BCA]">{getDateRange(recordsDuration, fromDate, toDate).startDate}</span>
                         </div>
@@ -898,7 +940,5 @@ const SchedulerConfigLogs = () => {
     )
 }
 
-export default SchedulerConfigLogs
-
-
+export default DownloadErrorLogs
 

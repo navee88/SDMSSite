@@ -6,12 +6,12 @@ import {
   UploadIcon,
   Search,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
+import { useLanguage } from '../../../../../Context/LanguageContext';
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+
 
 
 const InstrumentGrid = () => {
@@ -495,6 +495,7 @@ const getCurrentDate = () => {
 };
 
 
+
 const UsersPage = () => {
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -506,37 +507,44 @@ const UsersPage = () => {
     {
       id: 1,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample1"
+      instrument: "CU-Summary1 (CU-Summary1)",
+      storageName: "sdms-ftp"
     },
     {
       id: 2,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample2"
+      instrument: "CU-Summary1 (CU-Summary1)",
+      storageName: "sdms-ftp"
     },
     {
       id: 3,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample3",
+      instrument: "MU-Summary1 (MU-Summary1)",
+      storageName: "sdms-ftp"
     },
     {
       id: 4,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample4"
+      instrument: "AU-Summary1 (AU-Summary1)",
+      storageName: "sdms-ftp"
     },
     {
       id: 5,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample5"
+      instrument: "CU-Summary1 (CU-Summary1)",
+      storageName: "sdms-ftp"
     },
     {
       id: 6,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample6"
+      instrument: "CU-Summary1 (CU-Summary1)",
+      storageName: "sdms-ftp"
     },
     {
       id: 7,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample7"
+      instrument: "CU-Summary1 (CU-Summary1)",
+      storageName: "sdms-ftp"
     }
   ];
 
@@ -572,16 +580,23 @@ const UsersPage = () => {
     {
       key: 'clientName',
       label: 'Client Name',
-      width: 120,
+      width: 180,
       enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.clientName}</span>
     },
     {
-      key: 'fileName',
-      label: 'File Name',
+      key: 'instrument',
+      label: 'Instrument',
+      width: 250,
+      enableSearch: true,
+      render: (row) => <span className="text-gray-700">{row.instrument}</span>
+    },
+    {
+      key: 'storageName',
+      label: 'Storage Name',
       width: 120,
       enableSearch: true,
-      render: (row) => <span className="text-gray-700">{row.fileName}</span>
+      render: (row) => <span className="text-gray-700">{row.storageName}</span>
     }
   ], []);
 
@@ -590,30 +605,23 @@ const UsersPage = () => {
     <div className="space-y-3 text-[12px]">
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.size")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.size}450 mb</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.taskId")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.taskId}T1</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.versionNo")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.versionNo}2</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.scheduleId")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.scheduleId}TS1</div>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.errorDescription")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}No Error</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.sourcePath")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.sourcePath}D:\SDMSFTP\Scheduler</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.userName")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.userName}</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.noOfUploadCount")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.queue}0</div>
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.uploadOn")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedOn}</div>
-      </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.checksum")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.checksum}</div>
-      </div>
+
     </div>
   );
 
@@ -640,7 +648,8 @@ const UsersPage = () => {
 
 
 
-const UploadErrorLogs = () => {
+
+const UploadMonitor = () => {
   const today = getCurrentDate();
   // const [hideEmpty, setHideEmpty] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
@@ -650,10 +659,7 @@ const UploadErrorLogs = () => {
   const [recordsDuration, setRecordsDuration] = useState("Current Date");
   const [fromDate, setFromDate] = useState(today);
   const [toDate, setToDate] = useState(today);
-  const options = ["User A", "User B"];
-  const [selectedClient, setSelectedClient] = useState(options[0]);
-  const [task, setTask] = useState("");
-  const [fileName, setFileName] = useState("");
+  const [filename, setFilename] = useState("");
 
 
   const menuRef = useRef(null);
@@ -796,50 +802,16 @@ const UploadErrorLogs = () => {
     return { startDate, endDate };
   };
 
+
   const { currentLanguage, changeLanguage, languages } = useLanguage();
   const { t } = useTranslation();
+
   return (
-    <div className="flex flex-col w-full font-roboto rounded-md font-[roboto]">
+    <div className="flex flex-col h-[calc(100vh-15px)] font-roboto rounded-md">
       <div className="bg-[#f0f2f5] px-4 pt-4 pb-2 relative rounded-t-md z-20">
         {isOpen ? (
           <div className="flex flex-wrap items-end gap-3.5 mb-2">
-
-            <div className="w-60 mr-2">
-              <AnimatedDropdown
-                label={t("label.clientName")}
-                value={selectedClient}
-                options={options}
-                onChange={(e) => setSelectedClient(e.target.value)}
-                // isSearchable={true}
-                allowFreeInput={true}
-              />
-            </div>
-
-
-            <div className="w-60 mr-6">
-              <AnimatedDropdown
-                label={t("label.task")}
-                value={task}
-                options={["TS1_D:\SDMSFTP-001", "TS2_D:\SDMSFTP-002", "TS3_D:\SDMSFTP-003"]}
-                onChange={(e) => setTask(e.target.value)}
-                // isSearchable={true}
-                allowFreeInput={true}
-              />
-
-            </div>
-
-            <div className="w-60 mr-2">
-              <AnimatedInput
-                label={t("label.fileName")}
-                name="filename"
-                value={fileName}
-                onChange={(e) => setFileName(e.target.value)}
-              />
-
-            </div>
-
-
-            <div className="w-60 mr-2">
+            <div className="w-60">
               <AnimatedDropdown
                 label={t("label.recordsDuration")}
                 value={recordsDuration}
@@ -870,24 +842,15 @@ const UploadErrorLogs = () => {
                 </div>
               </>
             )}
+
+
             <div className="flex items-end gap-2 pb-2 ml-4">
               <PrimaryButton icon={Filter} label={t('button.filter')} />
               <PrimaryButton icon={RefreshCw} label={t('button.refresh')} />
-              <PrimaryButton icon={UploadIcon} label={t('button.export')} />
             </div>
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-4 py-2.5">
-
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-xs text-slate-600">{t("label.clientName")}:</span>
-              <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient || "---"}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>
-              <span className="font-medium text-xs text-[#0E5BCA] text-800">{fileName || "---"}</span>
-            </div>
-
             <div className="flex items-center gap-2">
               <span className="font-bold text-xs text-slate-600">{t("label.from")}:</span>
               <span className="font-medium text-xs text-[#0E5BCA]">{getDateRange(recordsDuration, fromDate, toDate).startDate}</span>
@@ -907,6 +870,7 @@ const UploadErrorLogs = () => {
         </button>
       </div>
 
+
       <div className="px-4 font-roboto h-[calc(100vh-150px)] flex flex-col">
         {/* UsersPage takes full width & height */}
         <div className="flex-1 overflow-hidden">
@@ -915,9 +879,53 @@ const UploadErrorLogs = () => {
       </div>
 
 
+      {/* <div className="flex gap-2 px-4">
+        <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
+          <div className="h-[38px] mb-2"></div>
+          <div className="flex-1">
+            <InstrumentGrid />
+          </div>
+        </div> */}
+
+      {/* Right Side - Details Panel */}
+      {/* <div className="w-1/2 flex flex-col h-[calc(100vh-200px)]">
+          <div className="h-[38px] mb-2"></div> */}
+      {/* Details Table */}
+      {/* <div className="border border-gray-300 rounded-lg overflow-hidden flex-1 overflow-y-auto">
+            <table className="w-full text-xs">
+              <tbody>
+
+
+                <tr> 
+                  <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.taskId')}</td> 
+                  <td className="px-4 py-2 font-semibold text-[#353F49]">T1</td>
+                </tr>
+                <tr> 
+                  <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.scheduleId')}</td>
+                  <td className="px-4 py-2 font-semibold text-[#353F49]">TS1</td>
+                </tr>
+                <tr>
+                  <td className="px-4 p-2 font-semibold text-[#405F78]">{t('label.sourcePath')}</td> 
+                  <td className="px-4 py-2 font-semibold text-[#353F49]">D:\SDMSFTP\Scheduler</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-semibold text-[#405F78]">{t('label.noOfUploadCount')}</td>
+                  <td className="px-4 py-2 font-semibold text-[#353F49]">0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div > */}
+
+
+
+
     </div>
+
   )
 }
 
-export default UploadErrorLogs
+export default UploadMonitor
+
 

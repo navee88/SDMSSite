@@ -6,12 +6,11 @@ import {
   UploadIcon,
   Search,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+import { useLanguage } from '../../../../../Context/LanguageContext';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
 
 
 const InstrumentGrid = () => {
@@ -594,6 +593,11 @@ const UsersPage = () => {
         <div className="col-span-2 font-semibold text-[#353F49]">{user.size}450 mb</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.versionNo")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.versionNo}2</div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
         <div className="font-semibold text-700 text-[#405F7D]">{t("label.deleteOn")}</div>
         <div className="col-span-2 font-semibold text-[#353F49]">{user.deleteOn}</div>
       </div>
@@ -623,7 +627,7 @@ const UsersPage = () => {
 
 
 
-const LocalFileDeleteLogs = () => {
+const ServerFileDeleteLogs = () => {
   const today = getCurrentDate();
   // const [hideEmpty, setHideEmpty] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
@@ -854,11 +858,6 @@ const LocalFileDeleteLogs = () => {
               <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient || "---"}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>
-              <span className="font-medium text-xs text-[#0E5BCA] text-800">{fileName || "---"}</span>
-            </div>
-
-            <div className="flex items-center gap-2">
               <span className="font-bold text-xs text-slate-600">{t("label.from")}:</span>
               <span className="font-medium text-xs text-[#0E5BCA]">{getDateRange(recordsDuration, fromDate, toDate).startDate}</span>
             </div>
@@ -889,6 +888,6 @@ const LocalFileDeleteLogs = () => {
   )
 }
 
-export default LocalFileDeleteLogs
+export default ServerFileDeleteLogs
 
 

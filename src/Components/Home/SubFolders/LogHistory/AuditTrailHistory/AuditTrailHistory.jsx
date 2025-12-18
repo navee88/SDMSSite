@@ -5,13 +5,19 @@ import {
     CheckCircle, List, MoreVertical, MousePointer2, Calendar,
     UploadIcon,
     Search,
+    RotateCw,
+    RotateCwIcon,
+    Printer,
+    Archive,
+    PackageOpen,
+    PackageOpenIcon,
+    ArchiveIcon,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import exportIcon from "../../../../../Assests/Icons/export-icon.png"
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
+import { useLanguage } from '../../../../../Context/LanguageContext';
 
 
 const InstrumentGrid = () => {
@@ -505,53 +511,125 @@ const UsersPage = () => {
     const mockData = [
         {
             id: 1,
-            clientName: "DESKTOP-CU9J5T2",
-            taskType: "TS_1",
-            fileName: "sample1"
-
+            select: false,
+            moduleName: "User Management",
+            actions: "Create",
+            transactionOn: "08/12/2025",
+            reviewStatus: "Pending",
+            requestedClient: "Client A",
+            affectedClient: "Client B",
+            instrumentName: "Instrument X",
+            reason: "N/A"
         },
         {
             id: 2,
-            clientName: "DESKTOP-CU9J5T2",
-            taskType: "TS_2",
-            fileName: "sample2"
+            select: true,
+            moduleName: "Role Management",
+            actions: "Update",
+            transactionOn: "08/12/2025",
+            reviewStatus: "Approved",
+            requestedClient: "Client C",
+            affectedClient: "Client D",
+            instrumentName: "Instrument Y",
+            reason: "N/A"
         },
         {
             id: 3,
-            clientName: "DESKTOP-CU9J5T2",
-            taskType: "TS_3",
-            fileName: "sample3",
+            select: false,
+            moduleName: "Instrument Setup",
+            actions: "Delete",
+            transactionOn: "07/12/2025",
+            reviewStatus: "Rejected",
+            requestedClient: "Client E",
+            affectedClient: "Client F",
+            instrumentName: "Instrument Z",
+            reason: "N/A"
         },
         {
             id: 4,
-            clientName: "DESKTOP-CU9J5T2",
-            taskType: "TS_4",
-            fileName: "sample4"
-
+            select: false,
+            moduleName: "Client Configuration",
+            actions: "Update",
+            transactionOn: "07/12/2025",
+            reviewStatus: "Pending",
+            requestedClient: "Client G",
+            affectedClient: "Client H",
+            instrumentName: "Instrument A",
+            reason: "N/A"
         },
         {
             id: 5,
-            clientName: "DESKTOP-CU9J5T2",
-            taskType: "TS_5",
-            fileName: "sample5"
-
+            select: true,
+            moduleName: "Audit Logs",
+            actions: "View",
+            transactionOn: "06/12/2025",
+            reviewStatus: "Approved",
+            requestedClient: "Client I",
+            affectedClient: "Client J",
+            instrumentName: "Instrument B",
+            reason: "N/A"
         },
         {
             id: 6,
-            clientName: "DESKTOP-CU9J5T2",
-            taskType: "TS_6",
-            fileName: "sample6"
-
+            select: false,
+            moduleName: "Permission Setup",
+            actions: "Create",
+            transactionOn: "06/12/2025",
+            reviewStatus: "Pending",
+            requestedClient: "Client K",
+            affectedClient: "Client L",
+            instrumentName: "Instrument C",
+            reason: "N/A"
         },
         {
             id: 7,
-            clientName: "DESKTOP-CU9J5T2",
-            taskType: "TS_7",
-            fileName: "sample7"
-
+            select: false,
+            moduleName: "Workflow Engine",
+            actions: "Update",
+            transactionOn: "05/12/2025",
+            reviewStatus: "Rejected",
+            requestedClient: "Client M",
+            affectedClient: "Client N",
+            instrumentName: "Instrument D",
+            reason: "N/A"
+        },
+        {
+            id: 8,
+            select: true,
+            moduleName: "Report Generator",
+            actions: "Generate",
+            transactionOn: "05/12/2025",
+            reviewStatus: "Approved",
+            requestedClient: "Client O",
+            affectedClient: "Client P",
+            instrumentName: "Instrument E",
+            reason: "N/A"
+        },
+        {
+            id: 9,
+            select: false,
+            moduleName: "Notification Service",
+            actions: "Update",
+            transactionOn: "04/12/2025",
+            reviewStatus: "Pending",
+            requestedClient: "Client Q",
+            affectedClient: "Client R",
+            instrumentName: "Instrument F",
+            reason: "N/A"
+        },
+        {
+            id: 10,
+            select: false,
+            moduleName: "Security Settings",
+            actions: "Update",
+            transactionOn: "04/12/2025",
+            reviewStatus: "Approved",
+            requestedClient: "Client S",
+            affectedClient: "Client T",
+            instrumentName: "Instrument G",
+            reason: "N/A"
         }
     ];
-
 
 
     //   useEffect(() => {
@@ -582,53 +660,134 @@ const UsersPage = () => {
 
     const userColumns = useMemo(() => [
         {
-            key: 'clientName',
-            label: 'Client Name',
-            width: 180, // Adjust
-            enableSearch: true,
-            render: (row) => <span className="text-gray-700">{row.clientName}</span>
+            key: 'select',
+            label: t('label.select'),
+            width: 150,
+            render: (row) => (
+                <label className="inline-flex items-center">
+                    <span
+                        className="
+            w-4 h-4
+            border border-gray-400
+            flex items-center justify-center
+            bg-white
+          "
+                    >
+                        {row.select && (
+                            <svg
+                                className="w-3 h-3 text-black"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        )}
+                    </span>
+                </label>
+            )
         },
         {
-            key: 'taskType',
-            label: 'Task Type',
-            width: 250,
+            key: 'moduleName',
+            label: t('label.moduleName'),
+            width: 150,
             enableSearch: true,
-            render: (row) => <span className="text-gray-700">{row.taskType}</span>
+            render: (row) => <span className="text-gray-700">{row.moduleName}</span>
         },
         {
-            key: 'fileName',
-            label: 'File Name',
-            width: 120,
+            key: 'actions',
+            label: t('label.actions'),
+            width: 150,
             enableSearch: true,
-            render: (row) => <span className="text-gray-700">{row.fileName}</span>
+            render: (row) => <span className="text-gray-700">{row.actions}</span>
+        },
+        {
+            key: 'transactionOn',
+            label: t('label.transactionOn'),
+            width: 200,
+            enableSearch: true,
+            render: (row) => <span className="text-gray-700">{row.transactionOn}</span>
+        },
+        {
+            key: 'reviewStatus',
+            label: t('label.reviewStatus'),
+            width: 150,
+            enableSearch: true,
+            render: (row) => <span className="text-gray-700">{row.reviewStatus}</span>
+        },
+        {
+            key: 'requestedClient',
+            label: t('label.requestedClient'),
+            width: 200,
+            enableSearch: true,
+            render: (row) => <span className="text-gray-700">{row.requestedClient}</span>
+        },
+        {
+            key: 'affectedClient',
+            label: t('label.affectedClient'),
+            width: 200,
+            enableSearch: true,
+            render: (row) => <span className="text-gray-700">{row.affectedClient}</span>
+        },
+        {
+            key: 'instrumentName',
+            label: t('label.instrumentName'),
+            width: 200,
+            enableSearch: true,
+            render: (row) => <span className="text-gray-700">{row.instrumentName}</span>
+        },
+        {
+            key: 'reason',
+            label: t('label.reason'),
+            width: 150,
+            enableSearch: true,
+            render: (row) => <span className="text-gray-700">{row.reason}</span>
         }
     ], []);
+
 
 
     const renderUserDetail = (user) => (
         <div className="space-y-3 text-[12px]">
 
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.size")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.size}450 mb</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.comments")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.comments}</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.versionNo")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.versionNo}2</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.userName")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.userName}</div>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadLocation")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadLocation}D:\SDMSFTP\Restore</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.profileName")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.profileName}</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadedBy")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedBy}</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.systemComments")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.systemComments}</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadedOn")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedOn}</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.reviewComments")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewComments}</div>
             </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.reviewedBy")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewedBy}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.reviewedDate")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewedDate}</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.modifiedData")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.modifiedData}</div>
+            </div>
+
+
         </div>
     );
 
@@ -655,7 +814,7 @@ const UsersPage = () => {
 
 
 
-const DownloadLogs = () => {
+const AuditTrailHistory = () => {
     const today = getCurrentDate();
     // const [hideEmpty, setHideEmpty] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
@@ -665,10 +824,12 @@ const DownloadLogs = () => {
     const [recordsDuration, setRecordsDuration] = useState("Current Date");
     const [fromDate, setFromDate] = useState(today);
     const [toDate, setToDate] = useState(today);
-    const options = ["User A", "User B"];
-    const [selectedClient, setSelectedClient] = useState(options[0]);
-    const [task, setTask] = useState("");
-    const [fileName, setFileName] = useState("");
+    const [filename, setFilename] = useState("");
+
+    const [selectedUser, setSelectedUser] = useState("All");
+    const [selectedModule, setSelectedModule] = useState("All");
+    const [selectedAuditType, setSelectedAuditType] = useState("All");
+
 
 
     const menuRef = useRef(null);
@@ -813,48 +974,66 @@ const DownloadLogs = () => {
 
     const { currentLanguage, changeLanguage, languages } = useLanguage();
     const { t } = useTranslation();
+
+    const ActionButton = ({ icon: Icon, label, disabled, onClick, className = "" }) => (
+        <button
+            onClick={onClick}
+            disabled={disabled}
+            className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold font-[roboto] rounded  whitespace-nowrap hover:scale-90 transition-all
+      ${disabled
+                    ? "bg-slate-100 text-slate-300 cursor-not-allowed"
+                    : "bg-[#f1f5f9] text-[#1d8cf8] hover:bg-blue-100"
+                }
+      ${className}
+    `}
+        >
+            {Icon && <Icon className="w-3.5 h-3.5 strokeWidth={3}" />}
+            <span className="font-[roboto] font-bold">{label}</span>
+        </button>
+    );
     return (
-        <div className="flex flex-col w-full font-roboto rounded-md font-[roboto]">
+        <div className="flex flex-col w-full font-roboto rounded-md">
             <div className="bg-[#f0f2f5] px-4 pt-4 pb-2 relative rounded-t-md z-20">
                 {isOpen ? (
                     <div className="flex flex-wrap items-end gap-3.5 mb-2">
 
-                        <div className="w-60 mr-2">
+                        <div className="w-60 mr-4">
                             <AnimatedDropdown
-                                label={t("label.clientName")}
-                                value={selectedClient}
-                                options={options}
-                                onChange={(e) => setSelectedClient(e.target.value)}
-                                // isSearchable={true}
-                                allowFreeInput={true}
-                            />
-                        </div>
-
-
-                        <div className="w-60 mr-6">
-                            <AnimatedDropdown
-                                label={t("label.task")}
-                                value={task}
-                                options={["TS1_D:\SDMSFTP-001", "TS2_D:\SDMSFTP-002", "TS3_D:\SDMSFTP-003"]}
-                                onChange={(e) => setTask(e.target.value)}
+                                label={t("label.userName")}
+                                value={selectedUser}
+                                options={["All", "User A", "User B"]}
+                                onChange={(e) => setSelectedUser(e.target.value)}
                                 // isSearchable={true}
                                 allowFreeInput={true}
                             />
 
-                        </div>
 
-                        <div className="w-60 mr-2">
-                            <AnimatedInput
-                                label={t("label.fileName")}
-                                name="filename"
-                                value={fileName}
-                                onChange={(e) => setFileName(e.target.value)}
+                        </div>
+                        <div className="w-60 mr-4">
+                            <AnimatedDropdown
+                                label={t("label.moduleName")}
+                                value={selectedModule}
+                                options={["All", "Audit Trail", "CFR Gateway", "CFR Settings"]}
+                                onChange={(e) => setSelectedModule(e.target.value)}
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
 
+
                         </div>
 
+                        <div className="w-60 mr-4">
+                            <AnimatedDropdown
+                                label={t("label.auditType")}
+                                value={selectedAuditType}
+                                options={["User", "System", "All"]}
+                                onChange={(e) => setSelectedAuditType(e.target.value)}
+                            />
 
-                        <div className="w-60 mr-2">
+
+                        </div>
+
+                        <div className="w-60 mr-4">
                             <AnimatedDropdown
                                 label={t("label.recordsDuration")}
                                 value={recordsDuration}
@@ -887,20 +1066,25 @@ const DownloadLogs = () => {
                         )}
                         <div className="flex items-end gap-2 pb-2 ml-4">
                             <PrimaryButton icon={Filter} label={t('button.filter')} />
-                            <PrimaryButton icon={RefreshCw} label={t('button.refresh')} />
-                            <PrimaryButton icon={UploadIcon} label={t('button.export')} />
+                            <PrimaryButton icon={RotateCwIcon} label={t('button.reset')} />
                         </div>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-4 gap-4 py-2.5">
+                    <div className="grid grid-cols-4 gap-4 py-2.5 font-[roboto]">
 
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs text-slate-600">{t("label.clientName")}:</span>
-                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient || "---"}</span>
+                            <span className="font-bold text-xs text-slate-600">{t("label.userName")}:</span>
+                            <span className="font-medium text-xs text-[#0E5BCA]">
+                                {selectedUser}
+                            </span>
+
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>
-                            <span className="font-medium text-xs text-[#0E5BCA] text-800">{fileName || "---"}</span>
+                            <span className="font-bold text-xs text-slate-600">{t("label.moduleName")}:</span>
+                            <span className="font-medium text-xs text-[#0E5BCA]">
+                                {selectedModule}
+                            </span>
+
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -922,17 +1106,27 @@ const DownloadLogs = () => {
                 </button>
             </div>
 
+            {/* Buttons */}
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
+                <ActionButton icon={History} label={t('button.reviewHistory')} />
+                <ActionButton icon={FileText} label={t('button.review')} />
+                <ActionButton icon={ArchiveIcon} label={t('button.createArchieve')} />
+                <ActionButton icon={PackageOpenIcon} label={t('button.openArchieve')} />
+                <ActionButton icon={Upload} label={t('button.export')} />
+                <ActionButton icon={Printer} label={t('button.print')} />
+            </div>
+
+
             <div className="px-4 font-roboto h-[calc(100vh-150px)] flex flex-col">
                 {/* UsersPage takes full width & height */}
                 <div className="flex-1 overflow-hidden">
                     <UsersPage />
                 </div>
             </div>
-
-
         </div>
     )
 }
 
-export default DownloadLogs
+export default AuditTrailHistory
+
 

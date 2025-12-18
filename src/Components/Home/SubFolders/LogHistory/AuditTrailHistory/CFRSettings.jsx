@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { Plus, Trash2 } from 'lucide-react';
+import { useLanguage } from '../../../../../Context/LanguageContext';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
 
 function CFRSettings() {
   const { currentLanguage, changeLanguage, languages } = useLanguage();

@@ -13,7 +13,7 @@ import Searchserverdata from "../../../../Pages/Home/FTP/Searchserverdata";
 import UserManagment from "../../../../Pages/Home/UserManagment/UserManagment";
 import Passwordpolicy from "../../../../Pages/Home/UserManagment/Passwordpolicy";
 import InstrumentLockSettings from "../../../../Pages/Home/LockSettings/InstrumentLockSettings";
-import MonitorSchedular from "../../../../Pages/Home/Schedular/MonitorSchedular";
+import MonitorScheduler from "../../../../Pages/Home/Scheduler/MonitorScheduler";
 import AuditTrailHistory from "../../../../Pages/Home/AuditTrailHistory/AuditTrailHistory";
 import DownloadLogs from "../../../../Pages/Home/AuditTrailHistory/DownloadLogs";
 import UploadLogs from "../../../../Pages/Home/AuditTrailHistory/UploadLogs";
@@ -47,7 +47,7 @@ export const menuConfig = [
     subItems: [
       { label: "Data Scheduler", content: <div>Data Scheduler1</div> },
       { label: "View Edit Scheduler", content: <div>View Edit Scheduler</div> },
-      { label: "Monitor Scheduler", content: <MonitorSchedular/> },
+      { label: "Monitor Scheduler", content: <MonitorScheduler/> },
       { label: "Local File Delete Scheduler", content: <div>Local File Delete Scheduler</div> },
       { label: "Server File Delete Scheduler", content: <div>Server File Delete Scheduler</div> },
       { label: "Download Scheduler", content: <div>Download Scheduler</div> },

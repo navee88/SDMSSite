@@ -6,12 +6,12 @@ import {
   UploadIcon,
   Search,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
+import { useLanguage } from '../../../../../Context/LanguageContext';
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+
 
 
 const InstrumentGrid = () => {
@@ -599,8 +599,20 @@ const UsersPage = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.deleteOn")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.deleteOn}</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.fileMode")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadLocation}PDF</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.userName")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.userName}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.uploadOn")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedOn}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.checksum")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.checksum}</div>
       </div>
     </div>
   );
@@ -628,7 +640,7 @@ const UsersPage = () => {
 
 
 
-const ServerFileDeleteLogs = () => {
+const UploadLogs = () => {
   const today = getCurrentDate();
   // const [hideEmpty, setHideEmpty] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
@@ -792,7 +804,7 @@ const ServerFileDeleteLogs = () => {
         {isOpen ? (
           <div className="flex flex-wrap items-end gap-3.5 mb-2">
 
-            <div className="w-60 mr-4">
+            <div className="w-60 mr-2">
               <AnimatedDropdown
                 label={t("label.clientName")}
                 value={selectedClient}
@@ -801,6 +813,19 @@ const ServerFileDeleteLogs = () => {
                 // isSearchable={true}
                 allowFreeInput={true}
               />
+            </div>
+
+
+            <div className="w-60 mr-6">
+              <AnimatedDropdown
+                label={t("label.task")}
+                value={task}
+                options={["TS1_D:\SDMSFTP-001", "TS2_D:\SDMSFTP-002", "TS3_D:\SDMSFTP-003"]}
+                onChange={(e) => setTask(e.target.value)}
+                // isSearchable={true}
+                allowFreeInput={true}
+              />
+
             </div>
 
             <div className="w-60 mr-2">
@@ -859,6 +884,11 @@ const ServerFileDeleteLogs = () => {
               <span className="font-medium text-xs text-[#0E5BCA] text-800">{selectedClient || "---"}</span>
             </div>
             <div className="flex items-center gap-2">
+              <span className="font-bold text-xs text-slate-600">{t("label.fileName")}:</span>
+              <span className="font-medium text-xs text-[#0E5BCA] text-800">{fileName || "---"}</span>
+            </div>
+
+            <div className="flex items-center gap-2">
               <span className="font-bold text-xs text-slate-600">{t("label.from")}:</span>
               <span className="font-medium text-xs text-[#0E5BCA]">{getDateRange(recordsDuration, fromDate, toDate).startDate}</span>
             </div>
@@ -889,6 +919,5 @@ const ServerFileDeleteLogs = () => {
   )
 }
 
-export default ServerFileDeleteLogs
-
+export default UploadLogs
 

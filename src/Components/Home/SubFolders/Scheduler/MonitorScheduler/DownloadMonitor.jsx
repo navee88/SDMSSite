@@ -6,12 +6,12 @@ import {
   UploadIcon,
   Search,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
+import { useLanguage } from '../../../../../Context/LanguageContext';
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+
 
 
 const InstrumentGrid = () => {
@@ -249,6 +249,7 @@ const InstrumentGrid = () => {
     </div>
   );
 };
+
 
 const ACTION_ICONS = {
   "Open": FolderOpen,
@@ -506,37 +507,44 @@ const UsersPage = () => {
     {
       id: 1,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample1"
+      fileName: "sample1",
+      taskStatus: "Completed"
     },
     {
       id: 2,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample2"
+      fileName: "sample2",
+      taskStatus: "Completed"
     },
     {
       id: 3,
       clientName: "DESKTOP-CU9J5T2",
       fileName: "sample3",
+      taskStatus: "Completed"
     },
     {
       id: 4,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample4"
+      fileName: "sample4",
+      taskStatus: "Completed"
     },
     {
       id: 5,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample5"
+      fileName: "sample5",
+      taskStatus: "Completed"
     },
     {
       id: 6,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample6"
+      fileName: "sample6",
+      taskStatus: "Completed"
     },
     {
       id: 7,
       clientName: "DESKTOP-CU9J5T2",
-      fileName: "sample7"
+      fileName: "sample7",
+      taskStatus: "Completed"
     }
   ];
 
@@ -572,16 +580,23 @@ const UsersPage = () => {
     {
       key: 'clientName',
       label: 'Client Name',
-      width: 120,
+      width: 180,
       enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.clientName}</span>
     },
     {
       key: 'fileName',
       label: 'File Name',
-      width: 120,
+      width: 250,
       enableSearch: true,
       render: (row) => <span className="text-gray-700">{row.fileName}</span>
+    },
+    {
+      key: 'taskStatus',
+      label: 'Task Status',
+      width: 120,
+      enableSearch: true,
+      render: (row) => <span className="text-gray-700">{row.taskStatus}</span>
     }
   ], []);
 
@@ -590,30 +605,31 @@ const UsersPage = () => {
     <div className="space-y-3 text-[12px]">
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.size")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.size}450 mb</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.sourcePath")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.sourcePath}D:\SDMSFTP\SourcePath</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.versionNo")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.versionNo}2</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.type")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.type}TS1</div>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.fileMode")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadLocation}PDF</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadLocation")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadLocation}D:\SDMSFTP\Restore</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.userName")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.userName}</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.errorDescription")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}NO Error</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.uploadOn")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedOn}</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadedBy")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedBy}</div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="font-semibold text-700 text-[#405F7D]">{t("label.checksum")}</div>
-        <div className="col-span-2 font-semibold text-[#353F49]">{user.checksum}</div>
+        <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadedBy")}</div>
+        <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedBy}</div>
       </div>
+
     </div>
   );
 
@@ -639,8 +655,7 @@ const UsersPage = () => {
 };
 
 
-
-const UploadLogs = () => {
+const DownloadMonitor = () => {
   const today = getCurrentDate();
   // const [hideEmpty, setHideEmpty] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
@@ -650,10 +665,12 @@ const UploadLogs = () => {
   const [recordsDuration, setRecordsDuration] = useState("Current Date");
   const [fromDate, setFromDate] = useState(today);
   const [toDate, setToDate] = useState(today);
+  const [filename, setFilename] = useState("");
   const options = ["User A", "User B"];
   const [selectedClient, setSelectedClient] = useState(options[0]);
-  const [task, setTask] = useState("");
+  const [taskId, setTaskId] = useState("");
   const [fileName, setFileName] = useState("");
+
 
 
   const menuRef = useRef(null);
@@ -741,7 +758,6 @@ const UploadLogs = () => {
     const actualValue = value?.target?.value || value?.value || value;
     setRecordsDuration(actualValue);
   };
-
   //calculate the current date minus the records duration date
   const formatDateDDMMYYYY = (date) => {
     const d = new Date(date);
@@ -795,7 +811,6 @@ const UploadLogs = () => {
 
     return { startDate, endDate };
   };
-
   const { currentLanguage, changeLanguage, languages } = useLanguage();
   const { t } = useTranslation();
   return (
@@ -804,7 +819,7 @@ const UploadLogs = () => {
         {isOpen ? (
           <div className="flex flex-wrap items-end gap-3.5 mb-2">
 
-            <div className="w-60 mr-2">
+            <div className="w-60">
               <AnimatedDropdown
                 label={t("label.clientName")}
                 value={selectedClient}
@@ -813,22 +828,23 @@ const UploadLogs = () => {
                 // isSearchable={true}
                 allowFreeInput={true}
               />
+
             </div>
 
 
-            <div className="w-60 mr-6">
+            <div className="w-60 mr-40">
               <AnimatedDropdown
-                label={t("label.task")}
-                value={task}
-                options={["TS1_D:\SDMSFTP-001", "TS2_D:\SDMSFTP-002", "TS3_D:\SDMSFTP-003"]}
-                onChange={(e) => setTask(e.target.value)}
+                label={t("label.taskId")}
+                value={taskId}
+                options={["Task-001", "Task-002", "Task-003"]}
+                onChange={(e) => setTaskId(e.target.value)}
                 // isSearchable={true}
                 allowFreeInput={true}
               />
 
             </div>
 
-            <div className="w-60 mr-2">
+            <div className="w-60">
               <AnimatedInput
                 label={t("label.fileName")}
                 name="filename"
@@ -839,7 +855,7 @@ const UploadLogs = () => {
             </div>
 
 
-            <div className="w-60 mr-2">
+            <div className="w-60">
               <AnimatedDropdown
                 label={t("label.recordsDuration")}
                 value={recordsDuration}
@@ -870,10 +886,14 @@ const UploadLogs = () => {
                 </div>
               </>
             )}
+
+
+
             <div className="flex items-end gap-2 pb-2 ml-4">
               <PrimaryButton icon={Filter} label={t('button.filter')} />
               <PrimaryButton icon={RefreshCw} label={t('button.refresh')} />
               <PrimaryButton icon={UploadIcon} label={t('button.export')} />
+
             </div>
           </div>
         ) : (
@@ -907,17 +927,16 @@ const UploadLogs = () => {
         </button>
       </div>
 
+
       <div className="px-4 font-roboto h-[calc(100vh-150px)] flex flex-col">
         {/* UsersPage takes full width & height */}
         <div className="flex-1 overflow-hidden">
           <UsersPage />
         </div>
       </div>
-
-
     </div>
   )
 }
 
-export default UploadLogs
+export default DownloadMonitor
 

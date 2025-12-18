@@ -7,24 +7,24 @@ import MyInstruments from "../../../Home/SubFolders/InstrumentLockSettings/MyIns
 import OtherInstruments from "../../../Home/SubFolders/InstrumentLockSettings/OtherInstruments";
 import InstrumentLockTag from "../../../Home/SubFolders/InstrumentLockSettings/InstrumentLocksandTags";
 import InstrumentDataPage from "../../../Home/SubFolders/InstrumentLockSettings/Data";
-import UploadQueue from "../../../Home/SubFolders/MonitorSchedular/UploadQueue";
-import FailedQueue from "../../../Home/SubFolders/MonitorSchedular/FailedQueue";
-import RestoreMonitor from "../../../Home/SubFolders/MonitorSchedular/RestoreMonitor";
-import DownloadMonitor from "../../../Home/SubFolders/MonitorSchedular/DownloadMonitor";
-import UploadMonitor from "../../../Home/SubFolders/MonitorSchedular/UploadMonitor";
-import CFRSettings from "../../../Home/SubFolders/AuditTrailHistory/CFRSettings";
-import AuditTrailHistory from "../../../Home/SubFolders/AuditTrailHistory/AuditTrailHistory";
-import DownloadErrorLogs from "../../../Home/SubFolders/DownloadLogs/DownloadErrorLogs";
-import DownloadLogs from "../../../Home/SubFolders/DownloadLogs/DownloadLogs";
-import UploadErrorLogs from "../../../Home/SubFolders/UploadLogs/UploadErrorLogs";
-import UploadLogs from "../../../Home/SubFolders/UploadLogs/UploadLogs";
-import ManualUploadLogs from "../../../Home/SubFolders/UploadLogs/ManualUploadLogs";
-import RestoreLogs from "../../../Home/SubFolders/RestoreLogs/RestoreLogs";
-import RestoreErrorLogs from "../../../Home/SubFolders/RestoreLogs/RestoreErrorLogs";
-import ServerFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDeleteLogs/ServerFileDeleteLogs";
-import LocalFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
-import InstrumentLogs from "../../../Home/SubFolders/InstrumentLogs/InstrumentLogs";
-import SchedulerConfigLogs from "../../../Home/SubFolders/SchedulerConfigLogs/SchedulerConfigLogs";
+import UploadQueue from "../../../Home/SubFolders/Scheduler/MonitorScheduler/UploadQueue";
+import FailedQueue from "../../../Home/SubFolders/Scheduler/MonitorScheduler/FailedQueue";
+import RestoreMonitor from "../../../Home/SubFolders/Scheduler/MonitorScheduler/RestoreMonitor";
+import DownloadMonitor from "../../../Home/SubFolders/Scheduler/MonitorScheduler/DownloadMonitor";
+import UploadMonitor from "../../../Home/SubFolders/Scheduler/MonitorScheduler/UploadMonitor";
+import CFRSettings from "../../../Home/SubFolders/LogHistory/AuditTrailHistory/CFRSettings";
+import AuditTrailHistory from "../../../Home/SubFolders/LogHistory/AuditTrailHistory/AuditTrailHistory";
+import DownloadErrorLogs from "../../../Home/SubFolders/LogHistory/DownloadLogs/DownloadErrorLogs";
+import DownloadLogs from "../../../Home/SubFolders/LogHistory/DownloadLogs/DownloadLogs";
+import UploadErrorLogs from "../../../Home/SubFolders/LogHistory/UploadLogs/UploadErrorLogs";
+import UploadLogs from "../../../Home/SubFolders/LogHistory/UploadLogs/UploadLogs";
+import ManualUploadLogs from "../../../Home/SubFolders/LogHistory/UploadLogs/ManualUploadLogs";
+import RestoreLogs from "../../../Home/SubFolders/LogHistory/RestoreLogs/RestoreLogs";
+import RestoreErrorLogs from "../../../Home/SubFolders/LogHistory/RestoreLogs/RestoreErrorLogs";
+import ServerFileDeleteLogs from "../../../Home/SubFolders/LogHistory/Server&LocalFileDeleteLogs/ServerFileDeleteLogs";
+import LocalFileDeleteLogs from "../../../Home/SubFolders/LogHistory/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
+import InstrumentLogs from "../../../Home/SubFolders/LogHistory/InstrumentLogs/InstrumentLogs";
+import SchedulerConfigLogs from "../../../Home/SubFolders/LogHistory/SchedulerConfigLogs/SchedulerConfigLogs";
 
 export const tabConfig = {
   DataExplorer: {
@@ -41,7 +41,7 @@ export const tabConfig = {
     "My Instruments": { content: <MyInstruments /> },
     "Other Instruments": { content: <OtherInstruments /> },
   },
-  MonitorSchedular: {
+  MonitorScheduler: {
     "Upload Queue": { content: <UploadQueue /> },
     "Failed Queue": { content: <FailedQueue /> },
     "Upload Monitor": { content: <UploadMonitor /> },

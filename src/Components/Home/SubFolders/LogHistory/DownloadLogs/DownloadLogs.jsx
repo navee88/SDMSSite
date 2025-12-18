@@ -6,12 +6,13 @@ import {
     UploadIcon,
     Search,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
+
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
+import { useLanguage } from '../../../../../Context/LanguageContext';
+
 
 
 const InstrumentGrid = () => {
@@ -506,47 +507,47 @@ const UsersPage = () => {
         {
             id: 1,
             clientName: "DESKTOP-CU9J5T2",
-            taskStatus: "TS_1",
+            taskType: "TS_1",
             fileName: "sample1"
 
         },
         {
             id: 2,
             clientName: "DESKTOP-CU9J5T2",
-            taskStatus: "TS_2",
+            taskType: "TS_2",
             fileName: "sample2"
         },
         {
             id: 3,
             clientName: "DESKTOP-CU9J5T2",
-            taskStatus: "TS_3",
+            taskType: "TS_3",
             fileName: "sample3",
         },
         {
             id: 4,
             clientName: "DESKTOP-CU9J5T2",
-            taskStatus: "TS_4",
+            taskType: "TS_4",
             fileName: "sample4"
 
         },
         {
             id: 5,
             clientName: "DESKTOP-CU9J5T2",
-            taskStatus: "TS_5",
+            taskType: "TS_5",
             fileName: "sample5"
 
         },
         {
             id: 6,
             clientName: "DESKTOP-CU9J5T2",
-            taskStatus: "TS_6",
+            taskType: "TS_6",
             fileName: "sample6"
 
         },
         {
             id: 7,
             clientName: "DESKTOP-CU9J5T2",
-            taskStatus: "TS_7",
+            taskType: "TS_7",
             fileName: "sample7"
 
         }
@@ -584,16 +585,16 @@ const UsersPage = () => {
         {
             key: 'clientName',
             label: 'Client Name',
-            width: 120,
+            width: 180, // Adjust
             enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.clientName}</span>
         },
         {
-            key: 'taskStatus',
-            label: 'Task Status',
-            width: 120,
+            key: 'taskType',
+            label: 'Task Type',
+            width: 250,
             enableSearch: true,
-            render: (row) => <span className="text-gray-700">{row.taskStatus}</span>
+            render: (row) => <span className="text-gray-700">{row.taskType}</span>
         },
         {
             key: 'fileName',
@@ -613,20 +614,21 @@ const UsersPage = () => {
                 <div className="col-span-2 font-semibold text-[#353F49]">{user.size}450 mb</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoreLocation")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoreLocation}D:/SDMS/RestoreErrorLogs</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.versionNo")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.versionNo}2</div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadLocation")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadLocation}D:\SDMSFTP\Restore</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.errorDescription")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}No error</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadedBy")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedBy}</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoredBy")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoredBy}</div>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoredOn")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoredOn}</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.downloadedOn")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.downloadedOn}</div>
             </div>
         </div>
     );
@@ -654,7 +656,7 @@ const UsersPage = () => {
 
 
 
-const RestoreErrorLogs = () => {
+const DownloadLogs = () => {
     const today = getCurrentDate();
     // const [hideEmpty, setHideEmpty] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
@@ -933,6 +935,5 @@ const RestoreErrorLogs = () => {
     )
 }
 
-export default RestoreErrorLogs
-
+export default DownloadLogs
 

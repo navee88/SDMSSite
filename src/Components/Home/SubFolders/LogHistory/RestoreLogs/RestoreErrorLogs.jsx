@@ -6,12 +6,12 @@ import {
     UploadIcon,
     Search,
 } from 'lucide-react';
-import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import exportIcon from "../../../../Assests/Icons/export-icon.png"
-import AnimatedInput from '../../../Layout/Common/AnimatedInput';
-import { useLanguage } from "../../../../Context/LanguageContext";
 import { useTranslation } from "react-i18next";
-import GridLayout from '../../../Layout/Common/Home/Grid/GridLayout';
+import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
+import AnimatedDropdown from '../../../../Layout/Common/AnimatedDropdown';
+import AnimatedInput from '../../../../Layout/Common/AnimatedInput';
+import { useLanguage } from '../../../../../Context/LanguageContext';
+
 
 
 const InstrumentGrid = () => {
@@ -614,7 +614,11 @@ const UsersPage = () => {
             </div>
             <div className="grid grid-cols-3 gap-4">
                 <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoreLocation")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoreLocation}D:/SDMS/Restore</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.restoreLocation}D:/SDMS/RestoreErrorLogs</div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.errorDescription")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.errorDescription}No error</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
                 <div className="font-semibold text-700 text-[#405F7D]">{t("label.restoredBy")}</div>
@@ -650,7 +654,7 @@ const UsersPage = () => {
 
 
 
-const RestoreLogs = () => {
+const RestoreErrorLogs = () => {
     const today = getCurrentDate();
     // const [hideEmpty, setHideEmpty] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
@@ -929,6 +933,6 @@ const RestoreLogs = () => {
     )
 }
 
-export default RestoreLogs
+export default RestoreErrorLogs
 
 
