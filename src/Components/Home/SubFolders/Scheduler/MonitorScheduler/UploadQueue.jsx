@@ -330,7 +330,7 @@ const UsersPage = () => {
     const userColumns = useMemo(() => [
         {
             key: 'clientName',
-            label: 'Client Name',
+            label: t("label.clientName"),
             width: 200,
             enableSearch: true,
             render: (row) => (
@@ -341,7 +341,7 @@ const UsersPage = () => {
         },
         {
             key: 'instrument',
-            label: 'Instrument',
+            label: t("label.Instrument"),
             width: 250,
             enableSearch: true,
             render: (row) => (

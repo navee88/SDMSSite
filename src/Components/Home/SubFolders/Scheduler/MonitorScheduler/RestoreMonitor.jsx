@@ -839,6 +839,7 @@ const RestoreMonitor = () => {
                                 onChange={(e) => setTaskId(e.target.value)}
                                 // isSearchable={true}
                                 allowFreeInput={true}
+                                borderColor="[border-bottom-color:#91DCF3]"
                             />
 
                         </div>
