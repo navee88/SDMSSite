@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { RefreshCw, FileText } from "lucide-react";
 import GridLayout from '../../../../Layout/Common/Home/Grid/GridLayout';
 import AnimatedDropdown from "../../../../Layout/Common/AnimatedDropdown";
-import Errordialog from "../../../../Layout/Common/Errordialog";
 
 const InfoBox = ({ data }) => (
   <div className="border border-gray-300 bg-white min-h-[100px] p-4 ">
@@ -88,30 +87,6 @@ export default function InstrumentDataPage() {
   
   const refreshTimerRef = useRef(null);
   const [selectedNullRow, setSelectedNullRow] = useState(null);
-  
-  // Add state for information dialog
-  const [infoDialog, setInfoDialog] = useState({
-    open: false,
-    message: "",
-    type: "information" // Default type is "information" for blue color
-  });
-
-  // Function to show information dialog
-  const showInfoDialog = useCallback((message, type = "information") => {
-    setInfoDialog({
-      open: true,
-      message,
-      type
-    });
-  }, []);
-
-  // Function to close information dialog
-  const closeInfoDialog = useCallback(() => {
-    setInfoDialog(prev => ({
-      ...prev,
-      open: false
-    }));
-  }, []);
 
   // Load initial data
   useEffect(() => {
@@ -181,7 +156,6 @@ export default function InstrumentDataPage() {
       }
     } catch (error) {
       console.error("Error loading instruments:", error);
-      showInfoDialog("Failed to load instruments", "information");
     }
   };
 
@@ -214,7 +188,6 @@ export default function InstrumentDataPage() {
       }
     } catch (error) {
       console.error("Error loading instrument tags:", error);
-      showInfoDialog("Failed to load instrument tags", "information");
     }
   };
 
@@ -231,7 +204,6 @@ export default function InstrumentDataPage() {
       }
     } catch (error) {
       console.error("Error loading merged files:", error);
-      showInfoDialog("Failed to load merged files", "information");
     }
   };
 
@@ -248,7 +220,6 @@ export default function InstrumentDataPage() {
       }
     } catch (error) {
       console.error("Error loading file information:", error);
-      showInfoDialog("Failed to load file information", "information");
     }
   };
 
@@ -269,7 +240,6 @@ export default function InstrumentDataPage() {
       }
     } catch (error) {
       console.error("Error checking merge count:", error);
-      showInfoDialog("Failed to check merge count", "information");
     }
   };
 
@@ -286,7 +256,6 @@ export default function InstrumentDataPage() {
       }
     } catch (error) {
       console.error("Error loading file tags:", error);
-      showInfoDialog("Failed to load file tags", "information");
     }
   };
 
@@ -313,7 +282,6 @@ export default function InstrumentDataPage() {
       }
     } catch (error) {
       console.error("Error loading parsed data:", error);
-      showInfoDialog("Failed to load parsed data", "information");
     }
   };
 
@@ -332,13 +300,11 @@ export default function InstrumentDataPage() {
         setFileViewerType(fileExtension);
         setFileViewerSrc(urlPath);
       } else if (response && response.Rtn?.toLowerCase() === "failed") {
-        // Replace alert with information dialog
-        showInfoDialog(response.Message || "Failed to load file", "information");
+        alert(response.Message);
         setFileViewerSrc("");
       }
     } catch (error) {
       console.error("Error loading file viewer:", error);
-      showInfoDialog("Failed to load file viewer", "information");
     }
   };
 
@@ -346,8 +312,7 @@ export default function InstrumentDataPage() {
     const selectedInstrument = instruments.find(inst => inst.nInterInstrumentID === parseInt(instrument));
     
     if (!selectedInstrument) {
-      // Replace alert with information dialog
-      showInfoDialog(t("instrumentlocktag.noinstrumentsfound") || "No Instruments Found", "information");
+      alert(t("instrumentlocktag.noinstrumentsfound") || "No Instruments Found");
       return;
     }
     
@@ -363,14 +328,12 @@ export default function InstrumentDataPage() {
       }
     } catch (error) {
       console.error("Error loading null data:", error);
-      showInfoDialog("Failed to load null data", "information");
     }
   };
 
   const handleNullDataAcknowledgement = async () => {
     if (!selectedNullRow) {
-      // Replace alert with information dialog
-      showInfoDialog(t("instrumentlocktag.norecordsfound") || "No Records Found", "information");
+      alert(t("instrumentlocktag.norecordsfound") || "No Records Found");
       return;
     }
     
@@ -383,12 +346,9 @@ export default function InstrumentDataPage() {
       
       if (response) {
         loadNullData();
-        // Show success message for acknowledgement
-        showInfoDialog("Null data acknowledged successfully", "success");
       }
     } catch (error) {
       console.error("Error acknowledging null data:", error);
-      showInfoDialog("Failed to acknowledge null data", "information");
     }
   };
 
@@ -428,7 +388,7 @@ export default function InstrumentDataPage() {
       key: 'sRawDataID',
       label: t("instrumentlocktag.rawdataid") || 'Raw Data ID',
       width: 250,
-      enableSearch: true,
+      enableSearch: true, // Add this
       render: (row, isSelected) => (
         <span className={`${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>
           {row.sRawDataID}
@@ -439,7 +399,7 @@ export default function InstrumentDataPage() {
       key: 'nSequenceNo',
       label: t("instrumentlocktag.sequenceno") || 'Sequence No',
       width: 200,
-      enableSearch: true,
+      enableSearch: true, // Add this
       render: (row, isSelected) => (
         <span className={isSelected ? 'font-bold' : ''}>{row.nSequenceNo}</span>
       )
@@ -448,7 +408,8 @@ export default function InstrumentDataPage() {
       key: 'nMergeFileCount',
       label: t("instrumentlocktag.mergefilecount") || 'Merge File Count',
       width: 200,
-      enableSearch: true,
+            enableSearch: true, // Add this
+
       render: (row, isSelected) => (
         <span className={isSelected ? 'font-bold' : ''}>{row.nMergeFileCount}</span>
       )
@@ -460,7 +421,8 @@ export default function InstrumentDataPage() {
       key: 'sRawDataID',
       label: t("instrumentlocktag.rawdataid") || 'Raw Data ID',
       width: 180,
-      enableSearch: true,
+            enableSearch: true, // Add this
+
       render: (row, isSelected) => (
         <span className={`${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>
           {row.sRawDataID}
@@ -471,7 +433,8 @@ export default function InstrumentDataPage() {
       key: 'nSequenceNo',
       label: t("instrumentlocktag.sequenceno") || 'Sequence No',
       width: 130,
-      enableSearch: true,
+            enableSearch: true, // Add this
+
       render: (row, isSelected) => (
         <span className={isSelected ? 'font-bold' : ''}>{row.nSequenceNo}</span>
       )
@@ -480,7 +443,8 @@ export default function InstrumentDataPage() {
       key: 'nMergeFileCount',
       label: t("instrumentlocktag.mergefilecount") || 'Merge File Count',
       width: 150,
-      enableSearch: true,
+            enableSearch: true, // Add this
+
       render: (row, isSelected) => (
         <span className={isSelected ? 'font-bold' : ''}>{row.nMergeFileCount}</span>
       )
@@ -488,8 +452,8 @@ export default function InstrumentDataPage() {
     {
       key: 'sLockID',
       label: t("instrumentlocktag.lockid") || 'Lock ID',
-      width: 180,
-      enableSearch: true,
+      width: 180,      enableSearch: true, // Add this
+
       render: (row, isSelected) => (
         <span className={isSelected ? 'font-bold' : ''}>{row.sLockID}</span>
       )
@@ -497,8 +461,8 @@ export default function InstrumentDataPage() {
     {
       key: 'nInstrumentID',
       label: t("instrumentlocktag.instrumentid") || 'Instrument ID',
-      width: 150,
-      enableSearch: true,
+      width: 150,      enableSearch: true, // Add this
+
       render: (row, isSelected) => (
         <span className={isSelected ? 'font-bold' : ''}>{row.nInstrumentID}</span>
       )
@@ -510,7 +474,8 @@ export default function InstrumentDataPage() {
       key: 'File Name',
       label: t("instrumentlocktag.filename") || 'File Name',
       width: 300,
-      enableSearch: true,
+            enableSearch: true, // Add this
+
       render: (row, isSelected) => {
         const fileName = row["File Name"] || "";
         const createdOn = row["Created On"] || "";
@@ -543,7 +508,8 @@ export default function InstrumentDataPage() {
       key: 'Client Name',
       label: t("label.clientName") || 'Client Name',
       width: 250,
-      enableSearch: true,
+            enableSearch: true, // Add this
+
       render: (row, isSelected) => (
         <span className={isSelected ? 'font-bold' : ''}>{row["Client Name"]}</span>
       )
@@ -569,8 +535,7 @@ export default function InstrumentDataPage() {
               if (response.NullDataStatus === "Created") {
                 setMergeFileRawData([]);
                 if (response.CreatedList) {
-                  // Replace alert with information dialog
-                  showInfoDialog(response.CreatedList + " " + response.Message, "information");
+                  alert(response.CreatedList + " " + response.Message);
                 }
               } else {
                 if (oldRawDataID === merge.sRawDataID || oldRawDataID === " ") {
@@ -586,7 +551,6 @@ export default function InstrumentDataPage() {
             }
           } catch (error) {
             console.error("Error loading merge file data:", error);
-            showInfoDialog("Failed to load merge file data", "information");
           }
         };
         
@@ -652,7 +616,6 @@ export default function InstrumentDataPage() {
       </div>
     );
   };
-  
   const FileDetailPanel = ({ file }) => {
     useEffect(() => {
       if (file) {
@@ -693,164 +656,155 @@ export default function InstrumentDataPage() {
   };
 
   return (
-    <div className="px-4 font-roboto flex flex-col">
-      {/* Information Dialog - will show with blue color for "information" type */}
-      {infoDialog.open && (
-        <Errordialog
-          message={infoDialog.message}
-          type={infoDialog.type}
-          onClose={closeInfoDialog}
+  <div className="px-4 font-roboto flex flex-col">
+    {/* Instrument Dropdown */}
+    <div className="mb-4 mt-4">
+      <label className="block text-sm font-medium text-[#4a6fa5] mb-1">
+        {t("label.instrument")} <span className="text-red-500">*</span>
+      </label>
+      <div className="w-80">
+        <AnimatedDropdown
+          name="instrument"
+          value={instrument}
+          options={instruments}
+          displayKey="sInstrumentAliasName"
+          valueKey="nInterInstrumentID"
+          onChange={handleInstrumentDropdownChange}
         />
-      )}
-      
-      {/* Instrument Dropdown */}
-      <div className="mb-4 mt-4">
-        <label className="block text-sm font-medium text-[#4a6fa5] mb-1">
-          {t("label.instrument")} <span className="text-red-500">*</span>
-        </label>
-        <div className="w-80">
-          <AnimatedDropdown
-            name="instrument"
-            value={instrument}
-            options={instruments}
-            displayKey="sInstrumentAliasName"
-            valueKey="nInterInstrumentID"
-            onChange={handleInstrumentDropdownChange}
-          />
-        </div>
-      </div>
-
-      {/* Instrument Tag Information */}
-      <div className="mb-4">
-        <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
-          {t("instrumentlocktag.instrumenttagsinformation")}
-        </h3>
-        <InfoBox data={instrumentTags} />
-      </div>
-
-      {/* Latest Merged File Information */}
-      <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-sm font-medium text-[#4a6fa5]">
-            {t("instrumentlocktag.latestmergedfileinformation")}
-          </h3>
-          <div className="flex gap-6">
-            <button
-              className={`text-sm font-medium pb-1 ${
-                tab === "merge"
-                  ? "text-[#4a9fd8] border-b-2 border-[#4a9fd8]"
-                  : "text-gray-600"
-              }`}
-              onClick={() => handleTabChange("merge")}
-            >
-              {t("instrumentlocktag.mergedata")}
-            </button>
-            <button
-              className={`text-sm font-medium pb-1 ${
-                tab === "null"
-                  ? "text-[#4a9fd8] border-b-2 border-[#4a9fd8]"
-                  : "text-gray-600"
-              }`}
-              onClick={() => handleTabChange("null")}
-            >
-              {t("instrumentlocktag.viewnulldata")}
-            </button>
-          </div>
-        </div>
-
-        {tab === "merge" ? (
-          <>
-            <div className="flex justify-end gap-2 mb-2">
-              <PrimaryButton 
-                icon={RefreshCw}
-                label={t("instrumentlocktag.refresh")}
-                onClick={handleRefreshLatestFiles}
-              />
-            </div>
-            {/* Simple wrapper with border and no radius */}
-            <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
-              <GridLayout
-                columns={mergeColumns}
-                data={mergeRows}
-                hidePagination={true}
-              />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="flex justify-end mb-2 gap-2">
-              <PrimaryButton 
-                icon={FileText}
-                label={t("instrumentlocktag.proceedacknowledgement")}
-                onClick={handleNullDataAcknowledgement}
-              />
-              <PrimaryButton 
-                icon={RefreshCw}
-                label={t("instrumentlocktag.refresh")}
-                onClick={handleRefreshNullData}
-              />
-            </div>
-            {/* Simple wrapper with border and no radius */}
-            <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
-              <GridLayout
-                columns={nullDataColumns}
-                data={nullDataRows}
-                hidePagination={true}
-              />
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* File Information */}
-      <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-sm font-medium text-[#4a6fa5]">
-            {t("instrumentlocktag.fileinformation")}
-          </h3>
-          <PrimaryButton 
-            icon={RefreshCw}
-            label={t("instrumentlocktag.refresh")}
-            onClick={handleRefreshFileInfo}
-          />
-        </div>
-        {/* Simple wrapper with border and no radius */}
-        <div className="w-full h-[400px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
-          <GridLayout
-            columns={fileColumns}
-            data={files}
-            hidePagination={true}
-          />
-        </div>
-      </div>
-
-      {/* File Tag Information */}
-      <div className="mb-4">
-        <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
-          {t("instrumentlocktag.filetagsinformation")}
-        </h3>
-        <InfoBox data={fileTags} />
-      </div>
-
-      {/* File Raw Data */}
-      <div className="mb-4">
-        <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
-          {t("instrumentlocktag.filerawdata")}
-        </h3>
-        <FileViewer 
-          src={fileViewerSrc} 
-          fileType={fileViewerType}
-          supportedExtensions={supportedExtensions}
-        />
-      </div>
-
-      {/* Parsed Data */}
-      <div className="mb-4">
-        <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
-          {t("instrumentlocktag.parseddata")}
-        </h3>
-        <InfoBox data={parsedData} />
       </div>
     </div>
-  );
+
+    {/* Instrument Tag Information */}
+    <div className="mb-4">
+      <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+        {t("instrumentlocktag.instrumenttagsinformation")}
+      </h3>
+      <InfoBox data={instrumentTags} />
+    </div>
+
+{/* Latest Merged File Information */}
+<div className="mb-4">
+  <div className="flex justify-between items-center mb-2">
+    <h3 className="text-sm font-medium text-[#4a6fa5]">
+      {t("instrumentlocktag.latestmergedfileinformation")}
+    </h3>
+    <div className="flex gap-6">
+      <button
+        className={`text-sm font-medium pb-1 ${
+          tab === "merge"
+            ? "text-[#4a9fd8] border-b-2 border-[#4a9fd8]"
+            : "text-gray-600"
+        }`}
+        onClick={() => handleTabChange("merge")}
+      >
+        {t("instrumentlocktag.mergedata")}
+      </button>
+      <button
+        className={`text-sm font-medium pb-1 ${
+          tab === "null"
+            ? "text-[#4a9fd8] border-b-2 border-[#4a9fd8]"
+            : "text-gray-600"
+        }`}
+        onClick={() => handleTabChange("null")}
+      >
+        {t("instrumentlocktag.viewnulldata")}
+      </button>
+    </div>
+  </div>
+
+  {tab === "merge" ? (
+    <>
+      <div className="flex justify-end gap-2 mb-2">
+        <PrimaryButton 
+          icon={RefreshCw}
+          label={t("instrumentlocktag.refresh")}
+          onClick={handleRefreshLatestFiles}
+        />
+      </div>
+      {/* Simple wrapper with border and no radius */}
+      <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+        <GridLayout
+          columns={mergeColumns}
+          data={mergeRows}
+          hidePagination={true}
+        />
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="flex justify-end mb-2 gap-2">
+        <PrimaryButton 
+          icon={FileText}
+          label={t("instrumentlocktag.proceedacknowledgement")}
+          onClick={handleNullDataAcknowledgement}
+        />
+        <PrimaryButton 
+          icon={RefreshCw}
+          label={t("instrumentlocktag.refresh")}
+          onClick={handleRefreshNullData}
+        />
+      </div>
+      {/* Simple wrapper with border and no radius */}
+      <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+        <GridLayout
+          columns={nullDataColumns}
+          data={nullDataRows}
+          hidePagination={true}
+        />
+      </div>
+    </>
+  )}
+</div>
+
+{/* File Information */}
+<div className="mb-4">
+  <div className="flex justify-between items-center mb-2">
+    <h3 className="text-sm font-medium text-[#4a6fa5]">
+      {t("instrumentlocktag.fileinformation")}
+    </h3>
+    <PrimaryButton 
+      icon={RefreshCw}
+      label={t("instrumentlocktag.refresh")}
+      onClick={handleRefreshFileInfo}
+    />
+  </div>
+  {/* Simple wrapper with border and no radius */}
+  <div className="w-full h-[400px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+    <GridLayout
+      columns={fileColumns}
+      data={files}
+      hidePagination={true}
+    />
+  </div>
+</div>
+
+    {/* File Tag Information */}
+    <div className="mb-4">
+      <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+        {t("instrumentlocktag.filetagsinformation")}
+      </h3>
+      <InfoBox data={fileTags} />
+    </div>
+
+    {/* File Raw Data */}
+    <div className="mb-4">
+      <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+        {t("instrumentlocktag.filerawdata")}
+      </h3>
+      <FileViewer 
+        src={fileViewerSrc} 
+        fileType={fileViewerType}
+        supportedExtensions={supportedExtensions}
+      />
+    </div>
+
+    {/* Parsed Data */}
+    <div className="mb-4">
+      <h3 className="text-sm font-medium text-[#4a6fa5] mb-2">
+        {t("instrumentlocktag.parseddata")}
+      </h3>
+      <InfoBox data={parsedData} />
+    </div>
+  </div>
+);
 }

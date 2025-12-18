@@ -199,5 +199,5 @@ const AnimatedDropdown = ({
     </div>
   );
 };
- 
+
 export default React.memo(AnimatedDropdown);

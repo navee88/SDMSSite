@@ -560,19 +560,20 @@ const ServerData = () => {
           )}
         </div>
       </div>
-        <h1>Hello World</h1>
+        
         <div><FtpLayout /> </div>
 
-        {/* <UsersPage /> */}
-       
+      {/* <UsersPage /> */}
 
-      {showConfig && (
-        <ConfigModal
-          currentVisibility={configState}
-          onSave={setConfigState}
-          onClose={() => setShowConfig(false)}
-        />
-      )}
+      {showConfig && <ConfigModal currentVisibility={configState} onSave={setConfigState} onClose={() => setShowConfig(false)} />}
+
+      
+      <CustomPopup
+        isOpen={!!activePopup} 
+        onClose={handlePopupClose}
+        title={activePopup || ""}
+        content={activePopup ? POPUP_CONTENTS[activePopup] : null}
+      />
     </div>
   );
 };
