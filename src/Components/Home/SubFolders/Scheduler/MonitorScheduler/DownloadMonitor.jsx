@@ -834,12 +834,13 @@ const DownloadMonitor = () => {
 
             <div className="w-60 mr-40">
               <AnimatedDropdown
-                label={t("label.taskId")}
+                label={t("label.task")}
                 value={taskId}
                 options={["Task-001", "Task-002", "Task-003"]}
                 onChange={(e) => setTaskId(e.target.value)}
                 // isSearchable={true}
                 allowFreeInput={true}
+                borderColor="[border-bottom-color:#91DCF3]"
               />
 
             </div>
