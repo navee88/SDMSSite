@@ -102,7 +102,8 @@ const GridLayout = ({
   page = 1,                 
   pageSize = 10,            
   onPageChange,             
-  onPageSizeChange          
+  onPageSizeChange,
+  onRowClick          
 }) => {
   const { t } = useTranslation();
   const [selectedItem, setSelectedItem] = useState(null);
@@ -343,7 +344,16 @@ const GridLayout = ({
                   const rowKey = row._gridId; 
 
                   return (
-                    <tr key={rowKey} onClick={() => setSelectedItem(row)} className={`cursor-pointer transition-colors text-sm hover:bg-gray-50 ${isSelected ? 'bg-blue-50' : 'bg-white'}`}>
+                    <tr key={rowKey}  
+                    
+                    
+//Newly added for the ftp layout
+                    onClick={() => { 
+                        setSelectedItem(row); 
+                        if(onRowClick) onRowClick(row); 
+                      }}  className={`cursor-pointer transition-colors text-sm hover:bg-gray-50 ${isSelected ? 'bg-blue-50' : 'bg-white'}`}>
+                    
+                    
                       {showDefaultSelectionColumn && (
                         <td className={`px-4 py-3 border-b border-gray-100 text-center align-middle ${isSelected ? 'border-l-4 border-l-blue-600' : 'border-l-4 border-l-transparent'}`}>
                           <div className="flex items-center justify-center h-full">
