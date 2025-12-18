@@ -25,6 +25,8 @@ import ServerFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDelet
 import LocalFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
 import InstrumentLogs from "../../../Home/SubFolders/InstrumentLogs/InstrumentLogs";
 import SchedulerConfigLogs from "../../../Home/SubFolders/SchedulerConfigLogs/SchedulerConfigLogs";
+import AutoDownloadConfiguration from "../../../Home/SubFolders/DownloadSchedular/AutoDownloadConfiguration";
+import ViewDownloadConfiguration from "../../../Home/SubFolders/DownloadSchedular/ViewDownloadConfiguration";
 
 export const tabConfig = {
   DataExplorer: {
@@ -74,6 +76,11 @@ export const tabConfig = {
   },
   InstrumentLogs:{
     "InstrumentLogs":{content:<InstrumentLogs/>}
+  },
+  DownloadSchedular:{
+    "Auto Download Configuration":{content:<AutoDownloadConfiguration/>},
+    "View Download Configuration":{content:<ViewDownloadConfiguration/>}
+
   }
 
 };

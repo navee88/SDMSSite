@@ -331,6 +331,7 @@ const UsersPage = () => {
             key: 'clientName',
             label: 'Client Name',
             width: 200,
+            enableSearch: true,
             render: (row) => (
                 <span className="text-gray-700">
                     {row.clientName}
@@ -341,6 +342,7 @@ const UsersPage = () => {
             key: 'instrument',
             label: 'Instrument',
             width: 250,
+            enableSearch: true,
             render: (row) => (
                 <span className="text-gray-700">
                     {row.instrument}
@@ -351,6 +353,7 @@ const UsersPage = () => {
             key: 'live',
             label: 'Live',
             width: 100,
+            enableSearch: true,
             render: (row) => (
                 <span className="text-lg">
                     {row.live ? "✓" : ""}

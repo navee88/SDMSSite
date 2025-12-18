@@ -585,18 +585,21 @@ const UsersPage = () => {
             key: 'clientName',
             label: 'Client Name',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.clientName}</span>
         },
         {
             key: 'taskName',
             label: 'Task Name',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.taskName}</span>
         },
         {
             key: 'sourcePath',
             label: 'Source Path',
             width: 120,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.sourcePath}</span>
         }
     ], []);
@@ -815,7 +818,8 @@ const SchedulerConfigLogs = () => {
                                 value={selectedClient}
                                 options={options}
                                 onChange={(e) => setSelectedClient(e.target.value)}
-                                isSearchable
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
                         </div>
 
@@ -825,7 +829,8 @@ const SchedulerConfigLogs = () => {
                                 value={recordsDuration}
                                 options={["Current Date", "Last 7 Days", "Last 30 Days", "Last 1 Year", "Custom Date"]}
                                 onChange={handleDurationChange}
-                                isSearchable={true}
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
                         </div>
 

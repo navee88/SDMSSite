@@ -695,48 +695,56 @@ const UsersPage = () => {
             key: 'moduleName',
             label: t('label.moduleName'),
             width: 150,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.moduleName}</span>
         },
         {
             key: 'actions',
             label: t('label.actions'),
             width: 150,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.actions}</span>
         },
         {
             key: 'transactionOn',
             label: t('label.transactionOn'),
             width: 200,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.transactionOn}</span>
         },
         {
             key: 'reviewStatus',
             label: t('label.reviewStatus'),
             width: 150,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.reviewStatus}</span>
         },
         {
             key: 'requestedClient',
             label: t('label.requestedClient'),
             width: 200,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.requestedClient}</span>
         },
         {
             key: 'affectedClient',
             label: t('label.affectedClient'),
             width: 200,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.affectedClient}</span>
         },
         {
             key: 'instrumentName',
             label: t('label.instrumentName'),
             width: 200,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.instrumentName}</span>
         },
         {
             key: 'reason',
             label: t('label.reason'),
             width: 150,
+            enableSearch: true,
             render: (row) => <span className="text-gray-700">{row.reason}</span>
         }
     ], []);
@@ -776,8 +784,8 @@ const UsersPage = () => {
                 <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewedDate}</div>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-700 text-[#405F7D]">{t("label.reviewDateUTC")}</div>
-                <div className="col-span-2 font-semibold text-[#353F49]">{user.reviewDateUTC}</div>
+                <div className="font-semibold text-700 text-[#405F7D]">{t("label.modifiedData")}</div>
+                <div className="col-span-2 font-semibold text-[#353F49]">{user.modifiedData}</div>
             </div>
 
 
@@ -996,7 +1004,8 @@ const AuditTrailHistory = () => {
                                 value={selectedUser}
                                 options={["All", "User A", "User B"]}
                                 onChange={(e) => setSelectedUser(e.target.value)}
-                                isSearchable
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
 
 
@@ -1007,7 +1016,8 @@ const AuditTrailHistory = () => {
                                 value={selectedModule}
                                 options={["All", "Audit Trail", "CFR Gateway", "CFR Settings"]}
                                 onChange={(e) => setSelectedModule(e.target.value)}
-                                isSearchable
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
 
 
@@ -1030,7 +1040,8 @@ const AuditTrailHistory = () => {
                                 value={recordsDuration}
                                 options={["Current Date", "Last 7 Days", "Last 30 Days", "Last 1 Year", "Custom Date"]}
                                 onChange={handleDurationChange}
-                                isSearchable={true}
+                                // isSearchable={true}
+                                allowFreeInput={true}
                             />
                         </div>
 
