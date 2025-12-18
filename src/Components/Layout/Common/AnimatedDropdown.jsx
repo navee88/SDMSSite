@@ -200,4 +200,3 @@ const AnimatedDropdown = ({
 };
  
 export default React.memo(AnimatedDropdown);
- 
