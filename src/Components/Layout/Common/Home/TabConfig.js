@@ -7,6 +7,26 @@ import MyInstruments from "../../../Home/SubFolders/InstrumentLockSettings/MyIns
 import OtherInstruments from "../../../Home/SubFolders/InstrumentLockSettings/OtherInstruments";
 import InstrumentLockTag from "../../../Home/SubFolders/InstrumentLockSettings/InstrumentLocksandTags";
 import InstrumentDataPage from "../../../Home/SubFolders/InstrumentLockSettings/Data";
+
+import UploadQueue from "../../../Home/SubFolders/Scheduler/MonitorScheduler/UploadQueue";
+import FailedQueue from "../../../Home/SubFolders/Scheduler/MonitorScheduler/FailedQueue";
+import RestoreMonitor from "../../../Home/SubFolders/Scheduler/MonitorScheduler/RestoreMonitor";
+import DownloadMonitor from "../../../Home/SubFolders/Scheduler/MonitorScheduler/DownloadMonitor";
+import UploadMonitor from "../../../Home/SubFolders/Scheduler/MonitorScheduler/UploadMonitor";
+import CFRSettings from "../../../Home/SubFolders/LogHistory/AuditTrailHistory/CFRSettings";
+import AuditTrailHistory from "../../../Home/SubFolders/LogHistory/AuditTrailHistory/AuditTrailHistory";
+import DownloadErrorLogs from "../../../Home/SubFolders/LogHistory/DownloadLogs/DownloadErrorLogs";
+import DownloadLogs from "../../../Home/SubFolders/LogHistory/DownloadLogs/DownloadLogs";
+import UploadErrorLogs from "../../../Home/SubFolders/LogHistory/UploadLogs/UploadErrorLogs";
+import UploadLogs from "../../../Home/SubFolders/LogHistory/UploadLogs/UploadLogs";
+import ManualUploadLogs from "../../../Home/SubFolders/LogHistory/UploadLogs/ManualUploadLogs";
+import RestoreLogs from "../../../Home/SubFolders/LogHistory/RestoreLogs/RestoreLogs";
+import RestoreErrorLogs from "../../../Home/SubFolders/LogHistory/RestoreLogs/RestoreErrorLogs";
+import ServerFileDeleteLogs from "../../../Home/SubFolders/LogHistory/Server&LocalFileDeleteLogs/ServerFileDeleteLogs";
+import LocalFileDeleteLogs from "../../../Home/SubFolders/LogHistory/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
+import InstrumentLogs from "../../../Home/SubFolders/LogHistory/InstrumentLogs/InstrumentLogs";
+import SchedulerConfigLogs from "../../../Home/SubFolders/LogHistory/SchedulerConfigLogs/SchedulerConfigLogs";
+
 import UploadQueue from "../../../Home/SubFolders/MonitorSchedular/UploadQueue";
 import FailedQueue from "../../../Home/SubFolders/MonitorSchedular/FailedQueue";
 import RestoreMonitor from "../../../Home/SubFolders/MonitorSchedular/RestoreMonitor";
@@ -25,6 +45,8 @@ import ServerFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDelet
 import LocalFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
 import InstrumentLogs from "../../../Home/SubFolders/InstrumentLogs/InstrumentLogs";
 import SchedulerConfigLogs from "../../../Home/SubFolders/SchedulerConfigLogs/SchedulerConfigLogs";
+import AutoDownloadConfiguration from "../../../Home/SubFolders/DownloadSchedular/AutoDownloadConfiguration";
+import ViewDownloadConfiguration from "../../../Home/SubFolders/DownloadSchedular/ViewDownloadConfiguration";
 
 export const tabConfig = {
   DataExplorer: {
