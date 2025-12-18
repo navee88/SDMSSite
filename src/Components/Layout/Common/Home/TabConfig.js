@@ -26,27 +26,8 @@ import ServerFileDeleteLogs from "../../../Home/SubFolders/LogHistory/Server&Loc
 import LocalFileDeleteLogs from "../../../Home/SubFolders/LogHistory/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
 import InstrumentLogs from "../../../Home/SubFolders/LogHistory/InstrumentLogs/InstrumentLogs";
 import SchedulerConfigLogs from "../../../Home/SubFolders/LogHistory/SchedulerConfigLogs/SchedulerConfigLogs";
-
-import UploadQueue from "../../../Home/SubFolders/MonitorSchedular/UploadQueue";
-import FailedQueue from "../../../Home/SubFolders/MonitorSchedular/FailedQueue";
-import RestoreMonitor from "../../../Home/SubFolders/MonitorSchedular/RestoreMonitor";
-import DownloadMonitor from "../../../Home/SubFolders/MonitorSchedular/DownloadMonitor";
-import UploadMonitor from "../../../Home/SubFolders/MonitorSchedular/UploadMonitor";
-import CFRSettings from "../../../Home/SubFolders/AuditTrailHistory/CFRSettings";
-import AuditTrailHistory from "../../../Home/SubFolders/AuditTrailHistory/AuditTrailHistory";
-import DownloadErrorLogs from "../../../Home/SubFolders/DownloadLogs/DownloadErrorLogs";
-import DownloadLogs from "../../../Home/SubFolders/DownloadLogs/DownloadLogs";
-import UploadErrorLogs from "../../../Home/SubFolders/UploadLogs/UploadErrorLogs";
-import UploadLogs from "../../../Home/SubFolders/UploadLogs/UploadLogs";
-import ManualUploadLogs from "../../../Home/SubFolders/UploadLogs/ManualUploadLogs";
-import RestoreLogs from "../../../Home/SubFolders/RestoreLogs/RestoreLogs";
-import RestoreErrorLogs from "../../../Home/SubFolders/RestoreLogs/RestoreErrorLogs";
-import ServerFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDeleteLogs/ServerFileDeleteLogs";
-import LocalFileDeleteLogs from "../../../Home/SubFolders/Server&LocalFileDeleteLogs/LocalFileDeleteLogs";
-import InstrumentLogs from "../../../Home/SubFolders/InstrumentLogs/InstrumentLogs";
-import SchedulerConfigLogs from "../../../Home/SubFolders/SchedulerConfigLogs/SchedulerConfigLogs";
-import AutoDownloadConfiguration from "../../../Home/SubFolders/DownloadSchedular/AutoDownloadConfiguration";
-import ViewDownloadConfiguration from "../../../Home/SubFolders/DownloadSchedular/ViewDownloadConfiguration";
+import AutoDownloadConfiguration from "../../../Home/SubFolders/Scheduler/DownloadScheduler/AutoDownloadConfiguration";
+import ViewDownloadConfiguration from "../../../Home/SubFolders/Scheduler/DownloadScheduler/ViewDownloadConfiguration";
 
 export const tabConfig = {
   DataExplorer: {

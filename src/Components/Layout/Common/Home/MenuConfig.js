@@ -21,7 +21,7 @@ import RestoreLogs from "../../../../Pages/Home/AuditTrailHistory/RestoreLogs";
 import SchedulerConfigLogs from "../../../../Pages/Home/AuditTrailHistory/SchedulerConfigLogs";
 import InstrumentLogs from "../../../../Pages/Home/AuditTrailHistory/InstrumentLogs";
 import ServerAndLocalFileDeleteLogs from "../../../../Pages/Home/AuditTrailHistory/ServerAndLocalFileDeleteLogs";
-import DownloadSchedular from "../../../../Pages/Home/Schedular/DownloadSchedular";
+import DownloadScheduler from "../../../../Pages/Home/Scheduler/DownloadScheduler";
 
 
 export const menuConfig = [
@@ -51,7 +51,7 @@ export const menuConfig = [
       { label: "Monitor Scheduler", content: <MonitorScheduler/> },
       { label: "Local File Delete Scheduler", content: <div>Local File Delete Scheduler</div> },
       { label: "Server File Delete Scheduler", content: <div>Server File Delete Scheduler</div> },
-      { label: "Download Scheduler", content: <DownloadSchedular/> },
+      { label: "Download Scheduler", content: <DownloadScheduler/> },
       { label: "Client Service Monitor", content: <div>Client Service Monitor</div> },
     ],
   },

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import AnimatedDropdown from "../../../Layout/Common/AnimatedDropdown";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { BsCheck2Square } from "react-icons/bs";
+import AnimatedDropdown from "../../../../Layout/Common/AnimatedDropdown";
 
 export default function AutoDownloadConfiguration() {
   const [pathType, setPathType] = useState("LOCAL"); // LOCAL | UNC
