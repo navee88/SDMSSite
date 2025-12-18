@@ -129,7 +129,7 @@ const FileUploadDropzone = ({ onFilesAdded, files, onRemoveFile, onUpload, onRes
           onClick={onReset}
           icon={RotateCcw}
           label={t("button.reset") || "Reset"}
-          variant="secondary"
+    variant="primary"  // Added this line
           className="px-4"
         />
         <PrimaryButton
@@ -137,6 +137,8 @@ const FileUploadDropzone = ({ onFilesAdded, files, onRemoveFile, onUpload, onRes
           disabled={files.length === 0}
           icon={Upload}
           label={t("button.upload") || "Upload"}
+              variant="primary"  // Added this line
+
           className="px-4"
         />
       </div>
@@ -504,15 +506,14 @@ export default function MyInstrumentsPage() {
               label={t("instrumentlocktag.refresh") || "Refresh"}
             />
           </div>
-          <div className="h-[300px] w-full border p-0 bg-white">
-            <div className="w-full h-[300px] border border-[#f1f1f1] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+            <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
               <GridLayout
                 columns={lockedInstrumentsColumns}
                 data={lockedInstruments}
                 onRowSelect={handleInstrumentSelect}
+                hidePagination={true}
               />
             </div>
-          </div>
         </div>
 
         {/* File Upload Zone */}
@@ -539,14 +540,13 @@ export default function MyInstrumentsPage() {
               label={t("instrumentlocktag.refresh") || "Refresh"}
             />
           </div>
-          <div className="h-[300px] w-full border p-0 bg-white">
-            <div className="w-full h-[300px] border border-[#f1f1f1] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+            <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
               <GridLayout
                 columns={filesColumns}
                 data={files}
                 onRowSelect={handleFileSelect}
+                hidePagination={true}
               />
-            </div>
           </div>
         </div>
 

@@ -102,7 +102,8 @@ const GridLayout = ({
   page = 1,                 
   pageSize = 10,            
   onPageChange,             
-  onPageSizeChange          
+  onPageSizeChange,
+  onRowClick          
 }) => {
   const { t } = useTranslation();
   const [selectedItem, setSelectedItem] = useState(null);
@@ -283,7 +284,7 @@ const GridLayout = ({
         `}
       </style>
 
-      <div className="flex w-full p-4 gap-4 overflow-hidden h-full">
+      <div className="flex w-full p-2 gap-4 overflow-hidden h-full">
         <div className={`flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden min-w-0 h-[610px] ${!renderDetailPanel ? 'w-full' : 'w-4/5'}`}>
           <div className="custom-scrollbar flex-grow" style={{ overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
             <table className="table-fixed border-separate border-spacing-0 w-full">
@@ -343,7 +344,16 @@ const GridLayout = ({
                   const rowKey = row._gridId; 
 
                   return (
-                    <tr key={rowKey} onClick={() => setSelectedItem(row)} className={`cursor-pointer transition-colors text-sm hover:bg-gray-50 ${isSelected ? 'bg-blue-50' : 'bg-white'}`}>
+                    <tr key={rowKey}  
+                    
+                    
+//Newly added for the ftp layout
+                    onClick={() => { 
+                        setSelectedItem(row); 
+                        if(onRowClick) onRowClick(row); 
+                      }}  className={`cursor-pointer transition-colors text-sm hover:bg-gray-50 ${isSelected ? 'bg-blue-50' : 'bg-white'}`}>
+                    
+                    
                       {showDefaultSelectionColumn && (
                         <td className={`px-4 py-3 border-b border-gray-100 text-center align-middle ${isSelected ? 'border-l-4 border-l-blue-600' : 'border-l-4 border-l-transparent'}`}>
                           <div className="flex items-center justify-center h-full">

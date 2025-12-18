@@ -608,7 +608,6 @@ showDialog(msg, "warning");
       valueKey="value"
       onChange={(e) => changeLanguage(e.target.value)}
       direction="up"
-      //  allowFreeInput={true} 
     />
             </motion.div>
           )}

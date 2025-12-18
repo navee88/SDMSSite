@@ -2,13 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   Filter, RotateCcw, RefreshCw, Settings, ChevronUp, ChevronDown, X, CheckSquare,
   FolderDown, Upload, FolderUp, FileClock, History, Tag, FileText, FolderOpen, Download,
-  CheckCircle, List, MoreVertical, MousePointer2, Calendar
+  CheckCircle, List, MoreVertical, MousePointer2
 } from 'lucide-react';
 
 import AnimatedDropdown from '../../../Layout/Common/AnimatedDropdown';
-import UsersPage from '../../../Layout/Common/Home/Userpage';
 import FtpLayout from '../../../Layout/Common/Home/Grid/FtpLayout';
+import CustomPopup from '../../../Layout/Common/Popup';
+import UsersPage from '../../../Layout/Common/Home/Userpage';
 
+// --- CONSTANTS ---
 const ACTION_ICONS = {
   "Open": FolderOpen,
   "File Download": Download,
@@ -26,24 +28,15 @@ const ACTION_ICONS = {
 };
 
 const ALL_ACTION_ORDER = [
-  "Open",
-  "File Download",
-  "Restore",
-  "Folder Download",
-  "File Upload",
-  "Folder Upload",
-  "Version History",
-  "Work Complete",
-  "Workflow History",
-  "Tag",
-  "Audit Trail History",
-  "Attribute",
-  "Multi-File Select"
+  "Open", "File Download", "Restore", "Folder Download", "File Upload", 
+  "Folder Upload", "Version History", "Work Complete", "Workflow History", 
+  "Tag", "Audit Trail History", "Attribute", "Multi-File Select"
 ];
 
 const CUSTOM_FILTERS = ["Instrument", "Workflow Status", "Task Status"];
 const CUSTOM_COLUMNS = ["Parser Status"];
 
+// --- HELPER COMPONENTS ---
 const CheckboxItem = ({ label, checked, onChange }) => (
   <label className="flex items-center justify-between py-2 hover:bg-slate-50 px-2 rounded cursor-pointer group transition-colors mr-2">
     <span className="text-slate-700 font-medium text-sm select-none group-hover:text-blue-700">{label}</span>
@@ -59,7 +52,7 @@ const CheckboxItem = ({ label, checked, onChange }) => (
 const PrimaryButton = ({ icon: Icon, label, onClick }) => (
   <button
     onClick={onClick}
-    className="flex items-center gap-1 px-2.5 py-2 hover:scale-90 transition-all bg-white text-blue-600 text-[11px] font-bold rounded shadow-sm border border-transparent hover:bg-blue-50  whitespace-nowrap"
+    className="flex items-center gap-1 px-2.5 py-2 hover:scale-95 transition-all bg-white text-blue-600 text-[11px] font-bold rounded shadow-sm border border-transparent hover:bg-blue-50 whitespace-nowrap"
   >
     <Icon className="w-4 h-4 stroke-[3]" />
     <span>{label}</span>
@@ -70,7 +63,7 @@ const ActionButton = ({ icon: Icon, label, disabled, onClick, className = "" }) 
   <button
     onClick={onClick}
     disabled={disabled}
-    className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold rounded  whitespace-nowrap hover:scale-90 transition-all
+    className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-bold rounded whitespace-nowrap hover:scale-95 transition-all
       ${disabled
         ? "bg-slate-100 text-slate-300 cursor-not-allowed"
         : "bg-[#f1f5f9] text-[#1d8cf8] hover:bg-blue-100"
@@ -81,12 +74,6 @@ const ActionButton = ({ icon: Icon, label, disabled, onClick, className = "" }) 
     {Icon && <Icon className="w-3.5 h-3.5" />}
     <span>{label}</span>
   </button>
-);
-
-const SummaryItem = ({ label, value }) => (
-  <div className="flex items-center gap-1 text-xs">
-    <span className="font-medium text-slate-800">{value}</span>
-  </div>
 );
 
 const DatePicker = ({ label, value, onChange, max }) => (
@@ -101,8 +88,6 @@ const DatePicker = ({ label, value, onChange, max }) => (
     />
   </div>
 );
-
-
 
 const ConfigModal = ({ onClose, currentVisibility, onSave }) => {
   const [tempVisibility, setTempVisibility] = useState({ ...currentVisibility });
@@ -245,6 +230,7 @@ const ConfigModal = ({ onClose, currentVisibility, onSave }) => {
   );
 };
 
+
 const getCurrentDate = () => {
   const date = new Date();
   const year = date.getFullYear();
@@ -253,6 +239,7 @@ const getCurrentDate = () => {
   return `${year}-${month}-${day}`;
 };
 
+// --- MAIN COMPONENT ---
 const ServerData = () => {
   const today = getCurrentDate();
   const [hideEmpty, setHideEmpty] = useState(true);
@@ -264,70 +251,127 @@ const ServerData = () => {
   const [fromDate, setFromDate] = useState(today);
   const [toDate, setToDate] = useState(today);
 
+  // --- GENERIC POPUP STATE ---
+  const [activePopup, setActivePopup] = useState(null); // Stores "File Upload", "Tag", etc.
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
+
   const menuRef = useRef(null);
   const actionContainerRef = useRef(null);
   const buttonRefs = useRef([]);
 
   const [configState, setConfigState] = useState({
-    "Restore": true,
-    "Folder Download": true,
-    "File Upload": true,
-    "Folder Upload": true,
-    "Version History": true,
-    "Work Complete": true,
-    "Workflow History": true,
-    "Tag": true,
-    "Open": true,
-    "File Download": true,
-    "Audit Trail History": true,
-    "Attribute": true,
-    "Multi-File Select": true,
-    "Instrument": true,
-    "Workflow Status": true,
-    "Task Status": true,
+    "Restore": true, "Folder Download": true, "File Upload": true, "Folder Upload": true,
+    "Version History": true, "Work Complete": true, "Workflow History": true, "Tag": true,
+    "Open": true, "File Download": true, "Audit Trail History": true, "Attribute": true,
+    "Multi-File Select": true, "Instrument": true, "Workflow Status": true, "Task Status": true,
     "Parser Status": false
   });
 
   const enabledActions = ALL_ACTION_ORDER.filter(action => configState[action]);
 
+  // --- HANDLERS ---
+  const handleActionClick = (actionName) => {
+    // Determine if this action has a popup defined in POPUP_CONTENTS
+    if (POPUP_CONTENTS[actionName]) {
+      setActivePopup(actionName);
+      setSelectedFile(null); // Reset file if opening upload
+    } else {
+      console.log(`Action ${actionName} clicked (No popup defined)`);
+    }
+    setShowMenu(false);
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handlePopupClose = () => {
+    setActivePopup(null);
+    setSelectedFile(null);
+  };
+
+
+  const POPUP_CONTENTS = {
+    "File Upload": (
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
+           <label className="text-sm font-bold text-slate-700">Upload path :</label>
+           <div className="text-xs text-slate-500 font-medium px-2 py-1.5 bg-slate-50 rounded border border-slate-100">
+              /Root/Current/Folder/Path
+           </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-bold text-slate-700">File <span className="text-red-500">*</span></label>
+          <div className="flex items-center gap-3">
+            <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
+            <button onClick={() => fileInputRef.current?.click()} className="px-3 py-1.5 bg-white border border-slate-300 rounded text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
+              Choose files
+            </button>
+            <span className="text-xs text-slate-600 font-medium truncate max-w-[200px]">
+              {selectedFile ? selectedFile.name : "No file chosen"}
+            </span>
+          </div>
+          <p className="text-[10px] font-semibold text-slate-400 mt-1">NOTE:- Upload File should be less than 200 MB</p>
+        </div>
+        <div className="flex justify-end gap-3 pt-1 mt-4 border-t border-slate-100 ">
+          <button onClick={() => console.log("Upload", selectedFile)} className="flex  items-center gap-2 px-2 py-0 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-bold rounded shadow-sm transition-all active:scale-95">
+            <Upload className="w-4 h-4 stroke-[3]" /> upload
+          </button>
+          <button onClick={handlePopupClose} className="px-5 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-600 text-sm font-bold rounded shadow-sm transition-all">
+            Close
+          </button>
+        </div>
+      </div>
+    ),
+    
+    "Folder Upload": (
+      <div className="p-4 text-center text-slate-600">
+        <FolderUp className="w-10 h-10 mx-auto mb-2 text-blue-500" />
+        <p>Folder Upload Content Here</p>
+        <button onClick={handlePopupClose} className="mt-4 px-4 py-2 bg-slate-100 rounded">Close</button>
+      </div>
+    ),
+
+    "Tag": (
+      <div className="flex flex-col gap-4">
+        <label className="text-sm font-bold text-slate-700">Add Tags</label>
+        <input type="text" className="border border-slate-300 rounded p-2 text-sm" placeholder="Enter tags..." />
+        <div className="flex justify-end gap-2 mt-2">
+           <button className="px-4 py-2 bg-blue-600 text-white rounded text-sm">Save Tag</button>
+           <button onClick={handlePopupClose} className="px-4 py-2 border rounded text-sm">Cancel</button>
+        </div>
+      </div>
+    )
+
+  };
+
+
   useEffect(() => {
     const calculateVisibleActions = () => {
       if (!actionContainerRef.current) return;
-
       const containerWidth = actionContainerRef.current.offsetWidth;
       const reservedSpace = 140;
       const availableWidth = containerWidth - reservedSpace;
-
       let accumulatedWidth = 0;
       let count = 0;
-
       for (let i = 0; i < buttonRefs.current.length; i++) {
         const button = buttonRefs.current[i];
         if (!button) continue;
-
         const buttonWidth = button.offsetWidth + 8;
-
         if (accumulatedWidth + buttonWidth <= availableWidth) {
           accumulatedWidth += buttonWidth;
           count++;
-        } else {
-          break;
-        }
+        } else { break; }
       }
-
       setVisibleCount(Math.max(1, count));
     };
-
     calculateVisibleActions();
-
     window.addEventListener('resize', calculateVisibleActions);
-
     const timer = setTimeout(calculateVisibleActions, 100);
-
-    return () => {
-      window.removeEventListener('resize', calculateVisibleActions);
-      clearTimeout(timer);
-    };
+    return () => { window.removeEventListener('resize', calculateVisibleActions); clearTimeout(timer); };
   }, [configState, enabledActions.length]);
 
   useEffect(() => {
@@ -342,17 +386,14 @@ const ServerData = () => {
 
   const visibleActions = enabledActions.slice(0, visibleCount);
   const overflowActions = enabledActions.slice(visibleCount);
-
   const isCustomDate = recordsDuration === "Custom Date";
-
   const handleDurationChange = (value) => {
     const actualValue = value?.target?.value || value?.value || value;
     setRecordsDuration(actualValue);
   };
 
   return (
-    <div className="flex flex-col w-full font-sans rounded-md">
-
+    <div className="flex flex-col w-full font-sans rounded-md relative">
       <div className="bg-[#f0f4f8] px-4 pt-4 pb-2 relative rounded-t-md z-20">
         {isOpen ? (
           <div className="flex flex-wrap items-end gap-3.5 mb-2">
@@ -462,123 +503,78 @@ const ServerData = () => {
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-4 py-2.5">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-xs text-slate-600">Storage Group:</span>
-              <span className="font-medium text-xs text-slate-800">File01</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-xs text-slate-600">Client:</span>
-              <span className="font-medium text-xs text-slate-800">All</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-xs text-slate-600">Instrument:</span>
-              <span className="font-medium text-xs text-slate-800">All</span>
-            </div>
-            <div className="flex items-center gap-2">
-              {/* <span className="font-bold text-xs text-slate-600">From:</span> */}
-              <span className="font-medium text-xs text-slate-800">{isCustomDate ? `From ${fromDate} to ${toDate}` : recordsDuration}</span>
-            </div>
+             <span className="text-xs text-slate-500 italic">Filters hidden...</span>
           </div>
         )}
-
-        <button
-          className="absolute right-4 -bottom-3 z-10 bg-[#f0f4f8] hover:bg-slate-200 p-0.5 rounded shadow-sm cursor-pointer transition-colors"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <button className="absolute right-4 -bottom-3 z-10 bg-[#f0f4f8] hover:bg-slate-200 p-0.5 rounded shadow-sm cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <ChevronUp className="w-4 h-4 text-blue-600" /> : <ChevronDown className="w-4 h-4 text-blue-600" />}
         </button>
       </div>
 
+      {/* ACTION BAR */}
       <div className="bg-white px-3 py-2">
         <div ref={actionContainerRef} className="flex items-center flex-wrap gap-2 justify-start relative">
+          {/* Measurement Div */}
           <div className="invisible absolute pointer-events-none flex gap-2">
-            {enabledActions.map((actionName, index) => {
-              const IconComponent = ACTION_ICONS[actionName];
-              const isDisabled = actionName === "Version History" || actionName === "Work Complete";
-              return (
-                <div
-                  key={`measure-${actionName}`}
-                  ref={(el) => (buttonRefs.current[index] = el)}
-                >
-                  <ActionButton
-                    icon={IconComponent}
-                    label={actionName}
-                    disabled={isDisabled}
-                  />
-                </div>
-              );
-            })}
+            {enabledActions.map((actionName, index) => (
+               <div key={`measure-${actionName}`} ref={(el) => (buttonRefs.current[index] = el)}>
+                 <ActionButton icon={ACTION_ICONS[actionName]} label={actionName} />
+               </div>
+            ))}
           </div>
 
-          {visibleActions.map((actionName) => {
-            const IconComponent = ACTION_ICONS[actionName];
-            const isDisabled = actionName === "Version History" || actionName === "Work Complete";
-
-            return (
-              <ActionButton
-                key={actionName}
-                icon={IconComponent}
-                label={actionName}
-                disabled={isDisabled}
-              />
-            );
-          })}
+          {/* Visible Buttons */}
+          {visibleActions.map((actionName) => (
+             <ActionButton
+               key={actionName}
+               icon={ACTION_ICONS[actionName]}
+               label={actionName}
+               disabled={actionName === "Version History" || actionName === "Work Complete"}
+               onClick={() => handleActionClick(actionName)}
+             />
+          ))}
 
           <div className="h-4 w-px bg-slate-200 mx-1"></div>
           <ActionButton icon={RefreshCw} label="Refresh" />
 
+          {/* Overflow Menu */}
           {overflowActions.length > 0 && (
             <div className="relative" ref={menuRef}>
-              <button
-                onClick={() => setShowMenu(!showMenu)}
-                className={`p-1.5 rounded transition-colors 
-                    ${showMenu ? 'bg-blue-100 text-blue-600' : 'bg-[#f1f5f9] text-[#1d8cf8] hover:bg-blue-100'}
-                  `}
-              >
+              <button onClick={() => setShowMenu(!showMenu)} className="p-1.5 rounded bg-[#f1f5f9] hover:bg-blue-100 text-[#1d8cf8]">
                 <MoreVertical className="w-4 h-4" />
               </button>
-
               {showMenu && (
-                <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-xl py-1 z-50">
-                  {overflowActions.map((actionName) => {
-                    const IconComponent = ACTION_ICONS[actionName];
-                    const isDisabled = actionName === "Version History" || actionName === "Work Complete";
-                    return (
-                      <button
-                        key={actionName}
-                        disabled={isDisabled}
-                        className={`w-full text-left px-4 py-2.5 text-xs flex items-center gap-2 
-                              ${isDisabled
-                            ? 'text-slate-300 cursor-not-allowed'
-                            : 'text-slate-700 hover:bg-slate-50'
-                          }
-                            `}
-                      >
-                        {IconComponent && <IconComponent className={`w-3.5 h-3.5 ${isDisabled ? 'text-slate-300' : 'text-blue-500'}`} />}
-                        {actionName}
-                      </button>
-                    );
-                  })}
+                <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-xl py-1 z-50 border border-slate-100">
+                  {overflowActions.map((actionName) => (
+                    <button
+                      key={actionName}
+                      onClick={() => handleActionClick(actionName)}
+                      className="w-full text-left px-4 py-2.5 text-xs flex items-center gap-2 hover:bg-slate-50 text-slate-700"
+                    >
+                      {ACTION_ICONS[actionName] && React.createElement(ACTION_ICONS[actionName], { className: "w-3.5 h-3.5 text-blue-500" })}
+                      {actionName}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
           )}
         </div>
-
       </div>
         
-        {/* <div><FtpLayout /> </div> */}
+      <div><FtpLayout /></div>
 
-        <UsersPage />
-       
+      {/* <UsersPage /> */}
 
-      {showConfig && (
-        <ConfigModal
-          currentVisibility={configState}
-          onSave={setConfigState}
-          onClose={() => setShowConfig(false)}
-        />
-      )}
+      {showConfig && <ConfigModal currentVisibility={configState} onSave={setConfigState} onClose={() => setShowConfig(false)} />}
+
+      
+      <CustomPopup
+        isOpen={!!activePopup} 
+        onClose={handlePopupClose}
+        title={activePopup || ""}
+        content={activePopup ? POPUP_CONTENTS[activePopup] : null}
+      />
     </div>
   );
 };

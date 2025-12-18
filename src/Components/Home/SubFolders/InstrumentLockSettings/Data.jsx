@@ -722,7 +722,7 @@ export default function InstrumentDataPage() {
         />
       </div>
       {/* Simple wrapper with border and no radius */}
-      <div className="w-full h-[300px] border border-[#f1f1f1] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+      <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
         <GridLayout
           columns={mergeColumns}
           data={mergeRows}
@@ -745,7 +745,7 @@ export default function InstrumentDataPage() {
         />
       </div>
       {/* Simple wrapper with border and no radius */}
-      <div className="w-full h-[300px] border border-[#f1f1f1] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+      <div className="w-full h-[300px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
         <GridLayout
           columns={nullDataColumns}
           data={nullDataRows}
@@ -769,7 +769,7 @@ export default function InstrumentDataPage() {
     />
   </div>
   {/* Simple wrapper with border and no radius */}
-  <div className="w-full h-[400px] border border-[#f1f1f1] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
+  <div className="w-full h-[400px] overflow-hidden [&>*]:!p-0 [&>*]:!m-0 rounded-none">
     <GridLayout
       columns={fileColumns}
       data={files}

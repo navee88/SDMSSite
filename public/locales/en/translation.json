@@ -134,7 +134,8 @@
     "print":"Print",
     "add": "Add",
     "remove": "Remove",
-    "upload":"Upload"
+    "upload":"Upload",
+    "update":"Update"
   },
   "label": {
     "email": "E-mail",
@@ -198,7 +199,8 @@
     "domain":"Domain",
     "fileSource":"File source",
     "fileStatus":"File status",
-    "modifiedData":"Modified Data"
+    "modifiedData":"Modified Data",
+    "task":"Task"
   },
   "statuses": {
     "activated": "Activated",
@@ -281,6 +283,9 @@
   "or": "or ",
   "clickhere": "click here ",
   "tobrowseoraccesscamera": " to browse or access camera ",
-  "toaddfile": " to add file"
+  "toaddfile": " to add file",
+  "tagName":"Tag Name",
+  "tagValue":"Tag Value",
+  "noTagValue":"No Tag Value"
 }
 }
