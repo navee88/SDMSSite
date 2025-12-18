@@ -199,7 +199,8 @@
     "domain":"Domain",
     "fileSource":"File source",
     "fileStatus":"File status",
-    "modifiedData":"Modified Data"
+    "modifiedData":"Modified Data",
+    "task":"Task"
   },
   "statuses": {
     "activated": "Activated",
