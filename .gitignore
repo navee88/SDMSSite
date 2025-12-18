@@ -22,6 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local config
+# local config don't change
 src/Api/config.js
 
